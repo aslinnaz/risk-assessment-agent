@@ -1,0 +1,1377 @@
+{
+ "version": "1.0",
+ "note": "Control coverage is not a safety score. Statuses are human declarations only and contain no technical verification. Source mappings are checked programmatically against the actual text (tools/verify_catalog.py).",
+ "status_values": {
+  "declared_present": "Declared present",
+  "declared_absent": "Declared absent",
+  "partial": "Partially assessed",
+  "unknown": "Unknown",
+  "not_assessed": "Not assessed",
+  "not_applicable": "Not applicable"
+ },
+ "controls": [
+  {
+   "id": "C01",
+   "topic": "role_eu",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 2",
+     "basis": "legal",
+     "keywords": [
+      "scope",
+      "applies to",
+      "deployers"
+     ],
+     "claim": "The scope of the Regulation depends on role and EU link."
+    },
+    {
+     "source_id": "AIA",
+     "ref": "Art. 6",
+     "basis": "legal",
+     "keywords": [
+      "high-risk",
+      "annex iii"
+     ],
+     "claim": "Rules for high-risk classification."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 1.1",
+     "basis": "guidance",
+     "keywords": [
+      "legal"
+     ],
+     "claim": "Understanding and managing legal requirements."
+    }
+   ],
+   "title": "Scope, role and risk classification",
+   "purpose": "The role (provider/deployer, ...), EU link and the rationale of the risk classification are recorded.",
+   "relevant_when": "Always.",
+   "info_needed": "Role of the organisation, EU link, intended purpose and date.",
+   "sample_question": "Is this system developed by your organisation, or do you use it ready-made? Is it used in the EU, or are its outputs used in the EU?",
+   "followup_when": "If the role is unclear or there is an EU link, the usage date is asked.",
+   "legal_note": ""
+  },
+  {
+   "id": "C02",
+   "topic": "prohibited_a",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 5",
+     "basis": "legal",
+     "keywords": [
+      "prohibited"
+     ],
+     "claim": "Prohibited AI practices."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 1.1",
+     "basis": "guidance",
+     "keywords": [
+      "legal"
+     ],
+     "claim": "Management of legal requirements."
+    }
+   ],
+   "title": "Prohibited practice screening",
+   "purpose": "Checking whether the use falls under the Art. 5 prohibitions.",
+   "relevant_when": "Always.",
+   "info_needed": "Whether the necessary conditions of any Art. 5(1) prohibition exist, and exceptions/scope/date.",
+   "sample_question": "Does the system do anything like steering people's behaviour by subliminal methods, social scoring, scraping facial images or inferring emotions?",
+   "followup_when": "On a 'Yes/Maybe' answer, the conditions and exception of the relevant prohibition are asked separately.",
+   "legal_note": ""
+  },
+  {
+   "id": "C03",
+   "topic": "governance",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 4",
+     "basis": "legal",
+     "keywords": [
+      "ai literacy",
+      "literacy"
+     ],
+     "claim": "AI literacy (a later amendment of the text should be checked)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 2.1",
+     "basis": "guidance",
+     "keywords": [
+      "role",
+      "responsib"
+     ],
+     "claim": "Documentation of roles and responsibilities."
+    }
+   ],
+   "title": "Accountability and AI literacy",
+   "purpose": "The system has a responsible owner and the relevant people are competent.",
+   "relevant_when": "Always.",
+   "info_needed": "A named owner; training/literacy practice.",
+   "sample_question": "Is there a named person who owns this system, and have the people who use it been informed about AI?",
+   "followup_when": "",
+   "legal_note": "Who is bound by the Art. 4 obligation may differ after later amendments; not verified against an official source."
+  },
+  {
+   "id": "C04",
+   "topic": "governance",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 9",
+     "basis": "legal",
+     "keywords": [
+      "risk management system"
+     ],
+     "claim": "Risk management system (for high-risk systems)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MANAGE 1.1",
+     "basis": "guidance",
+     "keywords": [
+      "manage",
+      "risk"
+     ],
+     "claim": "Treatment of risk."
+    }
+   ],
+   "title": "Lifecycle risk management",
+   "purpose": "Material risks have an owner, a treatment and a residual-risk decision on record.",
+   "relevant_when": "If there is a high-risk pathway or high impact.",
+   "info_needed": "Whether a risk register / risk assessment exists.",
+   "sample_question": "Has a written risk assessment been done for this use?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C05",
+   "topic": "governance",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 27",
+     "basis": "legal",
+     "keywords": [
+      "fundamental rights impact assessment"
+     ],
+     "claim": "Fundamental rights impact assessment (for certain deployers)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MAP 5.1",
+     "basis": "guidance",
+     "keywords": [
+      "impact"
+     ],
+     "claim": "Identification of impacts."
+    }
+   ],
+   "title": "Impacts on people and groups",
+   "purpose": "Affected people/groups and potential harms are identified.",
+   "relevant_when": "For decisions affecting people.",
+   "info_needed": "Whether an impact assessment exists; affected groups.",
+   "sample_question": "Has a separate impact assessment been done for the people affected by the system's decisions?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C06",
+   "topic": "data_docs",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 10",
+     "basis": "legal",
+     "keywords": [
+      "data governance",
+      "training, validation"
+     ],
+     "claim": "Data and data governance."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MAP 2.3",
+     "basis": "guidance",
+     "keywords": [
+      "data"
+     ],
+     "claim": "Data and scientific integrity."
+    }
+   ],
+   "title": "Data quality and provenance",
+   "purpose": "Fitness for purpose and source of data are known.",
+   "relevant_when": "If personal or sensitive data is used; in the high-risk pathway.",
+   "info_needed": "Data types, source and quality checks.",
+   "sample_question": "What data does the system work with, and are the source and quality of this data checked?",
+   "followup_when": "If sensitive data exists, protection measures are asked.",
+   "legal_note": ""
+  },
+  {
+   "id": "C07",
+   "topic": "data_docs",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 11",
+     "basis": "legal",
+     "keywords": [
+      "technical documentation"
+     ],
+     "claim": "Technical documentation."
+    },
+    {
+     "source_id": "AIA",
+     "ref": "Art. 13",
+     "basis": "legal",
+     "keywords": [
+      "instructions for use",
+      "transparent"
+     ],
+     "claim": "Transparency and information to deployers."
+    }
+   ],
+   "title": "Technical and operational documentation",
+   "purpose": "Architecture, limitations and instructions for use are current.",
+   "relevant_when": "In the high-risk pathway; as good practice elsewhere.",
+   "info_needed": "Existence of documentation.",
+   "sample_question": "Is there a current document that explains how the system works and what its limits are?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C08",
+   "topic": "logging",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 12",
+     "basis": "legal",
+     "keywords": [
+      "record-keeping",
+      "logs",
+      "automatic recording"
+     ],
+     "claim": "Record-keeping."
+    },
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 13",
+     "basis": "guidance",
+     "keywords": [
+      "logging",
+      "log"
+     ],
+     "claim": "Recording of agent actions (guidance)."
+    }
+   ],
+   "title": "Action traceability and logs",
+   "purpose": "Actions can be linked to triggers, tool calls, approvals and outcomes.",
+   "relevant_when": "If the system takes actions or is in the high-risk pathway.",
+   "info_needed": "Logging declaration.",
+   "sample_question": "Are the system's actions (which tool, when, with whose approval) recorded?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C09",
+   "topic": "approval",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 14",
+     "basis": "legal",
+     "keywords": [
+      "human oversight",
+      "intervene",
+      "stop"
+     ],
+     "claim": "Human oversight."
+    },
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 10",
+     "basis": "guidance",
+     "keywords": [
+      "oversight"
+     ],
+     "claim": "Oversight spectrum (guidance)."
+    }
+   ],
+   "title": "Effective human oversight",
+   "purpose": "Critical actions are taken with valid human approval/intervention, and a stop mechanism exists.",
+   "relevant_when": "If the system supports decisions or takes actions.",
+   "info_needed": "Scope of approval, intervention and stop possibility.",
+   "sample_question": "Does a human approve before an action is taken, and can someone stop the system if needed?",
+   "followup_when": "If approval exists: is it specific to the action, does it have a limit or parameters?",
+   "legal_note": ""
+  },
+  {
+   "id": "C10",
+   "topic": "security",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 15",
+     "basis": "legal",
+     "keywords": [
+      "accuracy",
+      "robustness"
+     ],
+     "claim": "Accuracy, robustness, cybersecurity."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MEASURE 2.5",
+     "basis": "guidance",
+     "keywords": [
+      "valid",
+      "reliable"
+     ],
+     "claim": "Validity and reliability."
+    }
+   ],
+   "title": "Accuracy and reliability",
+   "purpose": "Testing the system against success/error criteria suited to its purpose.",
+   "relevant_when": "For uses with a decision or action effect.",
+   "info_needed": "Performance test declaration.",
+   "sample_question": "Has the system's accuracy been tested against predefined criteria?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C11",
+   "topic": "tools",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 14",
+     "basis": "legal",
+     "keywords": [
+      "oversight",
+      "intervene"
+     ],
+     "claim": "Indirect: oversight and intervention. Not an explicit provision on tool authority."
+    },
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 6",
+     "basis": "guidance",
+     "keywords": [
+      "tool"
+     ],
+     "claim": "Tools determine the agent's reach (guidance)."
+    }
+   ],
+   "title": "Tool access and permission limits",
+   "purpose": "The tool/permission matrix is technically enforced; unauthorised actions and privilege escalation are blocked.",
+   "relevant_when": "If the system calls tools or accesses systems.",
+   "info_needed": "Tools, permissions, whether limits are technical or policy-level.",
+   "sample_question": "Which tools/systems can the system access, and are these limits technically enforced or only stated in instructions?",
+   "followup_when": "If there is authority expansion or delegation, it is asked separately.",
+   "legal_note": "The legislation has no explicit provision specific to agent permissions; this control is indirect and guidance-based."
+  },
+  {
+   "id": "C12",
+   "topic": "security",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 15",
+     "basis": "legal",
+     "keywords": [
+      "cybersecurity",
+      "attacks"
+     ],
+     "claim": "Indirect: cybersecurity."
+    },
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 9",
+     "basis": "guidance",
+     "keywords": [
+      "prompt",
+      "injection",
+      "instruction"
+     ],
+     "claim": "Indirect prompt injection (guidance)."
+    }
+   ],
+   "title": "Resistance to malicious instructions",
+   "purpose": "Malicious instructions in documents, messages and tool outputs do not change behaviour.",
+   "relevant_when": "If the system reads external content.",
+   "info_needed": "Source of external content and defence declaration.",
+   "sample_question": "Does the system read content from the internet or user documents and act on it? Is there a safeguard against malicious instructions?",
+   "followup_when": "",
+   "legal_note": "Indirect; the legislation has no explicit provision specific to agents."
+  },
+  {
+   "id": "C13",
+   "topic": "security",
+   "sources": [
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 6",
+     "basis": "guidance",
+     "keywords": [
+      "memory"
+     ],
+     "claim": "Memory governance (guidance)."
+    }
+   ],
+   "title": "Memory and context integrity",
+   "purpose": "Persistent memory cannot be manipulated; session/tenant separation.",
+   "relevant_when": "If the system keeps persistent memory.",
+   "info_needed": "Memory use and separation.",
+   "sample_question": "Does the system remember anything between sessions (persistent memory)?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C14",
+   "topic": "security",
+   "sources": [
+    {
+     "source_id": "TAI-AG",
+     "ref": "s. 27",
+     "basis": "guidance",
+     "keywords": [
+      "stop",
+      "budget",
+      "kill"
+     ],
+     "claim": "Stop conditions and budget limits (guidance)."
+    }
+   ],
+   "title": "Loop, cost and cascading failure limits",
+   "purpose": "Step/time/budget limits; safe stop on dependency failures.",
+   "relevant_when": "If the system is multi-step or autonomous.",
+   "info_needed": "Limit and safe-stop declaration.",
+   "sample_question": "Is there a step, time or budget limit so that the system does not repeat endlessly?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C15",
+   "topic": "supply_change",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 25",
+     "basis": "legal",
+     "keywords": [
+      "responsibilities along the ai value chain",
+      "third party"
+     ],
+     "claim": "Responsibilities along the AI value chain."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 6.1",
+     "basis": "guidance",
+     "keywords": [
+      "third-party"
+     ],
+     "claim": "Third-party risks."
+    }
+   ],
+   "title": "External model, tool and agent assurance",
+   "purpose": "Supplier versions, responsibilities and change conditions.",
+   "relevant_when": "If a third-party model/tool is used.",
+   "info_needed": "Supplier relationships.",
+   "sample_question": "Does the system use a third-party model or tool, and are versions and responsibilities defined?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C16",
+   "topic": "transparency",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 50",
+     "basis": "legal",
+     "keywords": [
+      "interact",
+      "disclos",
+      "synthetic"
+     ],
+     "claim": "Transparency obligations for certain systems."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 4.2",
+     "basis": "guidance",
+     "keywords": [
+      "document"
+     ],
+     "claim": "Documentation and communication."
+    }
+   ],
+   "title": "User information and transparency",
+   "purpose": "Applicable AI disclosures are provided.",
+   "relevant_when": "If there is user interaction, synthetic content, emotion recognition or deepfakes.",
+   "info_needed": "Features relevant to transparency.",
+   "sample_question": "Do users know that they are talking to an AI?",
+   "followup_when": "If synthetic content is generated, marking is asked.",
+   "legal_note": ""
+  },
+  {
+   "id": "C17",
+   "topic": "supply_change",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 43",
+     "basis": "legal",
+     "keywords": [
+      "substantial modification"
+     ],
+     "claim": "Re-assessment of conformity after a substantial modification (high-risk pathway)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "GOVERN 1.5",
+     "basis": "guidance",
+     "keywords": [
+      "monitor",
+      "review"
+     ],
+     "claim": "Ongoing monitoring and review."
+    }
+   ],
+   "title": "Change control and reassessment",
+   "purpose": "Changes to models/tools/permissions trigger reassessment.",
+   "relevant_when": "If the system changes continuously.",
+   "info_needed": "Change process.",
+   "sample_question": "Is a reassessment done when the model, tools or permissions change?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C18",
+   "topic": "logging",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 72",
+     "basis": "legal",
+     "keywords": [
+      "post-market monitoring"
+     ],
+     "claim": "Post-market monitoring (providers, high-risk)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MEASURE 3.1",
+     "basis": "guidance",
+     "keywords": [
+      "monitor",
+      "track"
+     ],
+     "claim": "Tracking risk over time."
+    }
+   ],
+   "title": "Operational monitoring",
+   "purpose": "A monitoring plan exists and alerts reach the responsible person.",
+   "relevant_when": "For systems running in production.",
+   "info_needed": "Monitoring declaration.",
+   "sample_question": "Is there someone or an alerting system that monitors the system's live behaviour?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C19",
+   "topic": "logging",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 73",
+     "basis": "legal",
+     "keywords": [
+      "serious incident"
+     ],
+     "claim": "Serious incident reporting (high-risk systems)."
+    },
+    {
+     "source_id": "NIST-PB",
+     "ref": "MANAGE 4.3",
+     "basis": "guidance",
+     "keywords": [
+      "incident"
+     ],
+     "claim": "Communication and follow-up of incidents."
+    }
+   ],
+   "title": "Incident response and reporting",
+   "purpose": "Incident classification, owner and reporting deadlines are known.",
+   "relevant_when": "For systems running in production.",
+   "info_needed": "Incident response declaration.",
+   "sample_question": "Is it defined what to do and whom to notify if a problem or incident occurs?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C20",
+   "topic": "supply_change",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 43",
+     "basis": "legal",
+     "keywords": [
+      "conformity assessment"
+     ],
+     "claim": "Conformity assessment."
+    },
+    {
+     "source_id": "AIA",
+     "ref": "Art. 49",
+     "basis": "legal",
+     "keywords": [
+      "registration"
+     ],
+     "claim": "Registration."
+    }
+   ],
+   "title": "Required conformity activities",
+   "purpose": "Applicable conformity assessment, declaration, marking and registration evidence.",
+   "relevant_when": "In the high-risk pathway (provider).",
+   "info_needed": "Conformity processes if in the high-risk pathway.",
+   "sample_question": "If the system is in a high-risk category, have conformity assessment and registration processes been planned?",
+   "followup_when": "",
+   "legal_note": ""
+  },
+  {
+   "id": "C21",
+   "topic": "supply_change",
+   "sources": [
+    {
+     "source_id": "AIA",
+     "ref": "Art. 17",
+     "basis": "legal",
+     "keywords": [
+      "quality management system"
+     ],
+     "claim": "Quality management system (partial alignment)."
+    }
+   ],
+   "title": "Independent management system review",
+   "purpose": "Audit and management review records.",
+   "relevant_when": "If there is a corporate management system.",
+   "info_needed": "Internal/external audit.",
+   "sample_question": "Is there a regular internal or independent audit of your AI governance?",
+   "followup_when": "",
+   "legal_note": "Partial alignment: Art. 17 binds only high-risk providers."
+  }
+ ],
+ "scope_rules": [
+  {
+   "controls": [
+    "C16"
+   ],
+   "when": {
+    "t_interacts_people": [
+     "no"
+    ],
+    "t_synthetic_content": [
+     "no"
+    ],
+    "t_emotion_biometric": [
+     "no"
+    ]
+   },
+   "all": true,
+   "reason": "It was declared that there is no direct interaction with people, no content generation and no emotion/biometric categorisation; the transparency notice is not relevant for this use (by declaration).",
+   "short": "No interaction, generated content or emotion/biometric features were declared."
+  },
+  {
+   "controls": [
+    "C20"
+   ],
+   "when_legal": [
+    "not_high_by_declaration",
+    "out_of_scope_declared",
+    "annex3_exception_claimed"
+   ],
+   "reason": "No legal high-risk pathway is established by the declarations (EU scope and role were not verified), so legal conformity activities are not established as required. This is a statement about legal applicability only; operational governance review stays relevant.",
+   "short": "No legal high-risk pathway is established by the declarations."
+  }
+ ],
+ "result_relevance": [
+  {
+   "controls": [
+    "C09"
+   ],
+   "when": {
+    "action_mode": [
+     "recommend",
+     "draft",
+     "approved_action"
+    ]
+   },
+   "why": "The declared low autonomy / human decision depends on the declaration that human oversight really exists."
+  },
+  {
+   "controls": [
+    "C11"
+   ],
+   "when": {
+    "action_mode": [
+     "approved_action",
+     "envelope_action",
+     "self_expanding"
+    ]
+   },
+   "why": "The authority limits of an agent that takes actions directly affect the result."
+  },
+  {
+   "controls": [
+    "C16"
+   ],
+   "when_any": {
+    "t_interacts_people": [
+     "yes"
+    ],
+    "t_synthetic_content": [
+     "yes"
+    ],
+    "t_emotion_biometric": [
+     "yes"
+    ]
+   },
+   "why": "A feature relevant to transparency was declared."
+  },
+  {
+   "controls": [
+    "C06"
+   ],
+   "when": {
+    "personal_data": [
+     "special"
+    ]
+   },
+   "why": "Use of sensitive data was declared."
+  },
+  {
+   "controls": [
+    "C20"
+   ],
+   "when_legal": [
+    "annex3_high",
+    "annex3_high_profiling",
+    "annex1_high"
+   ],
+   "why": "The legal high-risk pathway was assessed."
+  }
+ ],
+ "assessment_rules": {
+  "C01": [
+   {
+    "id": "purpose",
+    "label": "intended purpose",
+    "slot": "purpose",
+    "present": "set",
+    "say": {
+     "present": "intended purpose declared"
+    }
+   },
+   {
+    "id": "eu",
+    "label": "EU link",
+    "slot": "eu_link",
+    "present": [
+     "yes",
+     "no"
+    ],
+    "say": {
+     "present": "EU link declared"
+    }
+   },
+   {
+    "id": "area",
+    "label": "sensitive-use area (Annex III)",
+    "slot": "annex3_area",
+    "present": "*",
+    "say": {
+     "present": "sensitive-use area addressed"
+    }
+   }
+  ],
+  "C02": [
+   {
+    "id": "screening",
+    "label": "prohibited-use screening",
+    "slots": "PROHIBITION_REFS",
+    "say": {
+     "present": "no prohibited practice declared",
+     "absent": "a prohibited practice is supported by the declarations",
+     "partial": "a prohibited practice is possible and needs review",
+     "unknown": "prohibited-use screening is uncertain"
+    }
+   }
+  ],
+  "C03": [
+   {
+    "id": "owner",
+    "label": "named owner and AI literacy",
+    "decl": "C03",
+    "say": {
+     "present": "owner declared",
+     "absent": "no owner declared",
+     "unknown": "ownership unclear"
+    }
+   }
+  ],
+  "C04": [
+   {
+    "id": "harm",
+    "label": "worst reasonable outcome",
+    "slot": "max_harm",
+    "present": "*",
+    "say": {
+     "present": "worst reasonable outcome identified"
+    }
+   },
+   {
+    "id": "process",
+    "label": "risk assessment process",
+    "decl": "C04",
+    "say": {
+     "present": "risk assessment declared",
+     "absent": "no risk assessment declared",
+     "unknown": "risk assessment unclear"
+    }
+   }
+  ],
+  "C05": [
+   {
+    "id": "harm",
+    "label": "worst reasonable outcome",
+    "slot": "max_harm",
+    "present": "*",
+    "say": {
+     "present": "worst outcome identified"
+    }
+   },
+   {
+    "id": "reach",
+    "label": "number of people affected",
+    "slot": "reach",
+    "present": "*",
+    "say": {
+     "present": "reach declared"
+    },
+    "applies": {
+     "max_harm": [
+      "limited",
+      "serious",
+      "critical",
+      "unknown"
+     ]
+    }
+   },
+   {
+    "id": "groups",
+    "label": "vulnerable groups",
+    "slot": "vulnerable_groups",
+    "present": [
+     "no"
+    ],
+    "absent": [
+     "yes"
+    ],
+    "say": {
+     "present": "no vulnerable groups declared",
+     "absent": "vulnerable groups affected"
+    },
+    "applies": {
+     "personal_data": [
+      "ordinary",
+      "special",
+      "unknown"
+     ]
+    }
+   }
+  ],
+  "C06": [
+   {
+    "id": "data",
+    "label": "personal data",
+    "slot": "personal_data",
+    "present": "*",
+    "say": {
+     "present": "data type declared"
+    }
+   },
+   {
+    "id": "quality",
+    "label": "data quality checks",
+    "decl": "C06",
+    "say": {
+     "present": "data checks declared",
+     "absent": "no data checks declared",
+     "unknown": "data checks unclear"
+    }
+   }
+  ],
+  "C07": [
+   {
+    "id": "docs",
+    "label": "technical documentation",
+    "decl": "C07",
+    "say": {
+     "present": "documentation declared",
+     "absent": "no documentation declared",
+     "unknown": "documentation unclear"
+    }
+   }
+  ],
+  "C08": [
+   {
+    "id": "logs",
+    "label": "action logs",
+    "decl": "C08",
+    "say": {
+     "present": "logging declared",
+     "absent": "no logging declared",
+     "unknown": "logging unclear"
+    }
+   }
+  ],
+  "C09": [
+   {
+    "id": "approval",
+    "label": "approval before the agent acts",
+    "slot": "approval_exists",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "partial": [
+     "partial"
+    ],
+    "say": {
+     "present": "approval required before actions",
+     "absent": "actions are not approved by a person",
+     "partial": "approval covers only some actions",
+     "unknown": "approval is unclear"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "review",
+    "label": "person reviews the output",
+    "slot": "human_review",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "partial": [
+     "partial"
+    ],
+    "say": {
+     "present": "a person reviews outputs",
+     "absent": "no person reviews outputs",
+     "partial": "outputs are reviewed only in part"
+    },
+    "applies": {
+     "action_mode": [
+      "recommend",
+      "draft"
+     ]
+    }
+   },
+   {
+    "id": "stop",
+    "label": "immediate stop",
+    "slot": "can_stop",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "immediate stop available",
+     "absent": "immediate intervention unavailable"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "watch",
+    "label": "live watching",
+    "slot": "monitoring_live",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "live watching available",
+     "absent": "live watching unavailable"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "after",
+    "label": "review afterwards",
+    "slot": "post_action_review",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "post-action review declared",
+     "absent": "no post-action review"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   }
+  ],
+  "C10": [
+   {
+    "id": "perf",
+    "label": "performance testing",
+    "decl": "C10",
+    "say": {
+     "present": "testing declared",
+     "absent": "no testing declared",
+     "unknown": "testing unclear"
+    }
+   }
+  ],
+  "C11": [
+   {
+    "id": "limits",
+    "label": "limits on what the agent may do",
+    "slot": "limits_enforced",
+    "present": [
+     "technical"
+    ],
+    "absent": [
+     "none"
+    ],
+    "partial": [
+     "policy_only"
+    ],
+    "say": {
+     "present": "limits technically enforced",
+     "absent": "no limits declared",
+     "partial": "limits exist only as instructions or policy"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding",
+      "unknown"
+     ]
+    }
+   },
+   {
+    "id": "expansion",
+    "label": "agent cannot widen its own permissions",
+    "slot": "authority_expansion",
+    "present": [
+     "no"
+    ],
+    "absent": [
+     "yes"
+    ],
+    "say": {
+     "present": "no self-expansion of permissions",
+     "absent": "agent can widen its own permissions"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "bypass",
+    "label": "approval cannot be bypassed",
+    "slot": "approval_bypass",
+    "present": [
+     "no"
+    ],
+    "absent": [
+     "yes"
+    ],
+    "say": {
+     "present": "no route skips approval",
+     "absent": "some routes skip approval"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   }
+  ],
+  "C12": [
+   {
+    "id": "ext",
+    "label": "defence against malicious instructions",
+    "decl": "C12",
+    "say": {
+     "present": "defence declared",
+     "absent": "no defence declared",
+     "unknown": "defence unclear"
+    }
+   }
+  ],
+  "C13": [
+   {
+    "id": "mem",
+    "label": "memory and context integrity",
+    "decl": "C13",
+    "say": {
+     "present": "memory controls declared",
+     "absent": "no memory controls declared",
+     "unknown": "memory controls unclear"
+    }
+   }
+  ],
+  "C14": [
+   {
+    "id": "agg",
+    "label": "total limit across all actions",
+    "slot": "aggregate_limit",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "overall limit exists",
+     "absent": "no overall limit"
+    },
+    "applies": {
+     "wf_threshold": [
+      "yes"
+     ]
+    }
+   },
+   {
+    "id": "budget",
+    "label": "loop, cost and safe-stop limits",
+    "decl": "C14",
+    "say": {
+     "present": "limits declared",
+     "absent": "no limits declared",
+     "unknown": "limits unclear"
+    }
+   }
+  ],
+  "C15": [
+   {
+    "id": "deleg",
+    "label": "hand-off to other agents or tools",
+    "slot": "delegates_to_agents",
+    "present": [
+     "no"
+    ],
+    "partial": [
+     "yes"
+    ],
+    "say": {
+     "present": "no hand-off to other agents declared",
+     "partial": "hands work to other agents or tools; their assurance is not described"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "supplier",
+    "label": "supplier assurance",
+    "decl": "C15",
+    "say": {
+     "present": "supplier assurance declared",
+     "absent": "no supplier assurance declared",
+     "unknown": "supplier assurance unclear"
+    }
+   }
+  ],
+  "C16": [
+   {
+    "id": "people",
+    "label": "interaction with people",
+    "slot": "t_interacts_people",
+    "present": "*",
+    "say": {
+     "present": "interaction with people declared"
+    }
+   },
+   {
+    "id": "synth",
+    "label": "generated content",
+    "slot": "t_synthetic_content",
+    "present": "*",
+    "say": {
+     "present": "content generation declared"
+    }
+   },
+   {
+    "id": "notice",
+    "label": "user notice",
+    "decl": "C16",
+    "say": {
+     "present": "transparency notice declared",
+     "absent": "no transparency notice declared",
+     "unknown": "notice unclear"
+    }
+   }
+  ],
+  "C17": [
+   {
+    "id": "change",
+    "label": "change control",
+    "decl": "C17",
+    "say": {
+     "present": "change process declared",
+     "absent": "no change process declared",
+     "unknown": "change process unclear"
+    }
+   }
+  ],
+  "C18": [
+   {
+    "id": "watch",
+    "label": "live monitoring",
+    "slot": "monitoring_live",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "live monitoring available",
+     "absent": "live monitoring unavailable"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "mon",
+    "label": "operational monitoring",
+    "decl": "C18",
+    "say": {
+     "present": "monitoring declared",
+     "absent": "no monitoring declared",
+     "unknown": "monitoring unclear"
+    }
+   }
+  ],
+  "C19": [
+   {
+    "id": "rollback",
+    "label": "reversal of a wrong action",
+    "slot": "can_rollback",
+    "present": [
+     "yes"
+    ],
+    "absent": [
+     "no"
+    ],
+    "say": {
+     "present": "wrong actions can be reversed",
+     "absent": "rollback unavailable"
+    },
+    "applies": {
+     "action_mode": [
+      "approved_action",
+      "envelope_action",
+      "self_expanding"
+     ]
+    }
+   },
+   {
+    "id": "incident",
+    "label": "incident response",
+    "decl": "C19",
+    "say": {
+     "present": "incident response declared",
+     "absent": "no incident response declared",
+     "unknown": "incident response unclear"
+    }
+   }
+  ],
+  "C20": [
+   {
+    "id": "conf",
+    "label": "conformity activities",
+    "decl": "C20",
+    "say": {
+     "present": "conformity activities declared",
+     "absent": "no conformity activities declared",
+     "unknown": "conformity activities unclear"
+    }
+   }
+  ],
+  "C21": [
+   {
+    "id": "audit",
+    "label": "independent review",
+    "decl": "C21",
+    "say": {
+     "present": "independent review declared",
+     "absent": "no independent review declared",
+     "unknown": "independent review unclear"
+    }
+   }
+  ]
+ }
+}

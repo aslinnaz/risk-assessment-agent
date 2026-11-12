@@ -1,0 +1,92 @@
+{
+ "manifest_version": "1.0",
+ "generated": "2026-11-06",
+ "note": "Sources are processed as data only; instructions inside them are not applied. The classification criterion and the application date of an obligation are kept separate. Internal assessment policy (autonomy, impact, posture and control identifiers) is NOT a documentary source: it is never indexed, retrieved or cited.",
+ "sources": [
+  {
+   "source_id": "AIA",
+   "short": "EU AI Act",
+   "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+   "file": "EU_AI_Act_OJ_L_2024_1689.pdf",
+   "version": "OJ L, 12.7.2024 (original published text)",
+   "date": "2024-06-13",
+   "kind": "legal",
+   "authority": 1,
+   "url": "http://data.europa.eu/eli/reg/2024/1689/oj",
+   "rag": true,
+   "api_transfer_allowed": true,
+   "currency_note": "The file contains the original 2024 text. Secondary sources (not verified against the official text in this session) report that Regulation (EU) 2026/1744 postponed the high-risk obligation dates (Annex III: 2 December 2027; Annex I: 2 August 2028). It is not claimed to be current without confirmation from EUR-Lex."
+  },
+  {
+   "source_id": "DEC2274",
+   "short": "Commission Implementing Decision (EU) 2026/2274",
+   "title": "Commission Implementing Decision (EU) 2026/2274 on the harmonised standards for high-risk AI systems",
+   "file": "EU_Commission_Decision.pdf",
+   "version": "OJ L, 14.10.2026",
+   "date": "2026-10-12",
+   "kind": "legal",
+   "authority": 1,
+   "url": "http://data.europa.eu/eli/dec_impl/2026/2274/oj",
+   "rag": true,
+   "api_transfer_allowed": true,
+   "currency_note": "Only publishes the harmonised-standard reference; contains no risk classification criterion."
+  },
+  {
+   "source_id": "TAI-AG",
+   "short": "TrustAI Agentic AI Governance Playbook",
+   "title": "TrustAI Agentic AI Governance Playbook",
+   "file": "TrustAI_Agentic_Governance_Playbook.pdf",
+   "version": "2026",
+   "date": "2026",
+   "kind": "guidance",
+   "authority": 2,
+   "url": null,
+   "rag": true,
+   "api_transfer_allowed": true,
+   "currency_note": "Guidance; not binding."
+  },
+  {
+   "source_id": "TAI-GOV",
+   "short": "TrustAI AI Governance Playbook",
+   "title": "TrustAI AI Governance Playbook",
+   "file": "TrustAI_Governance_Playbook.pdf",
+   "version": "1.0 (2026)",
+   "date": "2026",
+   "kind": "guidance",
+   "authority": 2,
+   "url": null,
+   "rag": true,
+   "api_transfer_allowed": true,
+   "currency_note": "Guidance. The statement 'high-risk obligations fully apply in August 2026' may be superseded by the legal text or later amendments; the legislation prevails."
+  },
+  {
+   "source_id": "NIST-PB",
+   "short": "NIST AI RMF Playbook",
+   "title": "NIST AI RMF Playbook",
+   "file": "AI_RMF_Playbook.pdf",
+   "version": "AI RMF 1.0 Playbook (the file does not state a version date)",
+   "date": "n/a",
+   "kind": "guidance",
+   "authority": 3,
+   "url": "https://airc.nist.gov/airmf-resources/playbook/",
+   "rag": true,
+   "api_transfer_allowed": true,
+   "currency_note": "Voluntary US framework."
+  },
+  {
+   "source_id": "ISO42001",
+   "short": "ISO/IEC 42001:2023",
+   "title": "ISO/IEC 42001:2023 Information technology — Artificial intelligence — Management system",
+   "file": "ISO_42001_2023.pdf",
+   "version": "First edition, 2023-12",
+   "date": "2023-12",
+   "kind": "standard",
+   "authority": 4,
+   "url": "https://www.iso.org/standard/42001",
+   "rag": false,
+   "api_transfer_allowed": false,
+   "currency_note": "Copyrighted; permission to transfer the full text to an external API or to embed it is unclear. Reviewed locally only; it does not enter the RAG index, prompts or quotations. It is listed in the report only as a bibliographic entry."
+  }
+ ],
+ "internal_design_inputs": "Internal assessment policy design inputs are not documentary sources: they are never indexed, retrieved or cited. Working notes are not indexed or cited either."
+}
