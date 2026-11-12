@@ -1,8 +1,11 @@
-"""Final report: result, step-by-step derivation, findings with RAG-retrieved and support-checked citations, and the PDF.
+"""Report building (in-application) and the client PDF.
 
-The result comes ONLY from classify.py (deterministic). This module explains it: it shows how L, I, the posture and the risk level were derived, links each
-finding to the user's answers (answer -> extracted fact -> retrieved evidence -> rule -> result) and cites the retrieved source passages. Retrieval and the optional model
-support check can remove or flag a citation; they can never change the result.
+build_report assembles the full in-application report: result, step-by-step derivation, findings with RAG-retrieved and support-checked citations, and the answer trail.
+pdf_bytes renders only a concise two-page client summary of it (assessed agent, result, reasons, next steps, limitation, and the C01-C21 table); sources, retrieval
+diagnostics, the derivation trace and the answer trail are NOT part of the PDF.
+
+The result comes ONLY from classify.py (deterministic). This module explains it (answer -> extracted fact -> retrieved evidence -> rule -> result). Retrieval and the
+optional model support check can remove or flag a citation; they can never change the result.
 """
 from __future__ import annotations
 

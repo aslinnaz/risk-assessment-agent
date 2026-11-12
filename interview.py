@@ -1,7 +1,8 @@
-"""Interview agent: structured state + a single model call per turn.
+"""Interview agent: structured state + two model calls per turn (fact extraction, then question writing).
 
-Model: extracts ALL declarations in the answer into slots (each backed by a verbatim user quote), flags conflicts, chooses the most important of the candidate topics and
-writes the question and the source-backed rationale. Code: topic validity/priority, gate derivations, limits, Forbidden validation, citation/support checks and the stop decision.
+Extraction call: turns ALL declarations in the answer into slots, each backed by a verbatim user quote (SYSTEM_EXTRACT). Question call: chooses among the candidate topics
+given by the planner and writes the question and the source-backed rationale (SYSTEM_QUESTION). Code decides topic validity/priority, gate derivations, limits, Forbidden
+validation, citation/support checks and the stop decision.
 The model NEVER computes the risk result: classification is deterministic (classify.py). The rationale is bound to the passages retrieved while the question is generated and stored.
 """
 from __future__ import annotations

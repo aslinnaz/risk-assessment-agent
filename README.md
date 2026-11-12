@@ -1,97 +1,110 @@
-# TrustAI Risk Assessment — prototype
+# TrustAI Risk Assessment Agent
 
-> **Status: prototype for research and feedback.** The result is a **preliminary, declaration-based assessment**. It is not a technical verification, a control test, a compliance finding, a certificate or legal advice.
+> **Research prototype.** The output is a **preliminary, declaration-based assessment**. It is not a technical verification, a control test, a compliance finding, a certificate or legal advice. No license has been granted yet (see [docs/HANDOVER.md](docs/HANDOVER.md)).
 
-## Purpose
-The application interviews a **human** who knows the AI agent being assessed and produces a preliminary risk assessment from their **declarations** only:
-* a TrustAI risk level: **LOW / MEDIUM / HIGH / FORBIDDEN** (or "assessment not completed");
-* the internal TrustAI assessment policy result: autonomy **L0-L5**, impact **I0-I3** and assurance posture **P1-P4** (control identifiers C01-C21);
-* a PDF report that shows how each value was derived and cites the sources.
+## 1. Project Overview
 
-It never talks to the target agent, runs tests or attacks, or asks for logs, code or evidence. The EU AI Act is the assessment *reference*; legal applicability is a separate field and defaults to "not determined". Everything in the application (UI, questions, options, rationales, prompts, reports) is in English.
+A Streamlit application that interviews a person who knows an AI agent and produces a preliminary risk assessment of that agent **from their statements only**. It never contacts the assessed agent, runs tests, or asks for logs, code or evidence.
 
-Stack: Python, Streamlit, OpenAI API (chat + embeddings), local BM25 plus a persistent embedding index.
+Each assessment yields:
 
-## How it works (question-based, RAG-driven, deterministic result)
-1. **Question-based.** `planner.py` decides what to ask next (conflicts, one simple follow-up after "I don't know", missing critical facts, answers that would change the result, a few context topics). Target 10-15 questions, hard limit 20.
-   Questions about this specific agent (purpose, authority, harm, oversight) come first. The prohibited-use screening (EU AI Act Art. 5) is **one combined checklist question** (biometric data, behaviour steering, scoring of people) asked after them: tick what applies, choose "None of these", say you are not sure, or answer in your own words. **An unticked box is never recorded as "no" by itself**: "None of these" records an explicit negative, and ticking "This is the complete list: anything I did not tick does not apply" records the unticked items as explicit "no"; otherwise the items that were not ticked stay unknown and are asked once more, only for the open items (the other checklists work the same way). A checklist is the only answer interface of its question (no second set of buttons). Every option question also accepts a free-text answer. The question wording always comes from the catalog (its answer options are mapped to facts by label); a model-written opening sentence is kept only if its content words occur in the conversation so far. Essential scope questions (role, EU link, status) are asked first.
-2. **LLM extracts facts only.** Call 1 turns the answer into structured facts (slots). A fact is accepted only if the model supplies a verbatim quote from the user's text; quotes inside instruction-like sentences are ignored, and a negative fact needs a quote about that fact. The quote is stored with the fact.
-3. **RAG retrieves evidence from the approved external sources** (EU AI Act, Commission Decision, both TrustAI playbooks, NIST AI RMF Playbook, plus any approved source added after deployment; legislation, voluntary frameworks and guidance are labelled as such and guidance is never presented as a legal obligation). Retrieval is routed by the governance concern of each question (legal classification → legislation; authority, delegation, oversight, reversal → the agentic playbook and NIST; transparency → the AI Act). For each question and each report finding the system retrieves passages (curated anchors, then BM25 + embedding search). A passage is shown only if it passes a **support check** (keywords of the claim and embedding similarity). At report time one batched model call additionally checks the meaning of each claim-passage pair; unsupported passages are dropped and listed; partial support is flagged and never promoted. The **internal assessment policy is not a retrievable source**: it is never indexed, retrieved or cited. Report findings separate three kinds of provenance: user declarations, internal policy rules (rule IDs such as POL-L4 with the policy version) and external sources.
-4. **Result is deterministic.** `classify.py` computes the result from the facts only and imports neither the model nor the retrieval index. Retrieved text and the model cannot change it.
-5. **Trace.** The report shows answer → extracted fact (with quote) → retrieved evidence → rule → result for L, I, the posture, the legal pathway and the risk level.
-
-### Decision model (internal TrustAI assessment policy; rule IDs POL-...)
-* **L** from the declared authority, evaluated **per workflow** (action + condition): the user's answer is turned into workflow facts such as "places purchase orders up to EUR 5,000" (executes without approval) and "orders above EUR 5,000" (executes after approval by a human manager, bound to the action or not, limit technically enforced or not). A conditional approval structure is **not** a contradiction. The maximum declared reachable authority over the material workflows defines L (info only L0, recommends L1, drafts L2, acts after approval **bound to that action** L3 (otherwise L4), acts within a technically enforced envelope without per-action approval L4, **expands its own authority L5**). A genuine contradiction (the same action and condition described two different ways) is asked once, with its scope named.
-* **I** from the declared reasonable worst-case harm: I0-I3 (reversibility alone never lowers a class).
-* **P** = policy decision table cell (impact × autonomy; the 24-cell table is frozen in a test, and compared with an optional reference file when present). If the posture exposure factors are declared (wide reach, irreversible harm, vulnerable groups, sensitive data, authority limits that are only written in instructions) the posture rises by **one** step; it is never lowered. P4 is an internal "hold for redesign" posture, not a legal prohibition.
-* **Risk level** is derived from the final posture: P1 = LOW, P2 = MEDIUM, P3/P4 = HIGH. If L or I is unknown, every possible value is tried to give a posture *range*; a level is issued only if the range maps to one level.
-* **Legal pathway** (Art. 6) is reported separately; a supported high-risk pathway makes the level at least HIGH without changing the posture. **FORBIDDEN** is only issued for a supported Art. 5 finding.
-* Declared **release blockers** (policy-only limits, approval not bound to the action, no stop mechanism, authority expansion) are listed. **Context-sensitive gaps:** for an agent that executes actions, unknown stop, reversal, delegation, scale, technical enforcement, aggregate limits (split-order circumvention) and approval-bypass facts are critical gaps; for an agent that only recommends they are not applicable. Approval before execution, monitoring during execution, immediate stop, post-action review and reversal are separate facts. A declaration is never treated as proof that a safeguard works.
-* **Three separate statuses** in the report: *Interview* (Completed / Incomplete), *Assessment* (Preliminary / Requires further information, e.g. when a control that affects the result is unknown) and *Verification* (always "Not technically verified"). Finishing the interview never implies that a control was tested.
-* Report conclusions are separate: legal obligations, inherent exposure, control effectiveness (not assessed), evidence confidence (E0 — declarations only), residual risk (not assessed), operational recommendation (unable to assess).
-
-## Installation
-**Python 3.12 or 3.14** (both tested on macOS from a fresh virtual environment; Linux was not available for testing). Exact tested package versions are in `requirements-tested.txt`.
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt   # includes PyMuPDF (PDF text extraction); pypdf is only a fallback
-cp .env.example .env              # put your OPENAI_API_KEY in .env (never committed); or export OPENAI_API_KEY in the shell
-
-```
-`OPENAI_MODEL` (default `gpt-4.1-mini`) and `OPENAI_EMBED_MODEL` (default `text-embedding-3-small`) are environment variables; Streamlit secrets are also supported.
-
-## Source files
-`sources/` contains the following files (names matter; versions and dates are in `catalogs/sources.json`):
-
-| File name | Source | In the repository |
+| Output | Values | Meaning |
 |---|---|---|
-| `EU_AI_Act_OJ_L_2024_1689.pdf` | Regulation (EU) 2024/1689, OJ L, 12.7.2024 (original text) | yes |
-| `EU_Commission_Decision.pdf` | Commission Implementing Decision (EU) 2026/2274 (harmonised-standard reference only) | yes |
-| `TrustAI_Agentic_Governance_Playbook.pdf`, `TrustAI_Governance_Playbook.pdf` | TrustAI (2026) | yes |
-| `AI_RMF_Playbook.pdf` | NIST AI RMF Playbook | yes |
-| `compliance_matrix.docx` | **Optional, test-only** reference copy of the internal policy table. The application never reads, indexes or cites it. | no |
-| `ISO_42001_2023.pdf` | Optional and **not used**: excluded from the index and prompts for copyright reasons; listed as a bibliographic entry only | no |
+| Autonomy **L** | L0–L5 | What the agent can do without a person: L0 information only, L1 recommends, L2 drafts, L3 acts after approval bound to that action, L4 acts within an envelope without per-action approval, L5 can expand its own authority |
+| Impact **I** | I0–I3 | Declared reasonable worst-case harm (minimal, limited, serious, critical) |
+| Posture **P** | P1–P4 | Assurance posture from the policy table (impact × autonomy), raised by at most one step for declared exposure factors. P4 = "hold for redesign", an internal release posture, **not** a legal prohibition |
+| Risk level | LOW / MEDIUM / HIGH / FORBIDDEN | TrustAI label derived from P (P1 LOW, P2 MEDIUM, P3 and P4 HIGH). FORBIDDEN is issued only for a supported EU AI Act Art. 5 finding. These are **TrustAI labels, not EU AI Act categories** |
+| Legal pathway | separate field | Art. 6 high-risk screening (Annex III, Annex I). A supported high-risk pathway makes the level at least HIGH without changing P |
+| Controls | C01–C21 | Per-control status from the declarations: Declared present, Declared absent, Partially assessed, Unknown, Not assessed, Not applicable |
 
-At startup every required file is checked (`rag.check_sources`) and the parsed structure is validated (all 113 AI Act articles, 13 annexes, Art. 5(1)(a)-(h), Art. 6(1)-(4) and every anchor the catalogs cite, `Index.validate`). A missing file or a mis-parsed document stops the application with a message naming it; the search index is built automatically (no indexing script). Source texts are treated as data; instructions inside them are never applied. See `sources/README.md`.
+L, I, P and C01–C21 come from an **internal TrustAI assessment policy** (`catalogs/policy.json`, `catalogs/controls.json`). It is not an external standard and has not been externally validated.
 
-## Running
-```bash
-source .venv/bin/activate
-streamlit run app.py      # opens http://localhost:8501
+## 2. Key Features
+
+- Question-based interview, target 12 and hard limit 20 questions, with checklist questions and free-text answers.
+- A fact is accepted only with a quote that matches the user's own words (stem-level match, so it proves origin, not meaning); instruction-like text inside answers is ignored.
+- Deterministic classification: no model call and no retrieval in `classify.py`; every step is traced with a rule ID.
+- Local RAG (BM25 plus embeddings) over approved sources, with a support check before a passage is shown.
+- Explicit handling of uncertainty: "unknown" is never silently a "no".
+- On-screen review of the collected facts before the result, and a two-page client PDF.
+
+## 3. System Architecture
+
+```mermaid
+flowchart LR
+    U[User answers] --> PL[planner.py<br/>next question]
+    PL --> IV[interview.py<br/>LLM: fact extraction + question wording]
+    RAG[rag.py<br/>BM25 + embeddings<br/>approved sources] --> IV
+    IV -->|accepted facts + user quotes| ST[(Interview state)]
+    ST --> CL[classify.py<br/>deterministic L / I / P, level,<br/>legal pathway, C01-C21]
+    CL --> RP[report.py]
+    RAG --> RP
+    RP --> APP[app.py<br/>full on-screen report]
+    RP --> PDF[Two-page PDF]
 ```
-On startup the passages are extracted locally (cached in `.cache/`) and the **embedding index is prepared automatically**: the saved index is loaded and only missing passages are embedded (a small one-off API cost on the first run). If this fails the sidebar and the report say that keyword-only search was used. User answers and reports stay in the session.
 
-## Tests
+Three roles are kept apart: **the LLM extracts facts and words questions; RAG retrieves evidence and citations; classification is deterministic code** that sees neither the model nor the index. Retrieved text and model output cannot change the result. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## 4. Quick Start
+
+Requires an OpenAI API key and Python 3.12 or 3.14 (both verified on macOS; 3.13 and Linux are untested).
+
 ```bash
-python -m pytest -q                      # offline: scripted fake client, no API calls; syntax/app-start/UI smoke tests also run without sources/
-python tools/verify_catalog.py           # catalog citations and interview anchors vs. the real passages
-python -m pytest -m live -s -q           # REAL model: extraction, question quality, retrieval, injection (costs money)
+git clone https://github.com/aslinnaz/risk-assessment-agent.git
+cd risk-assessment-agent
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt          # or requirements-tested.txt for the exact tested versions
+cp .env.example .env                     # then set OPENAI_API_KEY in .env (never committed)
+streamlit run app.py                     # http://localhost:8501
 ```
-`evals/scenarios.py` holds the golden scenarios; `evals/RESULTS.md` records the latest live results and the defects they uncovered.
 
-## Structure
-`app.py` UI · `interview.py` interview (extraction call + question call) · `planner.py` question selection and finishing (no model) · `classify.py` deterministic classification and trace · `rag.py` extraction / index / retrieval / support checks · `report.py` report and PDF · `catalogs/` source manifest, C01-C21 coverage map, interview topics and decision policy · `evals/` live evaluation.
+The five source PDFs listed in [docs/SOURCES.md](docs/SOURCES.md) must be present in `sources/` with their exact names; the application checks this at startup and stops with a message naming any missing file. The first start embeds the source passages through the OpenAI API (a one-off cost, cached in `.cache/`). Models default to `gpt-4.1-mini` and `text-embedding-3-small` (`OPENAI_MODEL`, `OPENAI_EMBED_MODEL`).
 
-## Current limitations
-* **Small live evaluation.** 6 scenarios and 11 retrieval topics (see `evals/RESULTS.md`); it found and fixed real defects but is not a statistical validation. Support thresholds were tuned on this small set.
-* **Declarations only.** Nothing is verified. A quote shows the words came from the user, not that they are true or that they mean the extracted fact.
-* **FORBIDDEN** depends on facts extracted by the model (each needs its own user quote); it is a preliminary finding that needs human legal review.
-* **Project choices beyond the internal policy's table:** the mapping P → LOW/MEDIUM/HIGH; irreversible harm and sensitive data as posture-escalation factors; the maximum authority over workflows; policy-only limits kept at L4 with an escalation and a blocker. The policy is internal and has not been externally validated.
-* **Currency of the legislation is not verified.** The loaded AI Act text is the original 2024 text; secondary sources report postponed high-risk dates (not confirmed from an official source). The report states this.
-* ISO/IEC 42001 may be referenced bibliographically; its text is never indexed or retrieved.
-* C01-C21 is a coverage map of declarations, not a safety score; most controls are not asked.
-* No license has been added yet; the code and catalogs are for review before sharing.
+## 5. Assessment Workflow
 
+1. **Interview.** The user describes the agent; the planner picks the next question (conflicts, one follow-up after "I don't know", missing critical facts, a few context topics).
+2. **Extraction.** The model turns each answer into structured facts; code validates each against the user's own words.
+3. **Screening.** Prohibited-use screening (Art. 5) is one combined checklist. An unticked item is not a "no" unless the user ticks "This is the complete list" or chooses "None of these".
+4. **Review.** The user sees every fact as confirmed, explicit negative, unknown or not collected, and can edit earlier answers.
+5. **Classification.** L, I, P, risk level, legal pathway and C01–C21 are computed from the accepted facts only.
+6. **Report.** Evidence is retrieved for each finding and checked; the result is shown with its derivation.
 
-## Approved sources added after deployment
-Legislation, voluntary frameworks, guidance or licensed standards can be added without changing the application:
+EU AI Act screening (Art. 5, Art. 6, Art. 50) is a reference check against the loaded legislative text. It identifies pathways that need legal review. It does not establish legal applicability, compliance or non-compliance. Rules: [docs/METHODOLOGY.md](docs/METHODOLOGY.md).
+
+## 6. Outputs
+
+- **In the application:** the full report with the answer-to-result trace, retrieved evidence with citations, the three separate statuses (interview, assessment, verification: always "Not technically verified"), and the C01–C21 coverage table.
+- **PDF (two pages, three at most):** page 1 = assessed agent, result (level, L, I, P), why, up to three next steps, limitation; page 2 = the C01–C21 table (ID, control, assessment, finding). The PDF contains **no** sources, retrieval diagnostics, answer trail or derivation trace; those exist only in the application session.
+- Nothing is stored by the application beyond the Streamlit session and the local `.cache/` (source passages and embeddings).
+
+## 7. Testing
+
 ```bash
-python tools/add_source.py add path/to/document.pdf --id NIST-GENAI --title "..." --publisher NIST --version 1.0 --date 2024-07-26 \
-       --kind framework --concerns agentic,oversight --indexing-permitted
-python tools/add_source.py list            # active, excluded (with the reason)
-python tools/add_source.py deactivate NIST-GENAI
+python -m pytest -q                       # offline, scripted model, no API calls or key needed
+python tools/verify_catalog.py            # catalog citations and interview anchors against the real source passages
+python -m pytest -m live -s -q            # real OpenAI calls; costs money; run deliberately
 ```
-The document is copied to `sources/custom/`, validated (PDF or DOCX; complete metadata; extractable text; licence confirmation that indexing is permitted; no duplicate content; unique id), chunked by section with page numbers, and indexed at the next start (only new passages are embedded). `--supersedes OLDID` replaces an older version. Retrieval is routed by `--concerns` (legal, agentic, oversight, transparency, data, all). Incomplete, scanned, duplicate or unlicensed documents are rejected or flagged; copyrighted standards must not be added. Adding a source never changes the deterministic classification.
 
-## Report
-The PDF is a concise client report of two pages (three at most): page 1 = assessed agent, risk result (level, L, I, P), why this result, up to three next steps and the limitation statement; page 2 = the C01–C21 table (ID, control, assessment, finding). Control statuses are Declared present, Declared absent, Partially assessed, Unknown, Not assessed and Not applicable; each comes from an explicit fact-to-control mapping in `catalogs/controls.json` (`assessment_rules`) and is shown identically in the application. Sources, retrieval diagnostics, the answer trail and the decision trace stay in the application and in the stored records; they are not in the PDF. The PDF uses the Unicode font bundled with ReportLab (identical on macOS and Linux; `REPORT_FONT` / `REPORT_FONT_BOLD` override it).
+Offline tests that need the source PDFs skip when `sources/` is empty, so a skip count is not a pass. GitHub Actions runs the offline suite on every push and pull request ([.github/workflows/ci.yml](.github/workflows/ci.yml)). Verified results, known gaps and reproduction steps: [docs/VALIDATION.md](docs/VALIDATION.md).
+
+## 8. Documentation
+
+| Document | Contents |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Modules, data flow, dependencies, design decisions |
+| [docs/METHODOLOGY.md](docs/METHODOLOGY.md) | Classification rules, rule provenance, uncertainty handling, C01–C21 |
+| [docs/VALIDATION.md](docs/VALIDATION.md) | Test categories, verified results, historical records, gaps |
+| [docs/DEVELOPER_GUIDE.md](docs/DEVELOPER_GUIDE.md) | Setup, configuration, troubleshooting, adding sources, extending |
+| [docs/HANDOVER.md](docs/HANDOVER.md) | Status, known issues, operating requirements, next steps |
+| [docs/SOURCES.md](docs/SOURCES.md) | Source manifest, provenance, redistribution status |
+| [evals/RESULTS.md](evals/RESULTS.md) | Historical live-evaluation log (dated records) |
+
+## 9. Limitations & Disclaimer
+
+- **Declarations only.** A quote shows that the words came from the user, not that they are true or mean the extracted fact. No safeguard is verified.
+- **Internal policy.** L, I, P, the P-to-level mapping, the escalation factors and C01–C21 are project choices that have not been externally validated.
+- **FORBIDDEN and legal pathways** depend on model-extracted facts and are preliminary findings that require human legal review.
+- **Legislation currency is not verified.** The loaded AI Act is the original 2024 text; obligation dates in `catalogs/policy.json` have not been checked against an official source.
+- **Model variance.** Live extraction is not deterministic; the live evaluation is small and is not a statistical validation.
+- **Not production software.** No authentication, persistence, multi-user support or data-protection review. User answers and source passages are sent to the OpenAI API.
+- **Source documents.** Redistribution rights for some bundled PDFs are not established; see [docs/SOURCES.md](docs/SOURCES.md) before sharing the repository.

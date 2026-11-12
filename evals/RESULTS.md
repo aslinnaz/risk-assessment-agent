@@ -1,5 +1,7 @@
 # Live evaluation results (real model)
 
+> **Historical record.** The sections below are dated logs of earlier live runs (2026-11-08 to 2026-11-12). Their counts and results were true for the code and models at those dates and were **not re-executed** later. For current, verified results and known gaps see [docs/VALIDATION.md](../docs/VALIDATION.md).
+
 Run on 2026-11-08 with `OPENAI_MODEL=gpt-4.1-mini` and `text-embedding-3-small` (`pytest -m live`). 21 live tests, all passing at the end of the run.
 This is a SMALL evaluation (6 scenarios, 11 retrieval topics). It finds defects and checks regressions; it is not a statistical validation.
 
