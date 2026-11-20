@@ -54,7 +54,7 @@ def test_autonomy_and_impact_definitions_match_the_matrix():
 def test_label_is_derived_from_posture_for_every_cell():
     P = C.policy()
     lab = P["label_from_posture"]
-    assert lab == {"P1": "LOW", "P2": "MEDIUM", "P3": "HIGH", "P4": "HIGH"}
+    assert lab == {"P1": "LOW", "P2": "LOW", "P3": "HIGH", "P4": "HIGH"}
     mode = {"L0": "info_only", "L1": "recommend", "L2": "draft", "L3": "approved_action", "L4": "envelope_action", "L5": "self_expanding"}
     harm = {"I0": "minimal", "I1": "limited", "I2": "serious", "I3": "critical"}
     for I, row in P["posture_matrix"].items():
@@ -85,7 +85,7 @@ def test_policy_only_limits_stay_l4_with_a_critical_finding_and_escalation():
 
 def test_approval_must_be_bound_for_l3():
     c = C.classify(st({"action_mode": "approved_action", "max_harm": "limited", "approval_bound": "no"}))
-    assert c["L"] == "L4" and any("L3 requires approval bound" in n for n in c["level_notes"])
+    assert c["L"] is None and any("Specific-action approval was not established" in n for n in c["level_notes"])
     assert any(b["id"] == "approval_not_bound" for b in c["blockers"])
     assert C.classify(st({"action_mode": "approved_action", "max_harm": "limited", "approval_bound": "yes"}))["L"] == "L3"
 
@@ -138,7 +138,7 @@ def test_every_step_of_the_derivation_is_traced_to_answers():
     assert steps["Autonomy level (L)"]["inputs"][0]["quote"] == "it only recommends"
     assert steps["Impact level (I)"]["result"] == "I1"
     assert steps["Posture (P)"]["result"] == "P2" and steps["Posture escalation"]["result"] == "P3"
-    assert c["risk_label"] == "HIGH" and "P1 = LOW, P2 = MEDIUM, P3 and P4 = HIGH" in c["label_basis"][0]["rule"]
+    assert c["risk_label"] == "HIGH" and "P1/P2 = LOW, P3/P4 = HIGH" in c["label_basis"][0]["rule"]
 
 
 def test_classification_does_not_depend_on_the_model_or_on_retrieval():
@@ -305,4 +305,4 @@ FROZEN_POSTURE = {"I0": {"L0": "P1", "L1": "P1", "L2": "P1", "L3": "P2", "L4": "
 def test_policy_posture_table_is_the_established_24_cell_table():
     assert C.policy()["posture_matrix"] == FROZEN_POSTURE and sum(len(v) for v in FROZEN_POSTURE.values()) == 24
     assert C.policy()["posture_matrix"]["I2"]["L4"] == "P4" and C.policy()["posture_matrix"]["I2"]["L3"] == "P3"
-    assert C.policy()["label_from_posture"] == {"P1": "LOW", "P2": "MEDIUM", "P3": "HIGH", "P4": "HIGH"}
+    assert C.policy()["label_from_posture"] == {"P1": "LOW", "P2": "LOW", "P3": "HIGH", "P4": "HIGH"}

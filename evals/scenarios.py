@@ -13,7 +13,7 @@ SCENARIOS = [
         "expect_slots": {"action_mode": {"recommend"}, "t_interacts_people": {"no"}},
         "forbid_slots": ["g_biometric", "g_influence", "annex3_area", "max_harm", "approval_bound", "p_social_scoring", "p_manipulation", "eu_link"],
         "truth": {"max_harm": "limited", "annex3_area": "none", "reversibility": "reversible", "reach": "single", "personal_data": "ordinary", "vulnerable_groups": "no"},
-        "expect_result": {"L": "L1", "I": "I1", "posture": "P2", "label": "MEDIUM"},
+        "expect_result": {"L": "L1", "I": "I1", "posture": "P2", "label": "LOW"},
     },
     {
         "id": "procurement_agent",

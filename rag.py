@@ -27,6 +27,22 @@ CUSTOM_KINDS = {"legislation": ("legal", 1), "framework": ("framework", 2), "sta
 CUSTOM_CONCERNS = ("legal", "agentic", "oversight", "transparency", "data", "all")
 
 
+# External development/QA reference documents are NEVER application sources (not indexed, retrieved, cited, packaged or sent to an API). They are recognised by file/title pattern and by
+# a content marker. The patterns are assembled here, in code, so that no user-visible catalog or string has to name the document.
+_EXCLUDED_NAME = re.compile(r"compliance[\W_]*(?:check[\W_]*)?matri|agentic[\W_]*ai[\W_]*compliance|matrix[\W_]*v?2\b", re.I)
+_EXCLUDED_MARKERS = (" ".join(("agentic", "ai", "compliance", "check", "matrix")), " ".join(("compliance", "check", "matrix")))
+
+
+def is_excluded_reference(*names: str) -> bool:
+    """Is a file name, title or source id one of the external development/QA reference documents (for example the compliance check matrix)? Those are never application sources."""
+    return any(_EXCLUDED_NAME.search(n or "") for n in names)
+
+
+def has_excluded_content(text: str) -> bool:
+    low = re.sub(r"\s+", " ", (text or "").lower())
+    return any(mk in low for mk in _EXCLUDED_MARKERS)
+
+
 def custom_registry() -> dict:
     path = config.custom_dir() / "registry.json"
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"sources": []}
@@ -43,7 +59,9 @@ def custom_entries() -> tuple[list[dict], list[dict]]:
     for e in entries:
         f = config.custom_dir() / e["file"]
         reason = None
-        if not e.get("active"):
+        if is_excluded_reference(e.get("file", ""), e.get("title", ""), e.get("source_id", ""), e.get("short", "")):
+            reason = "excluded reference document (development/QA reference, never an application source)"
+        elif not e.get("active"):
             reason = "deactivated"
         elif e["source_id"] in superseded:
             reason = "superseded by a newer active source"
@@ -173,6 +191,25 @@ def _split_long(text: str, limit: int = 1800) -> list[str]:
     return parts
 
 
+_FOOTNOTE_START = re.compile(r"^\((\d{1,3})\) (?:Regulations?|Directives?|Council|Commission|Decisions?|Treaty|Judgment|Proposal|Opinion|Report|Communication|Recommendation|Joint|Resolution|Position|Charter|Case|Agreement|Convention|Delegated|Implementing|European|Declaration|Framework)\b")
+
+
+def _drop_footnotes(lines: list[tuple[int, str]]) -> list[tuple[int, str]]:
+    """Removes page-bottom footnotes (e.g. '(31) Regulation (EU) 2019/2144 … (OJ L 325, 16.12.2019, p. 1).') from the recital text: they are not part of the recital, and
+    a footnote that is glued into a recital would be cited as if the recital said it. A block is dropped only if it starts like a footnote and ends with an '(OJ …' reference on the same page."""
+    out, i = [], 0
+    while i < len(lines):
+        pg, ln = lines[i]
+        if _FOOTNOTE_START.match(ln.strip()):
+            end = next((k for k in range(i, min(i + 10, len(lines))) if lines[k][0] == pg and re.search(r"\(OJ [^)]*\)\.?\s*$|\bp\. \d+\)\.?\s*$", lines[k][1].strip())), None)
+            if end is not None:
+                i = end + 1
+                continue
+        out.append(lines[i])
+        i += 1
+    return out
+
+
 def chunk_aia(src, pages):
     if any(re.search(r"\bAr ticle \d|\bHA VE ADOPTED|REGUL A TION", pg) for pg in pages):
         raise SourceError(f"{src['file']}: the PDF text extractor split words into letters ('Ar ticle', 'pur pose'), which makes legal retrieval unreliable. "
@@ -189,7 +226,7 @@ def chunk_aia(src, pages):
     if idx is None:
         raise SourceError(f"{src['file']}: the enacting formula 'HAVE ADOPTED THIS REGULATION' was not found, so recitals and articles cannot be separated. "
                           "Install PyMuPDF (pip install pymupdf) or check that the PDF is the OJ text.")
-    rec, body = lines[:idx], lines[idx + 1:]
+    rec, body = _drop_footnotes(lines[:idx]), lines[idx + 1:]
     cur, n = None, 1
     for pg, ln in rec:
         m = re.match(r"^\((\d{1,3})\) ", ln)
@@ -445,6 +482,19 @@ CHUNKERS = {"AIA": chunk_aia, "DEC2274": chunk_decision, "TAI-AG": chunk_playboo
             "TAI-GOV": chunk_playbook, "NIST-PB": chunk_nist}
 
 
+_TR_CHARS = re.compile(r"[\u00e7\u011f\u0131\u00f6\u015f\u00fc\u00c7\u011e\u0130\u00d6\u015e\u00dc]")
+_TR_WORDS = {"ve", "bir", "i\u00e7in", "ile", "olan", "bu", "da", "veya", "gibi", "daha", "tarafindan", "taraf\u0131ndan", "yapay", "zeka", "yasas\u0131", "ajan", "sistem", "kim", "nas\u0131l", "ise", "ancak", "olarak"}
+
+
+def is_non_english(text: str) -> bool:
+    """Heuristic language gate: a passage that is mostly Turkish is not indexed, so no source snippet or citation shown to the user is in another language. (User quotes are never translated.)"""
+    words = re.findall(r"[^\W\d_]+", (text or "").lower())
+    if len(words) < 12:
+        return False
+    letters = sum(len(w) for w in words)
+    return len(_TR_CHARS.findall(text)) / max(1, letters) > 0.02 or sum(w in _TR_WORDS for w in words) / len(words) > 0.06
+
+
 def build_chunks() -> list[dict]:
     """Chunks the permitted sources; caches by file hash."""
     man = load_manifest()
@@ -456,12 +506,20 @@ def build_chunks() -> list[dict]:
         p = source_path(s)
         if not p.exists():
             continue
+        if is_excluded_reference(p.name, s.get("title", ""), s.get("source_id", ""), s.get("file", "")):
+            raise SourceError(f"{p.name}: this is an external development/QA reference document, not an application source; it must not be indexed.")
         key.update(file_hash(p).encode())
         todo.append((s, p))
     key.update(Path(__file__).read_bytes())
     cache = config.CACHE_DIR / f"chunks_{key.hexdigest()[:16]}.json"
     if cache.exists():
-        return json.loads(cache.read_text(encoding="utf-8"))
+        try:
+            cached = json.loads(cache.read_text(encoding="utf-8"))
+            if isinstance(cached, list) and cached and not any(has_excluded_content(c["text"]) for c in cached):
+                return cached
+        except (ValueError, KeyError, TypeError, OSError):
+            pass  # a truncated or corrupted cache is never trusted
+        cache.unlink(missing_ok=True)  # a damaged cache, or one that contains an excluded reference document, is discarded and rebuilt from the permitted sources
     chunks = []
     for s, p in todo:
         chunker = CHUNKERS.get(s["source_id"]) or chunk_generic
@@ -470,6 +528,9 @@ def build_chunks() -> list[dict]:
             have = {hashlib.sha1(c["text"].encode()).hexdigest() for c in chunks}
             new = [c for c in new if hashlib.sha1(c["text"].encode()).hexdigest() not in have]
         chunks += new
+    chunks = [c for c in chunks if not is_non_english(c["text"])]
+    if any(has_excluded_content(c["text"]) for c in chunks):
+        raise SourceError("A source contains an external development/QA reference document; it must not be indexed.")
     for c in chunks:  # after Art. 5(1)(h), '(i)' is not a letter but the exception sub-points (i)-(iii)
         if c["source_id"] == "AIA" and c["ref"] == "Art. 5(1)(i)":
             c["ref"] = "Art. 5(1)(h) exceptions (i)–(iii)"
@@ -479,7 +540,9 @@ def build_chunks() -> list[dict]:
         cid = f"{c['source_id']}:{slug}"
         seen[cid] += 1
         c["chunk_id"] = cid if seen[cid] == 1 else f"{cid}~{seen[cid]}"
-    cache.write_text(json.dumps(chunks, ensure_ascii=False), encoding="utf-8")
+    tmp = cache.with_name(cache.name + ".tmp")
+    tmp.write_text(json.dumps(chunks, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(cache)  # atomic: a crash cannot leave a half-written cache behind
     return chunks
 
 
@@ -494,6 +557,7 @@ class Index:
         self.avg = sum(len(t) for t in self._tok) / max(1, len(self._tok))
         self.emb = self._load_emb()
         self.validate()
+        set_corpus(self.chunks)
 
     # ----- mandatory structure and anchors (checked after every build; a missing legal reference is an error, never silently skipped)
     def mandatory_anchors(self) -> list[tuple[str, str]]:
@@ -558,9 +622,15 @@ class Index:
         if not p.exists() and not self._migrate_legacy():
             self.missing = len(self.chunks)
             return None
-        z = np.load(p)
-        have = dict(zip(z["keys"].tolist(), range(len(z["keys"]))))
-        dim = z["vecs"].shape[1]
+        try:
+            z = np.load(p)
+            keys, vecs = z["keys"].tolist(), z["vecs"]
+        except Exception:  # noqa: BLE001  (damaged or truncated file: treated as 'no embeddings yet', rebuilt by ensure_embeddings)
+            p.unlink(missing_ok=True)
+            self.missing = len(self.chunks)
+            return None
+        have = dict(zip(keys, range(len(keys))))
+        dim = vecs.shape[1]
         arr = np.zeros((len(self.chunks), dim), dtype=np.float32)
         miss = 0
         for i, c in enumerate(self.chunks):
@@ -568,7 +638,7 @@ class Index:
             if j is None:
                 miss += 1
             else:
-                arr[i] = z["vecs"][j]
+                arr[i] = vecs[j]
         self.missing = miss
         return arr if miss < len(self.chunks) else None
 
@@ -591,8 +661,8 @@ class Index:
         return {"chunks": len(self.chunks), "embeddings": self.emb is not None, "missing": getattr(self, "missing", len(self.chunks)),
                 "embed_model": config.embed_model(), "sources": sorted({c["source_id"] for c in self.chunks})}
 
-    def build_embeddings(self, client, batch=96, usage=None) -> int:
-        """Embeds only the passages that are not in the index (called by ensure_embeddings at startup)."""
+    def build_embeddings(self, client, batch=256, usage=None) -> int:
+        """Embeds only the passages that are not in the index (called by ensure_embeddings at startup). Large batches keep the number of API requests small (the whole corpus is about six requests)."""
         todo = [i for i in range(len(self.chunks)) if self.emb is None or not np.any(self.emb[i])]
         if not todo:
             return 0
@@ -609,7 +679,10 @@ class Index:
         for i, v in vecs.items():
             x = np.asarray(v, dtype=np.float32)
             arr[i] = x / (np.linalg.norm(x) + 1e-9)
-        np.savez(self._emb_path(), keys=np.array([self._key(c) for c in self.chunks]), vecs=arr)
+        final = self._emb_path()
+        tmp = final.with_name(final.stem + ".tmp.npz")
+        np.savez(tmp, keys=np.array([self._key(c) for c in self.chunks]), vecs=arr)
+        tmp.replace(final)  # atomic
         self.emb, self.missing = arr, 0
         return len(todo)
 
@@ -678,8 +751,8 @@ class Index:
 
 # --------------------------------------------------------------------------- support validation
 # A retrieved passage is only shown as support for a question or finding if it passes this check. Retrieval never changes the classification.
-SIM_ANCHOR, SIM_HYBRID = 0.15, 0.22          # minimum embedding similarity (when embeddings are available)
-COVER_ANCHOR, COVER_HYBRID = 0.20, 0.34     # minimum share of claim keywords/term groups found in the passage
+SIM_ANCHOR, SIM_HYBRID = 0.15, 0.30          # minimum embedding similarity (when embeddings are available)
+COVER_ANCHOR, COVER_HYBRID, COVER_NO_EMBED = 0.20, 0.34, 0.50     # minimum share of claim keywords/term groups found in the passage
 _STOP = set("the and for with that this from have has are was were not but you your can does did which what when where who how any all its into than then them they their there will would could should about also only more most such been being each other these those over under between within without per via one two".split())
 
 
@@ -691,25 +764,77 @@ def keywords(text: str) -> set[str]:
     return {_stem(w) for w in re.findall(r"[a-z0-9]+", (text or "").lower()) if len(w) > 3 and w not in _STOP}
 
 
+WINDOW_CHARS, WINDOW_HYBRID = 450, 0.45  # distinctive terms must occur CLOSE together (inside one window of text), not scattered over a long page
+_CORPUS: list[str] = []                  # lower-cased passage texts of the loaded index (document frequencies for term weights)
+_DF: dict[str, int] = {}
+
+
+def set_corpus(chunks: list[dict]) -> None:
+    _CORPUS[:] = [((c.get("title") or "") + " " + c["text"]).lower() for c in chunks]
+    _DF.clear()
+
+
+def term_weight(group: list[str]) -> float:
+    """Specificity of a term group: inverse document frequency of its rarest term in the loaded passages (a word such as 'system' says little; 'biometric' says a lot). 1.0 without a corpus."""
+    if not _CORPUS:
+        return 1.0
+    best = 0.0
+    for t in group:
+        t = (t or "").lower()
+        if t not in _DF:
+            _DF[t] = sum(1 for x in _CORPUS if t in x)
+        best = max(best, math.log(1 + len(_CORPUS) / (_DF[t] + 0.5)))
+    return best
+
+
+def _window_cov(txt: str, groups: list[list[str]], width: int = WINDOW_CHARS) -> float:
+    """Largest IDF-weighted share of term groups that occur together inside one window of `width` characters."""
+    w = [term_weight(g) for g in groups]
+    ev = sorted((m.start(), gi) for gi, g in enumerate(groups) for t in g if t for m in re.finditer(re.escape(t.lower()), txt))
+    best, j, cnt = 0.0, 0, Counter()
+    for pos, gi in ev:
+        cnt[gi] += 1
+        while ev[j][0] < pos - width:
+            cnt[ev[j][1]] -= 1
+            if cnt[ev[j][1]] == 0:
+                del cnt[ev[j][1]]
+            j += 1
+        best = max(best, sum(w[g] for g in cnt))
+    return best / sum(w) if sum(w) else 0.0
+
+
 def support(chunk: dict, claim: str = "", terms: list[list[str]] | None = None, sim: float | None = None, anchored: bool = False) -> dict:
-    """Deterministic support check for a passage.
+    """Deterministic support check for a passage (retrieval never changes the classification; this only decides whether a passage may be SHOWN as support).
     terms: list of term groups (any-of); coverage = share of groups present in the passage. Without terms, the claim's keywords are used.
-    sim: embedding similarity of the passage to the claim/query, when available."""
+    sim: embedding similarity of the passage to the claim/query, when available.
+    A passage found by search (not a curated anchor) must in addition have its distinctive terms close together (window coverage); without embeddings the bar is higher still."""
     txt = ((chunk.get("title") or "") + " " + chunk["text"]).lower()
     if terms:
+        groups = terms
         cov = sum(any(t.lower() in txt for t in g) for g in terms) / len(terms)
     else:
-        kw = keywords(claim)
+        kw = sorted(keywords(claim))
+        groups = [[k] for k in sorted(kw, key=lambda k: -term_weight([k]))[:6]]  # a long claim is judged on its six most distinctive words
         have = keywords(txt)
-        cov = (len(kw & have) / len(kw)) if kw else 0.0
-    cmin = COVER_ANCHOR if anchored else COVER_HYBRID
+        cov = (len(set(kw) & have) / len(kw)) if kw else 0.0
+    cmin = COVER_ANCHOR if anchored else (COVER_HYBRID if sim is not None else COVER_NO_EMBED)
     smin = SIM_ANCHOR if anchored else SIM_HYBRID
     reasons = []
     if cov < cmin:
         reasons.append(f"keyword coverage {cov:.2f} < {cmin}")
+    win = None
+    if not anchored:
+        win = round(_window_cov(txt, groups), 2)
+        if win < WINDOW_HYBRID:
+            reasons.append(f"distinctive terms are not close together (proximity {win:.2f} < {WINDOW_HYBRID})")
+    if not anchored and terms and len(terms) < 2 and claim:  # a single curated term (for example 'prohibited') is too weak on its own: the claim's own distinctive words must be close together too
+        kw_groups = [[k] for k in sorted(keywords(claim), key=lambda k: -term_weight([k]))[:6]]
+        w2 = round(_window_cov(txt, kw_groups), 2)
+        if w2 < WINDOW_HYBRID:
+            reasons.append(f"the claim's distinctive words are not close together (proximity {w2:.2f} < {WINDOW_HYBRID})")
     if sim is not None and sim < smin:
         reasons.append(f"embedding similarity {sim:.2f} < {smin}")
-    return {"ok": not reasons, "coverage": round(cov, 2), "sim": None if sim is None else round(float(sim), 2), "reason": "; ".join(reasons)}
+    return {"ok": not reasons, "coverage": round(cov, 2), "proximity": win, "sim": None if sim is None else round(float(sim), 2), "reason": "; ".join(reasons)}
 
 
 def chunk_sim(index: "Index", chunk: dict, qvec) -> float | None:

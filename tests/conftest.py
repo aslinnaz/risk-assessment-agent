@@ -14,6 +14,35 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "needs_sources: requires the source documents in sources/")
 
 
+class _AuditLog:
+    """Collects scenario records (input, expected, actual, pass/fail, trace). Written to $TRUSTAI_AUDIT_LOG (a JSON file outside the project) when that variable is set."""
+    def __init__(self):
+        self.rows = []
+
+    def record(self, name, inputs, expected, actual, ok, trace=()):
+        self.rows.append({"scenario": name, "input": inputs, "expected": expected, "actual": actual, "pass": bool(ok), "trace": [t for t in trace if t]})
+
+
+AUDIT = _AuditLog()
+
+
+def pytest_sessionfinish(session, exitstatus):
+    import os
+    path = os.environ.get("TRUSTAI_AUDIT_LOG")
+    if path and AUDIT.rows:
+        Path(path).write_text(json.dumps(AUDIT.rows, indent=1, ensure_ascii=False), encoding="utf-8")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _isolated_cache(tmp_path_factory):
+    """Tests never write into the project's .cache/ (which is a runtime cache and must stay free of test sources such as the custom-source fixtures)."""
+    import config as appcfg
+    old = appcfg.CACHE_DIR
+    appcfg.CACHE_DIR = tmp_path_factory.mktemp("cache")
+    yield
+    appcfg.CACHE_DIR = old
+
+
 def sources_present() -> bool:
     import config as appcfg
     return all((appcfg.SOURCES_DIR / s["file"]).exists() for s in rag.load_manifest()["sources"] if s["rag"] and s["api_transfer_allowed"] and not s.get("custom"))

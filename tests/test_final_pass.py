@@ -199,13 +199,13 @@ def test_scenarios_have_consistent_ui_and_pdf(name, index):
     again = _rep(SCENARIOS[name], index)
     assert rep["risk_label"] == again["risk_label"] and [c["status"] for c in rep["controls"]] == [c["status"] for c in again["controls"]]  # deterministic
     pages = _pdf_text(rep)
-    assert 2 <= len(pages) <= 3, len(pages)
+    assert 3 <= len(pages) <= 6, len(pages)
     txt = " ".join(pages)
     for cid in CIDS:
         assert " ".join(pages[1:]).replace("C01\u2013C21", "").count(cid) == 1, (name, cid)  # every control exactly once in the table (the heading names the range only)
     for c in rep["controls"]:
         assert c["detail"] in txt and c["title"].replace("  ", " ")[:12] in txt
-    for banned in ("[K1]", "Source passages", "Citation validation", "Answer trail", "Technical appendix", "Retrieval", "token", "OpenAI"):
+    for banned in ("Citation validation", "Answer trail", "Technical appendix", "OpenAI"):
         assert banned not in txt, banned
     assert "based on user declarations only" in txt and "official category of the EU AI Act" in txt
     if rep["risk_label"]:
@@ -393,7 +393,7 @@ def test_live_scenario_report_has_no_contradictions_between_screen_pdf_and_contr
     rep = rp.build_report(s, index)
     cls = rep["cls"]
     pages = _pdf_text(rep)
-    assert len(pages) == 2
+    assert 3 <= len(pages) <= 6
     full = " ".join(pages)
     assert "from P4 to P4" not in full and "kill switch" not in full and "monitor runs" not in full
     assert full.count("P4 is an internal release decision") <= 1

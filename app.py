@@ -304,6 +304,10 @@ def render_result(state, idx):
             st.markdown("**Workflow facts** (authority is evaluated per workflow)")
             for w in rep["workflows"]:
                 st.caption(f"{w['label']}: {w['execution']}; threshold: {w['threshold']}; approval authority: {w['approval_authority']}; approval bound: {w['approval_bound']}; limit enforcement: {w['limit_enforcement']} — answer {w['answer_id']}")
+        if rep.get("tools"):
+            st.markdown("**Tool and system inventory** (confirmed, denied and not-stated permissions are different things)")
+            for x in rep["tools"]:
+                st.caption(f"{x['name']} ({x['kind']}); scope: {x['scope']}; confirmed: {x['confirmed']}; denied: {x['denied']}; not stated: {x['unknown']} — answer {x['answer_ids']}")
         ig, cc = rep["integrity"], rep["citation_check"]
         st.caption("Fact-state integrity: " + ("every decision input is an accepted fact or a derived fact with accepted inputs." if ig["ok"] else "VIOLATIONS: " + "; ".join(ig["violations"])))
         st.caption(f"Citation validation: {cc['checked']} checked" + ("; all valid." if cc["ok"] else "; problems: " + "; ".join(cc["problems"])))

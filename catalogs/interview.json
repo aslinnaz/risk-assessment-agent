@@ -1,2928 +1,2997 @@
 {
- "version": "3.0",
- "slots": {
-  "purpose": "text",
-  "affected_decisions": "text",
-  "org_role": [
-   "provider",
-   "deployer",
-   "importer_distributor",
-   "other",
-   "unknown"
-  ],
-  "eu_link": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "use_status": [
-   "live",
-   "planned",
-   "unknown"
-  ],
-  "g_biometric": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "g_influence": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "g_person_eval": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "p_manipulation": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_exploit_vulnerability": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_social_scoring": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_crime_profiling": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_facial_scraping": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_emotion_work_edu": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_biometric_categorisation": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "p_rbi_law_enforcement": [
-   "none",
-   "possible",
-   "supported",
-   "excepted",
-   "unknown"
-  ],
-  "annex1_product": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "annex3_area": [
-   "none",
-   "biometrics",
-   "critical_infrastructure",
-   "education",
-   "employment",
-   "essential_services",
-   "law_enforcement",
-   "migration",
-   "justice_democracy",
-   "unknown"
-  ],
-  "profiling": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "art6_3_exception": [
-   "none",
-   "narrow_procedural",
-   "improve_prior_human_work",
-   "detect_patterns",
-   "preparatory",
-   "unknown"
-  ],
-  "influences_decision": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "t_interacts_people": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "t_synthetic_content": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "t_emotion_biometric": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "t_deepfake_public_text": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "personal_data": [
-   "none",
-   "ordinary",
-   "special",
-   "unknown"
-  ],
-  "vulnerable_groups": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "action_mode": [
-   "info_only",
-   "recommend",
-   "draft",
-   "approved_action",
-   "envelope_action",
-   "self_expanding",
-   "unknown"
-  ],
-  "tools_summary": "text",
-  "human_review": [
-   "yes",
-   "no",
-   "partial",
-   "unknown"
-  ],
-  "approval_bound": [
-   "yes",
-   "no",
-   "partial",
-   "unknown"
-  ],
-  "limits_enforced": [
-   "technical",
-   "policy_only",
-   "none",
-   "unknown"
-  ],
-  "authority_expansion": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "delegates_to_agents": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "max_harm": [
-   "minimal",
-   "limited",
-   "serious",
-   "critical",
-   "unknown"
-  ],
-  "harm_desc": "text",
-  "reversibility": [
-   "reversible",
-   "partly",
-   "irreversible",
-   "unknown"
-  ],
-  "reach": [
-   "single",
-   "group",
-   "wide",
-   "unknown"
-  ],
-  "eval_uses_social_traits": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "eval_predicts_crime": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "approval_exists": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "can_stop": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "can_rollback": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "human_reexam": [
-   "yes",
-   "no",
-   "partial",
-   "unknown"
-  ],
-  "monitoring_live": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "post_action_review": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "aggregate_limit": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "approval_bypass": [
-   "yes",
-   "no",
-   "unknown"
-  ],
-  "wf_threshold": [
-   "yes",
-   "no"
-  ],
-  "annex1_third_party": [
-   "yes",
-   "no",
-   "unknown"
-  ]
- },
- "topics": [
-  {
-   "id": "purpose",
-   "phase": "Scope",
-   "title": "Intended purpose and affected decisions",
-   "slots": [
-    "purpose",
-    "affected_decisions"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": true,
-   "priority": 100,
-   "hint": "intended purpose use for which an AI system is intended",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [],
-   "default_q": "Could you briefly describe what the agent we will assess does?",
-   "open": true,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "eu_link",
-   "phase": "Scope",
-   "title": "EU link",
-   "slots": [
-    "eu_link"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": false,
-   "priority": 95,
-   "hint": "scope applies to providers deployers located in the Union output used in the Union",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 2(1)"
-   ],
-   "default_q": "Is the agent used in the EU, or do its outputs affect people or organisations in the EU?",
-   "options": [
-    "Yes, it is used in the EU",
-    "No link with the EU",
-    "I don't know"
-   ],
-   "simple_q": "In short: do people living in the EU, or an organisation in the EU, use the agent's outputs or get affected by them? If you are unsure, you can list the countries of your customers and your organisation.",
-   "option_map": {
-    "Yes, it is used in the EU": {
-     "eu_link": "yes"
-    },
-    "No link with the EU": {
-     "eu_link": "no"
-    },
-    "I don't know": {
-     "eu_link": "unknown"
-    }
-   },
-   "early": true,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "org_role",
-   "phase": "Scope",
-   "title": "Role of the organisation",
-   "slots": [
-    "org_role"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": false,
-   "priority": 96,
-   "hint": "provider deployer importer distributor definitions role",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 25(1)"
-   ],
-   "default_q": "Did your organisation build this agent, or does it use an agent that someone else built?",
-   "options": [
-    "We developed it",
-    "We use a ready-made agent",
-    "I'm not sure"
-   ],
-   "option_map": {
-    "We developed it": {
-     "org_role": "provider"
-    },
-    "We use a ready-made agent": {
-     "org_role": "deployer"
-    },
-    "I'm not sure": {
-     "org_role": "unknown"
-    }
-   },
-   "early": true,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "use_status",
-   "phase": "Scope",
-   "title": "Usage status and date",
-   "slots": [
-    "use_status"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": false,
-   "priority": 94,
-   "hint": "date of application obligations apply from",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 113"
-   ],
-   "default_q": "Is the agent live now, or is this a planned use?",
-   "options": [
-    "Live",
-    "Planned",
-    "I don't know"
-   ],
-   "option_map": {
-    "Live": {
-     "use_status": "live"
-    },
-    "Planned": {
-     "use_status": "planned"
-    },
-    "I don't know": {
-     "use_status": "unknown"
-    }
-   },
-   "early": true,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "screening",
-   "phase": "Use",
-   "title": "Standard prohibited-use check",
-   "slots": [
-    "g_biometric",
-    "g_influence",
-    "g_person_eval"
-   ],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 78,
-   "hint": "prohibited artificial intelligence practices biometric emotion manipulative techniques social scoring risk assessment natural persons",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(a)",
-    "AIA|Art. 5(1)(c)",
-    "AIA|Art. 5(1)(f)",
-    "AIA|Art. 5(1)(g)"
-   ],
-   "default_q": "Standard check, asked for every agent: does your agent do any of the following? Tick everything that applies, or choose “None of these”. Anything you already told me is left out. You can also describe it in your own words.",
-   "simple_q": "In short, do any of these apply? For example: face recognition at a door or emotion analysis from a camera; messages written to persuade someone to buy something or change their mind; or a score or ranking number given to applicants, customers or employees. Tick what applies, or say you are not sure.",
-   "multi": {
-    "items": [
-     {
-      "slot": "g_biometric",
-      "label": "It uses biometric data (face, voice, fingerprints) to recognise people or work out something about them, such as emotions"
-     },
-     {
-      "slot": "g_influence",
-      "label": "It is meant to steer the people it deals with towards a behaviour, such as buying, clicking, voting or giving up (a plain recommendation to a decision maker does not count)"
-     },
-     {
-      "slot": "g_person_eval",
-      "label": "It gives people a score, a rank or a risk/suitability value"
-     }
+  "version": "3.0",
+  "slots": {
+    "purpose": "text",
+    "affected_decisions": "text",
+    "org_role": [
+      "provider",
+      "deployer",
+      "importer_distributor",
+      "other",
+      "unknown"
     ],
-    "none_label": "None of these",
-    "unsure_label": "I'm not sure about some of these"
-   },
-   "focus_terms": [],
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "g_biometric",
-   "phase": "Use",
-   "title": "Biometrics screening",
-   "slots": [
-    "g_biometric"
-   ],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 88,
-   "hint": "prohibited biometric categorisation emotion inference facial images remote biometric identification",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(g)",
-    "AIA|Art. 5(1)(f)"
-   ],
-   "default_q": "Does the agent use biometric data such as face, voice or fingerprints to recognise people or infer their characteristics?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "simple_q": "For example: face recognition at a door, voice-based identity verification, fingerprint reading, or emotion analysis from a camera. Is there anything like that?",
-   "focus_terms": [
-    "biometric",
-    "fingerprint",
-    "face",
-    "facial"
-   ],
-   "evidence_terms": [
-    "biometric",
-    "fingerprint",
-    "face",
-    "facial",
-    "voice",
-    "iris",
-    "recognition"
-   ],
-   "asked": false,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "g_influence",
-   "phase": "Use",
-   "title": "Behaviour steering screening",
-   "slots": [
-    "g_influence"
-   ],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 86,
-   "hint": "prohibited manipulative deceptive techniques exploit vulnerabilities distort behaviour",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(a)",
-    "AIA|Art. 5(1)(b)"
-   ],
-   "default_q": "Is the agent's purpose to steer the people it meets towards a specific behaviour (buying, clicking, voting, giving up)? Merely giving a recommendation to a decision maker does not count.",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "simple_q": "For example: does it generate messages designed to persuade a user to buy something or change their mind?",
-   "focus_terms": [
-    "steer",
-    "persuade",
-    "specific behaviour"
-   ],
-   "evidence_terms": [
-    "steer",
-    "persuade",
-    "manipulate",
-    "manipulation",
-    "nudge",
-    "behaviour",
-    "behavior",
-    "influence",
-    "users"
-   ],
-   "asked": false,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "g_person_eval",
-   "phase": "Use",
-   "title": "Scoring of people screening",
-   "slots": [
-    "g_person_eval"
-   ],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 84,
-   "hint": "prohibited social scoring risk assessment of natural persons criminal offence profiling",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(c)",
-    "AIA|Art. 5(1)(d)"
-   ],
-   "default_q": "Does the agent assign people a score, a rank or a risk/suitability value?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "simple_q": "For example: does it give applicants, customers or employees a score or a ranking number?",
-   "focus_terms": [
-    "score, rank",
-    "risk/suitability"
-   ],
-   "evidence_terms": [
-    "score",
-    "scoring",
-    "rank",
-    "ranking",
-    "rating",
-    "suitability",
-    "evaluate",
-    "evaluates",
-    "profile"
-   ],
-   "asked": false,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "prohibited_detail",
-   "phase": "Use",
-   "title": "Conditions and exceptions of a possible prohibition",
-   "slots": [],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 99,
-   "hint": "prohibited practices conditions exceptions",
-   "sources": [
-    "AIA"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(a)"
-   ],
-   "default_q": "I need to clarify which feature in the prohibited-use screening applies.",
-   "condition": null,
-   "asked": false,
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "annex3",
-   "phase": "Use",
-   "title": "Sensitive use area",
-   "slots": [
-    "annex3_area"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": true,
-   "priority": 92,
-   "hint": "high-risk AI systems Annex III areas employment education essential services law enforcement migration justice biometrics",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 6(2)",
-    "AIA|Annex III"
-   ],
-   "default_q": "Does the agent's task fall into one of these areas: recruitment/employee management, education/exams, access to essential services such as credit, insurance or social benefits, law enforcement, migration/borders, justice/elections, or critical infrastructure?",
-   "options": [
-    "None of them",
-    "Recruitment / employee management",
-    "Credit / insurance / essential services",
-    "Education / exams",
-    "Another area",
-    "I don't know"
-   ],
-   "simple_q": "For example: is it used in a decision process that affects a person's life, such as recruitment, a credit or insurance application, school/exams, police or migration procedures?",
-   "focus_terms": [
-    "recruitment",
-    "credit",
-    "insurance",
-    "exams",
-    "law enforcement",
-    "migration",
-    "critical infrastructure",
-    "justice"
-   ],
-   "option_map": {
-    "None of them": {
-     "annex3_area": "none"
-    },
-    "Recruitment / employee management": {
-     "annex3_area": "employment"
-    },
-    "Credit / insurance / essential services": {
-     "annex3_area": "essential_services"
-    },
-    "Education / exams": {
-     "annex3_area": "education"
-    },
-    "I don't know": {
-     "annex3_area": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "recruitment",
-    "hiring",
-    "candidates",
-    "employee",
-    "credit",
-    "insurance",
-    "exam",
-    "education",
-    "school",
-    "law",
-    "enforcement",
-    "police",
-    "migration",
-    "border",
-    "justice",
-    "election",
-    "infrastructure"
-   ],
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "profiling",
-   "phase": "Use",
-   "title": "Profiling",
-   "slots": [
-    "profiling"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": true,
-   "priority": 91.5,
-   "hint": "profiling of natural persons always high-risk Annex III",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 6(3)"
-   ],
-   "default_q": "In this task, does the agent evaluate people and build profiles of them?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "condition": "annex3_area_set",
-   "simple_q": "Does the agent automatically assess a person's personality, behaviour or interests and build a profile?",
-   "evidence_terms": [
-    "profile",
-    "profiling",
-    "personality",
-    "behaviour",
-    "interests"
-   ],
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "id": "annex1",
-   "phase": "Use",
-   "title": "Product safety component",
-   "slots": [
-    "annex1_product",
-    "annex1_third_party"
-   ],
-   "controls": [
-    "C01"
-   ],
-   "critical": false,
-   "priority": 74,
-   "hint": "safety component of a product Union harmonisation legislation third-party conformity assessment Article 6(1) needs both conditions",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 6(1)"
-   ],
-   "default_q": "Is the agent a safety component of a regulated product (such as a medical device, machinery or a toy), or the product itself? If so, must that product pass an independent safety check by an outside body (a notified body) before it is sold?",
-   "options": [
-    "Yes, and the product must pass an independent safety check by an outside body (a notified body) before it is sold",
-    "Yes, but the product does not need an independent safety check by an outside body",
-    "Yes, but I don't know whether an independent safety check is needed",
-    "No, it is not part of a regulated product",
-    "I don't know"
-   ],
-   "evidence_terms": [
-    "safety",
-    "component",
-    "medical",
-    "device",
-    "machinery",
-    "toy",
-    "product"
-   ],
-   "concerns": [
-    "legal"
-   ],
-   "option_map": {
-    "Yes, and the product must pass an independent safety check by an outside body (a notified body) before it is sold": {
-     "annex1_product": "yes",
-     "annex1_third_party": "yes"
-    },
-    "Yes, but the product does not need an independent safety check by an outside body": {
-     "annex1_product": "yes",
-     "annex1_third_party": "no"
-    },
-    "Yes, but I don't know whether an independent safety check is needed": {
-     "annex1_product": "yes",
-     "annex1_third_party": "unknown"
-    },
-    "No, it is not part of a regulated product": {
-     "annex1_product": "no",
-     "annex1_third_party": "no"
-    },
-    "I don't know": {
-     "annex1_product": "unknown",
-     "annex1_third_party": "unknown"
-    }
-   }
-  },
-  {
-   "id": "action_mode",
-   "phase": "Authority and impact",
-   "title": "Action authority",
-   "slots": [
-    "action_mode",
-    "tools_summary"
-   ],
-   "controls": [
-    "C11"
-   ],
-   "critical": true,
-   "priority": 93,
-   "hint": "agent tools access permissions actions autonomy latitude",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 6",
-    "TAI-AG|s. 20"
-   ],
-   "default_q": "What can the agent do on its own, and does a person have to approve it first? Please describe each kind of action, for example: “it answers customers by itself, but refunds need an employee’s approval”.",
-   "options": [
-    "Only provides information",
-    "Gives recommendations, a human acts",
-    "Prepares drafts, a human sends them",
-    "Acts after approval",
-    "Acts without approval",
-    "Something else",
-    "I don't know"
-   ],
-   "simple_q": "For example: can the agent send an e-mail, make a payment or change a record on its own, or does it only prepare a recommendation for a person?",
-   "focus_terms": [
-    "take actions"
-   ],
-   "option_map": {
-    "Only provides information": {
-     "action_mode": "info_only"
-    },
-    "Gives recommendations, a human acts": {
-     "action_mode": "recommend"
-    },
-    "Prepares drafts, a human sends them": {
-     "action_mode": "draft"
-    },
-    "Acts after approval": {
-     "action_mode": "approved_action"
-    },
-    "Acts without approval": {
-     "action_mode": "envelope_action"
-    },
-    "I don't know": {
-     "action_mode": "unknown"
-    }
-   },
-   "support_terms": [
-    [
-     "autonom",
-     "level",
-     "oversight"
+    "eu_link": [
+      "yes",
+      "no",
+      "unknown"
     ],
-    [
-     "approv",
-     "gate"
+    "use_status": [
+      "live",
+      "planned",
+      "unknown"
     ],
-    [
-     "action",
-     "tool",
-     "permission",
-     "execut"
-    ]
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "review_basis",
-   "phase": "Authority and impact",
-   "title": "Review of the recommendation",
-   "slots": [
-    "human_review"
-   ],
-   "controls": [
-    "C09"
-   ],
-   "critical": false,
-   "priority": 81,
-   "hint": "human oversight reviewers understand outputs automation bias ability to override",
-   "sources": [
-    "TAI-AG",
-    "AIA",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 10",
-    "AIA|Art. 14(4)",
-    "NIST-PB|MAP 3.5"
-   ],
-   "default_q": "Can the employee who decides see what information the agent's recommendation is based on?",
-   "options": [
-    "Yes, they can see the basis",
-    "Partly",
-    "No, they only see the result",
-    "I don't know"
-   ],
-   "condition": "recommends",
-   "focus_terms": [
-    "basis",
-    "based on"
-   ],
-   "context": true,
-   "option_map": {
-    "Yes, they can see the basis": {
-     "human_review": "yes"
-    },
-    "Partly": {
-     "human_review": "partial"
-    },
-    "No, they only see the result": {
-     "human_review": "no"
-    },
-    "I don't know": {
-     "human_review": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "basis",
-    "reason",
-    "see",
-    "explanation"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "approval_exists",
-   "phase": "Authority and impact",
-   "title": "Is there human approval",
-   "slots": [
-    "approval_exists"
-   ],
-   "controls": [
-    "C09"
-   ],
-   "critical": true,
-   "priority": 85,
-   "condition": "acts",
-   "hint": "human approval before actions oversight intervention",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB",
-    "AIA"
-   ],
-   "anchors": [
-    "TAI-AG|s. 10",
-    "NIST-PB|MAP 3.5"
-   ],
-   "default_q": "Before the agent carries out an action, does a person have to approve it? If it depends on the amount or the kind of action, please describe the rule.",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "simple_q": "For example: before a payment, sending an e-mail or changing a record, does someone press an 'approve' button?",
-   "focus_terms": [
-    "approval is obtained"
-   ],
-   "evidence_terms": [
-    "approve",
-    "approval",
-    "approving",
-    "sign",
-    "confirm",
-    "human"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "approval_bound",
-   "phase": "Authority and impact",
-   "title": "Action-specific approval",
-   "slots": [
-    "approval_bound"
-   ],
-   "controls": [
-    "C09"
-   ],
-   "critical": true,
-   "priority": 84,
-   "hint": "human approval before actions bound to the specific action oversight intervention",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB",
-    "AIA"
-   ],
-   "anchors": [
-    "TAI-AG|s. 10",
-    "TAI-AG|s. 20",
-    "NIST-PB|MAP 3.5"
-   ],
-   "default_q": "Is this approval specific to that single action (details such as amount and recipient approved one by one), or is it a general/bulk approval?",
-   "options": [
-    "Yes, specific to the action",
-    "No, general / bulk approval",
-    "Partly",
-    "I don't know"
-   ],
-   "condition": "approval_exists_yes",
-   "simple_q": "For example: does the approver see and approve the amount and recipient each time, or was a one-time general permission given?",
-   "option_map": {
-    "Yes, specific to the action": {
-     "approval_bound": "yes"
-    },
-    "No, general / bulk approval": {
-     "approval_bound": "no"
-    },
-    "Partly": {
-     "approval_bound": "partial"
-    },
-    "I don't know": {
-     "approval_bound": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "approve",
-    "approval",
-    "specific",
-    "action",
-    "transaction"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "limits_enforced",
-   "phase": "Authority and impact",
-   "title": "Enforcement of limits",
-   "slots": [
-    "limits_enforced"
-   ],
-   "controls": [
-    "C11"
-   ],
-   "critical": true,
-   "priority": 83,
-   "hint": "permission limits allowlist enforced technically tools scope budget caps",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 6",
-    "TAI-AG|s. 27"
-   ],
-   "default_q": "Are the agent’s limits (for example the maximum amount, or which systems it can reach) enforced by the system itself, or only written down in instructions?",
-   "options": [
-    "Technically enforced",
-    "Only instructions / policy",
-    "There is no limit",
-    "I don't know"
-   ],
-   "condition": "acts",
-   "simple_q": "For example: is the maximum amount blocked by code in the system, or is there only an instruction telling the agent 'do not exceed this much'?",
-   "option_map": {
-    "Technically enforced": {
-     "limits_enforced": "technical"
-    },
-    "Only instructions / policy": {
-     "limits_enforced": "policy_only"
-    },
-    "There is no limit": {
-     "limits_enforced": "none"
-    },
-    "I don't know": {
-     "limits_enforced": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "limit",
-    "limits",
-    "cap",
-    "block",
-    "enforce",
-    "enforced",
-    "instruction",
-    "allowlist"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "authority_expansion",
-   "phase": "Authority and impact",
-   "title": "Authority expansion",
-   "slots": [
-    "authority_expansion"
-   ],
-   "controls": [
-    "C11"
-   ],
-   "critical": true,
-   "priority": 82,
-   "hint": "authority expansion privilege escalation delegation ceiling dynamic permissions",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 14",
-    "TAI-AG|s. 16"
-   ],
-   "default_q": "Can the agent give itself more permissions or access on its own while it is working?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "condition": "acts",
-   "simple_q": "For example: can the agent add a new tool, permission or access for itself for its task?",
-   "support_terms": [
-    [
-     "delegat",
-     "orchestrat",
-     "subagent"
+    "g_biometric": [
+      "yes",
+      "no",
+      "unknown"
     ],
-    [
-     "authority",
-     "permission",
-     "privilege",
-     "access",
-     "constraint"
+    "g_influence": [
+      "yes",
+      "no",
+      "unknown"
     ],
-    [
-     "agent"
-    ]
-   ],
-   "evidence_terms": [
-    "expand",
-    "grant",
-    "itself",
-    "permission",
-    "access",
-    "privilege"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "delegation",
-   "phase": "Authority and impact",
-   "title": "Delegation to other agents",
-   "slots": [
-    "delegates_to_agents"
-   ],
-   "controls": [
-    "C11"
-   ],
-   "critical": false,
-   "priority": 60,
-   "hint": "multi-agent delegation orchestrator subagents accountability",
-   "sources": [
-    "TAI-AG"
-   ],
-   "anchors": [
-    "TAI-AG|s. 14",
-    "TAI-AG|s. 16"
-   ],
-   "default_q": "Does the agent delegate part of its work to other agents or automated tools?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "condition": "acts",
-   "evidence_terms": [
-    "delegate",
-    "delegates",
-    "agents",
-    "orchestrator"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "max_harm",
-   "phase": "Authority and impact",
-   "title": "Reasonable worst-case harm",
-   "slots": [
-    "max_harm",
-    "harm_desc"
-   ],
-   "controls": [
-    "C04",
-    "C05"
-   ],
-   "critical": true,
-   "priority": 90,
-   "hint": "risk of harm to health safety fundamental rights severity of harm",
-   "sources": [
-    "TAI-AG",
-    "AIA",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 4",
-    "AIA|Art. 9(2)",
-    "NIST-PB|MAP 5.1"
-   ],
-   "default_q": "What is the worst reasonable outcome if the agent makes a mistake (financial loss, privacy breach, loss of rights, safety)?",
-   "options": [
-    "Negligible / easily corrected",
-    "Limited harm",
-    "Serious harm",
-    "Critical (safety / fundamental rights)",
-    "I don't know"
-   ],
-   "simple_q": "If the agent recommends or does something wrong, what would be the worst outcome: a small correction, a financial loss, a serious loss of rights?",
-   "focus_terms": [
-    "worst"
-   ],
-   "option_map": {
-    "Negligible / easily corrected": {
-     "max_harm": "minimal"
-    },
-    "Limited harm": {
-     "max_harm": "limited"
-    },
-    "Serious harm": {
-     "max_harm": "serious"
-    },
-    "Critical (safety / fundamental rights)": {
-     "max_harm": "critical"
-    },
-    "I don't know": {
-     "max_harm": "unknown"
-    }
-   },
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "reversibility",
-   "phase": "Authority and impact",
-   "title": "Reversibility",
-   "slots": [
-    "reversibility"
-   ],
-   "controls": [
-    "C04"
-   ],
-   "critical": false,
-   "priority": 52,
-   "hint": "reversibility of actions irreversible consequences",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 4",
-    "TAI-AG|s. 30"
-   ],
-   "default_q": "If a wrong result or recommendation is noticed, can it be corrected?",
-   "options": [
-    "Easily corrected",
-    "Partly correctable",
-    "No, it cannot be undone",
-    "I don't know"
-   ],
-   "condition": "harm_known_no_rollback",
-   "focus_terms": [
-    "corrected",
-    "correctable"
-   ],
-   "option_map": {
-    "Easily corrected": {
-     "reversibility": "reversible"
-    },
-    "Partly correctable": {
-     "reversibility": "partly"
-    },
-    "No, it cannot be undone": {
-     "reversibility": "irreversible"
-    },
-    "I don't know": {
-     "reversibility": "unknown"
-    }
-   },
-   "context": true,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "reach",
-   "phase": "Authority and impact",
-   "title": "Reach",
-   "slots": [
-    "reach"
-   ],
-   "controls": [
-    "C05"
-   ],
-   "critical": false,
-   "priority": 50,
-   "hint": "scale reach number of persons affected speed",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 30"
-   ],
-   "default_q": "How many people could be affected by such a mistake?",
-   "options": [
-    "One person/unit",
-    "A group",
-    "A large number of people",
-    "I don't know"
-   ],
-   "condition": "harm_known",
-   "focus_terms": [
-    "how many people",
-    "could be affected"
-   ],
-   "option_map": {
-    "One person/unit": {
-     "reach": "single"
-    },
-    "A group": {
-     "reach": "group"
-    },
-    "A large number of people": {
-     "reach": "wide"
-    },
-    "I don't know": {
-     "reach": "unknown"
-    }
-   },
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "personal_data",
-   "phase": "Use",
-   "title": "Personal data",
-   "slots": [
-    "personal_data"
-   ],
-   "controls": [
-    "C06"
-   ],
-   "critical": false,
-   "priority": 62,
-   "hint": "data and data governance personal data special categories",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 10(1)"
-   ],
-   "default_q": "What type of personal data does the agent work with?",
-   "options": [
-    "No personal data",
-    "Ordinary personal data (such as name, contact details, order history)",
-    "Sensitive data too (such as health, religion, ethnic origin)",
-    "I don't know"
-   ],
-   "focus_terms": [
-    "personal data"
-   ],
-   "option_map": {
-    "No personal data": {
-     "personal_data": "none"
-    },
-    "Ordinary personal data (such as name, contact details, order history)": {
-     "personal_data": "ordinary"
-    },
-    "Sensitive data too (such as health, religion, ethnic origin)": {
-     "personal_data": "special"
-    },
-    "I don't know": {
-     "personal_data": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "personal",
-    "data",
-    "sensitive",
-    "health",
-    "name",
-    "contact"
-   ],
-   "concerns": [
-    "data",
-    "legal"
-   ]
-  },
-  {
-   "id": "vulnerable_groups",
-   "phase": "Use",
-   "title": "Vulnerable groups",
-   "slots": [
-    "vulnerable_groups"
-   ],
-   "controls": [
-    "C05"
-   ],
-   "critical": false,
-   "priority": 53,
-   "hint": "vulnerable groups children elderly persons with disabilities adverse impact",
-   "sources": [
-    "AIA",
-    "NIST-PB",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 9(9)"
-   ],
-   "default_q": "Can vulnerable groups such as children, elderly or disabled people be affected by the agent's decisions?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "condition": "personal_data_set",
-   "focus_terms": [
-    "children",
-    "elderly",
-    "disabled"
-   ],
-   "evidence_terms": [
-    "children",
-    "child",
-    "elderly",
-    "vulnerable",
-    "disabled",
-    "minors"
-   ],
-   "concerns": [
-    "data",
-    "legal"
-   ]
-  },
-  {
-   "id": "t_interacts",
-   "phase": "Use",
-   "title": "Direct interaction with people",
-   "slots": [
-    "t_interacts_people"
-   ],
-   "controls": [
-    "C16"
-   ],
-   "critical": false,
-   "priority": 56,
-   "hint": "AI systems intended to interact directly with natural persons informed they are interacting with an AI system",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 50(1)"
-   ],
-   "default_q": "Does the agent communicate directly with people, for example by chat, e-mail or voice? This includes your own staff as well as customers or suppliers.",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "focus_terms": [
-    "talk or message",
-    "directly with"
-   ],
-   "context": true,
-   "evidence_terms": [
-    "talk",
-    "talks",
-    "message",
-    "messages",
-    "chat",
-    "converse",
-    "customers",
-    "directly",
-    "interact"
-   ],
-   "concerns": [
-    "transparency",
-    "legal"
-   ]
-  },
-  {
-   "id": "t_synthetic",
-   "phase": "Use",
-   "title": "Content generation",
-   "slots": [
-    "t_synthetic_content"
-   ],
-   "controls": [
-    "C16"
-   ],
-   "critical": false,
-   "priority": 54,
-   "hint": "synthetic audio image video or text content marked machine-readable format",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 50(2)"
-   ],
-   "default_q": "Does the agent write free-form text, or produce audio, images or video, as its output? Filling in structured fields or taking actions (for example placing an order) does not count.",
-   "options": [
-    "No, it only takes actions or fills in structured fields",
-    "Yes, free-form text (for example e-mails or summaries)",
-    "Yes, audio, images or video",
-    "I don't know"
-   ],
-   "focus_terms": [
-    "generate content",
-    "video"
-   ],
-   "evidence_terms": [
-    "generate",
-    "generates",
-    "content",
-    "image",
-    "video",
-    "audio",
-    "text",
-    "publish"
-   ],
-   "option_map": {
-    "No, it only takes actions or fills in structured fields": {
-     "t_synthetic_content": "no"
-    },
-    "Yes, free-form text (for example e-mails or summaries)": {
-     "t_synthetic_content": "yes"
-    },
-    "Yes, audio, images or video": {
-     "t_synthetic_content": "yes"
-    },
-    "I don't know": {
-     "t_synthetic_content": "unknown"
-    }
-   },
-   "concerns": [
-    "transparency",
-    "legal"
-   ]
-  },
-  {
-   "id": "t_deepfake",
-   "phase": "Use",
-   "title": "Content resembling a real person/event",
-   "slots": [
-    "t_deepfake_public_text"
-   ],
-   "controls": [
-    "C16"
-   ],
-   "critical": false,
-   "priority": 45,
-   "hint": "deep fake disclose artificially generated or manipulated text published to inform the public",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 50(4)"
-   ],
-   "default_q": "Is that output published, or does it imitate real people, places or events? Please pick the closest description.",
-   "options": [
-    "No: nothing is published and nothing imitates real people, places or events",
-    "It imitates real people, places or events (for example a realistic voice, image or video)",
-    "It writes text that is published to inform the public about matters of public interest",
-    "Neither, but it is sent to outside parties (for example customers or suppliers)",
-    "I don't know"
-   ],
-   "condition": "synthetic_yes",
-   "evidence_terms": [
-    "deepfake",
-    "real",
-    "person",
-    "public"
-   ],
-   "option_map": {
-    "No: nothing is published and nothing imitates real people, places or events": {
-     "t_deepfake_public_text": "no"
-    },
-    "It imitates real people, places or events (for example a realistic voice, image or video)": {
-     "t_deepfake_public_text": "yes"
-    },
-    "It writes text that is published to inform the public about matters of public interest": {
-     "t_deepfake_public_text": "yes"
-    },
-    "Neither, but it is sent to outside parties (for example customers or suppliers)": {
-     "t_deepfake_public_text": "no"
-    },
-    "I don't know": {
-     "t_deepfake_public_text": "unknown"
-    }
-   },
-   "concerns": [
-    "transparency",
-    "legal"
-   ]
-  },
-  {
-   "id": "ctl_owner",
-   "phase": "Authority and impact",
-   "title": "Responsible owner",
-   "slots": [],
-   "controls": [
-    "C03"
-   ],
-   "critical": false,
-   "priority": 30,
-   "hint": "accountability responsible owner roles AI literacy",
-   "sources": [
-    "NIST-PB",
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "NIST-PB|GOVERN 2.1",
-    "AIA|Art. 4"
-   ],
-   "default_q": "Is there a named person who is the responsible owner of this system?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_risk",
-   "phase": "Authority and impact",
-   "title": "Written risk/impact assessment",
-   "slots": [],
-   "controls": [
-    "C04",
-    "C05"
-   ],
-   "critical": false,
-   "priority": 29,
-   "hint": "risk management system impact assessment documented",
-   "sources": [
-    "NIST-PB",
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "NIST-PB|MAP 5.1",
-    "AIA|Art. 9(2)"
-   ],
-   "default_q": "Has a written risk assessment been done for this use?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_logging",
-   "phase": "Authority and impact",
-   "title": "Logging",
-   "slots": [],
-   "controls": [
-    "C08"
-   ],
-   "critical": false,
-   "priority": 28,
-   "hint": "logging trajectory logs record-keeping traceability",
-   "sources": [
-    "TAI-AG",
-    "AIA"
-   ],
-   "anchors": [
-    "TAI-AG|s. 13",
-    "AIA|Art. 12(1)"
-   ],
-   "default_q": "Are the agent's actions and recommendations recorded so that they can be traced later?",
-   "options": [
-    "Yes",
-    "Partly",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_monitoring",
-   "phase": "Authority and impact",
-   "title": "Monitoring and incident handling",
-   "slots": [],
-   "controls": [
-    "C18"
-   ],
-   "critical": false,
-   "priority": 27,
-   "hint": "post-deployment monitoring incident response reporting",
-   "sources": [
-    "NIST-PB",
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "NIST-PB|MANAGE 4.1",
-    "NIST-PB|GOVERN 4.3"
-   ],
-   "default_q": "Is there someone who monitors the agent's live behaviour and is there an incident process?",
-   "options": [
-    "Yes, both",
-    "Only one of them",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_docs",
-   "phase": "Authority and impact",
-   "title": "Documentation",
-   "slots": [],
-   "controls": [
-    "C06",
-    "C07"
-   ],
-   "critical": false,
-   "priority": 26,
-   "hint": "technical documentation instructions for use data provenance",
-   "sources": [
-    "AIA",
-    "NIST-PB",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 11(1)"
-   ],
-   "default_q": "Is there a current document that explains how the agent works and what its limits are?",
-   "options": [
-    "Yes",
-    "Outdated / incomplete",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_external",
-   "phase": "Authority and impact",
-   "title": "External content and memory",
-   "slots": [],
-   "controls": [
-    "C12",
-    "C13"
-   ],
-   "critical": false,
-   "priority": 25,
-   "hint": "prompt injection indirect instructions untrusted content memory poisoning",
-   "sources": [
-    "TAI-AG",
-    "AIA"
-   ],
-   "anchors": [
-    "TAI-AG|s. 9"
-   ],
-   "default_q": "Does the agent read external content such as web pages, e-mails or documents; if so, is there a safeguard so that this content cannot steer the agent?",
-   "options": [
-    "It does not read external content",
-    "It reads it, safeguards exist",
-    "It reads it, no safeguards",
-    "I don't know"
-   ],
-   "condition": "acts_or_reads",
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_budget",
-   "phase": "Authority and impact",
-   "title": "Loop and budget limit",
-   "slots": [],
-   "controls": [
-    "C14"
-   ],
-   "critical": false,
-   "priority": 24,
-   "hint": "stop conditions iteration budget caps loops cascading failure",
-   "sources": [
-    "TAI-AG"
-   ],
-   "anchors": [
-    "TAI-AG|s. 27"
-   ],
-   "default_q": "Is there a step, time or budget limit so that the agent cannot run in an endless loop?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "condition": "acts",
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_supplier",
-   "phase": "Authority and impact",
-   "title": "Supplier and change control",
-   "slots": [],
-   "controls": [
-    "C15"
-   ],
-   "critical": false,
-   "priority": 23,
-   "hint": "third-party suppliers change control reassessment after changes",
-   "sources": [
-    "NIST-PB",
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "NIST-PB|GOVERN 6.1",
-    "AIA|Art. 25(1)"
-   ],
-   "default_q": "Does the system use a third-party model or tool?",
-   "options": [
-    "Yes, there is a process",
-    "Yes, but there is no process",
-    "It does not use any",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_conformity",
-   "phase": "Authority and impact",
-   "title": "Conformity activities",
-   "slots": [],
-   "controls": [
-    "C20"
-   ],
-   "critical": false,
-   "priority": 22,
-   "hint": "conformity assessment registration quality management system",
-   "sources": [
-    "AIA",
-    "DEC2274"
-   ],
-   "anchors": [
-    "AIA|Art. 43(1)",
-    "AIA|Art. 17(1)"
-   ],
-   "default_q": "Has your organisation planned the formal checks and registration that the law requires for a high-risk use of AI?",
-   "options": [
-    "Yes",
-    "Partly",
-    "No",
-    "I don't know"
-   ],
-   "condition": "legal_high_or_unknown",
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "ctl_transparency",
-   "phase": "Use",
-   "title": "User information",
-   "slots": [],
-   "controls": [
-    "C16"
-   ],
-   "critical": false,
-   "priority": 21,
-   "hint": "transparency obligations inform persons interacting with an AI system synthetic content disclosure",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 50(1)",
-    "AIA|Art. 50(2)"
-   ],
-   "default_q": "Do users know that they are interacting with AI, or that content was generated by AI (for example, is it stated on screen)?",
-   "options": [
-    "Yes, it is stated",
-    "No",
-    "I don't know"
-   ],
-   "asked": false,
-   "concerns": [
-    "transparency",
-    "legal"
-   ]
-  },
-  {
-   "id": "eval_criteria",
-   "phase": "Use",
-   "title": "Criteria of the score",
-   "slots": [
-    "eval_uses_social_traits",
-    "eval_predicts_crime"
-   ],
-   "controls": [
-    "C02"
-   ],
-   "critical": true,
-   "priority": 85,
-   "condition": "person_eval_yes",
-   "hint": "evaluation or classification of natural persons social behaviour personal characteristics criminal offence risk assessment profiling",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 5(1)(c)",
-    "AIA|Art. 5(1)(d)"
-   ],
-   "default_q": "Which criteria and data is the score or evaluation calculated from?",
-   "simple_q": "Does this evaluation also include data such as social media, general behaviour or personality analysis, or a prediction of crime/fraud risk?",
-   "focus_terms": [
-    "criteria",
-    "which data"
-   ],
-   "open": true,
-   "simple_options": [
-    "No, neither",
-    "Yes, social behaviour or personality data is used",
-    "Yes, crime or fraud risk is assessed",
-    "I don't know"
-   ],
-   "simple_option_map": {
-    "No, neither": {
-     "eval_uses_social_traits": "no",
-     "eval_predicts_crime": "no"
-    },
-    "Yes, social behaviour or personality data is used": {
-     "eval_uses_social_traits": "yes"
-    },
-    "Yes, crime or fraud risk is assessed": {
-     "eval_predicts_crime": "yes"
-    },
-    "I don't know": {
-     "eval_uses_social_traits": "unknown",
-     "eval_predicts_crime": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "social",
-    "personality",
-    "behaviour",
-    "online",
-    "crime",
-    "criminal",
-    "fraud",
-    "offence"
-   ],
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "phase": "Authority and impact",
-   "controls": [
-    "C09",
-    "C18",
-    "C19"
-   ],
-   "critical": false,
-   "anchors": [
-    "AIA|Art. 14(4)"
-   ],
-   "focus_terms": [],
-   "id": "oversight",
-   "title": "Safeguards during and after execution",
-   "slots": [
-    "can_stop",
-    "can_rollback",
-    "monitoring_live",
-    "post_action_review"
-   ],
-   "priority": 71,
-   "condition": "acts",
-   "hint": "human oversight intervene stop monitoring reversal",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB",
-    "AIA"
-   ],
-   "default_q": "Which of these safeguards exist for what the agent does? Tick everything that applies. (Approval before an action is a separate topic and is not covered here.)",
-   "simple_q": "In short: can a person stop the agent at once, watch it while it runs, review what it did afterwards, and undo a wrong action? Tick what applies, or say you are not sure.",
-   "multi": {
-    "items": [
-     {
-      "slot": "can_stop",
-      "label": "A person can pause or stop it immediately"
-     },
-     {
-      "slot": "monitoring_live",
-      "label": "A person can watch what it does while it is running"
-     },
-     {
-      "slot": "post_action_review",
-      "label": "A person reviews what it did afterwards"
-     },
-     {
-      "slot": "can_rollback",
-      "label": "A wrong action can be reversed or cancelled afterwards"
-     }
+    "g_person_eval": [
+      "yes",
+      "no",
+      "unknown"
     ],
-    "none_label": "None of these",
-    "unsure_label": "I'm not sure about some of these"
-   },
-   "evidence_terms": [
-    "stop",
-    "pause",
-    "monitor",
-    "watch",
-    "review",
-    "reverse",
-    "cancel",
-    "undo",
-    "rollback"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ],
-   "support_terms": [
-    [
-     "oversight",
-     "human"
+    "p_manipulation": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "monitor"
+    "p_exploit_vulnerability": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "stop",
-     "interrupt",
-     "deactivat",
-     "intervene",
-     "override",
-     "supersede"
+    "p_social_scoring": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "revers",
-     "rollback",
-     "recover",
-     "undo"
-    ]
-   ]
-  },
-  {
-   "phase": "Authority and impact",
-   "controls": [
-    "C11",
-    "C15"
-   ],
-   "critical": false,
-   "anchors": [],
-   "focus_terms": [],
-   "id": "boundaries",
-   "title": "Delegation and approval boundaries",
-   "slots": [
-    "delegates_to_agents",
-    "approval_bypass"
-   ],
-   "priority": 69,
-   "condition": "acts",
-   "hint": "delegation permissions authority approval boundary",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "default_q": "Do either of these apply to the agent? Tick what applies, or choose “None of these”.",
-   "simple_q": "In short: does the agent hand work to other agents or tools, and can any privileged or administrative route skip the approval step? Tick what applies, or say you are not sure.",
-   "multi": {
-    "items": [
-     {
-      "slot": "delegates_to_agents",
-      "label": "It can hand work to other agents or automated tools"
-     },
-     {
-      "slot": "approval_bypass",
-      "label": "Some privileged or administrative routes can skip the approval step"
-     }
+    "p_crime_profiling": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    "none_label": "None of these",
-    "unsure_label": "I'm not sure about some of these"
-   },
-   "evidence_terms": [
-    "delegate",
-    "other agents",
-    "tools",
-    "privileged",
-    "admin",
-    "bypass",
-    "skip"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ],
-   "support_terms": [
-    [
-     "delegat",
-     "other agents"
+    "p_facial_scraping": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "permission",
-     "privilege",
-     "authority",
-     "scope"
+    "p_emotion_work_edu": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "approval",
-     "bypass",
-     "boundary",
-     "human"
-    ]
-   ]
-  },
-  {
-   "phase": "Authority and impact",
-   "controls": [
-    "C11",
-    "C14"
-   ],
-   "critical": false,
-   "anchors": [],
-   "focus_terms": [],
-   "id": "aggregate_cap",
-   "title": "Aggregate limits",
-   "slots": [
-    "aggregate_limit"
-   ],
-   "priority": 68,
-   "condition": "has_threshold",
-   "hint": "aggregate limits cumulative cap transactions",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "default_q": "Besides the limit on each single action (for example each order or payment), is there a total cap, such as per day, per week or per recipient, so that many small actions cannot add up beyond it?",
-   "options": [
-    "Yes, there is a total cap",
-    "No, only each single action is limited",
-    "I don't know"
-   ],
-   "option_map": {
-    "Yes, there is a total cap": {
-     "aggregate_limit": "yes"
-    },
-    "No, only each single action is limited": {
-     "aggregate_limit": "no"
-    },
-    "I don't know": {
-     "aggregate_limit": "unknown"
-    }
-   },
-   "evidence_terms": [
-    "total",
-    "cap",
-    "per day",
-    "per week",
-    "per supplier",
-    "aggregate",
-    "cumulative",
-    "budget"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ],
-   "support_terms": [
-    [
-     "limit",
-     "cap",
-     "budget",
-     "threshold",
-     "boundar"
+    "p_biometric_categorisation": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "aggregate",
-     "cumulative",
-     "total",
-     "blast",
-     "component"
+    "p_rbi_law_enforcement": [
+      "none",
+      "possible",
+      "supported",
+      "excepted",
+      "unknown"
     ],
-    [
-     "transaction",
-     "action",
-     "tool"
-    ]
-   ]
-  },
-  {
-   "id": "stop_ability",
-   "phase": "Authority and impact",
-   "title": "Ability to stop",
-   "slots": [
-    "can_stop"
-   ],
-   "controls": [
-    "C09"
-   ],
-   "critical": false,
-   "priority": 70,
-   "context": true,
-   "condition": "acts",
-   "hint": "stop kill switch halt intervention human oversight",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB",
-    "AIA"
-   ],
-   "anchors": [
-    "TAI-AG|s. 27",
-    "NIST-PB|MANAGE 2.4",
-    "AIA|Art. 14(4)"
-   ],
-   "default_q": "If a mistake is noticed, can someone stop the agent immediately?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "focus_terms": [
-    "stop the agent"
-   ],
-   "support_terms": [
-    [
-     "supersede",
-     "disengage",
-     "deactivat",
-     "stop",
-     "halt",
-     "kill",
-     "intervene"
+    "annex1_product": [
+      "yes",
+      "no",
+      "unknown"
     ],
-    [
-     "mechanism",
-     "responsib",
-     "oversight",
-     "human"
-    ],
-    [
-     "system"
-    ]
-   ],
-   "evidence_terms": [
-    "stop",
-    "halt",
-    "switch",
-    "shut",
-    "disable"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "rollback_ability",
-   "phase": "Authority and impact",
-   "title": "Ability to roll back",
-   "slots": [
-    "can_rollback"
-   ],
-   "controls": [
-    "C19"
-   ],
-   "critical": false,
-   "priority": 69,
-   "context": true,
-   "condition": "acts",
-   "hint": "rollback recovery reversibility of actions incident",
-   "sources": [
-    "TAI-AG",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 27",
-    "TAI-AG|s. 4"
-   ],
-   "default_q": "If an action taken by the agent is wrong, can it be undone?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "focus_terms": [
-    "undone"
-   ],
-   "evidence_terms": [
-    "undo",
-    "roll",
-    "back",
-    "rollback",
-    "revert",
-    "reverse"
-   ],
-   "asked": false,
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "id": "reexam",
-   "phase": "Authority and impact",
-   "title": "Human re-examination",
-   "slots": [
-    "human_reexam"
-   ],
-   "controls": [
-    "C09"
-   ],
-   "critical": false,
-   "priority": 80,
-   "context": true,
-   "hint": "human oversight review of outputs contestability affected persons ability to override",
-   "sources": [
-    "TAI-AG",
-    "AIA",
-    "NIST-PB"
-   ],
-   "anchors": [
-    "TAI-AG|s. 10",
-    "AIA|Art. 14(4)"
-   ],
-   "default_q": "Can a human re-examine the file of a person adversely affected by the agent's result (for example a rejected application or request)?",
-   "options": [
-    "Yes",
-    "Partly",
-    "No",
-    "I don't know"
-   ],
-   "option_map": {
-    "Yes": {
-     "human_reexam": "yes"
-    },
-    "Partly": {
-     "human_reexam": "partial"
-    },
-    "No": {
-     "human_reexam": "no"
-    },
-    "I don't know": {
-     "human_reexam": "unknown"
-    }
-   },
-   "focus_terms": [
-    "re-examine"
-   ],
-   "evidence_terms": [
-    "re-examine",
-    "review",
-    "appeal",
-    "human"
-   ],
-   "concerns": [
-    "agentic",
-    "oversight"
-   ]
-  },
-  {
-   "phase": "Use",
-   "controls": [
-    "C01"
-   ],
-   "critical": true,
-   "condition": "annex3_area_set",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 6(3)",
-    "AIA|Art. 6(4)"
-   ],
-   "id": "art6_role",
-   "title": "Type of task",
-   "slots": [
-    "art6_3_exception"
-   ],
-   "priority": 91,
-   "hint": "not high-risk narrow procedural task preparatory task improve result of previously completed human activity detect decision-making patterns",
-   "default_q": "Which of these is closest to the agent's task?",
-   "options": [
-    "A narrow procedural step (e.g. a format check)",
-    "Improving the result of a task a human already completed",
-    "Detecting decision patterns (without replacing human assessment)",
-    "Preparation for an assessment a human will make",
-    "None of these",
-    "I don't know"
-   ],
-   "option_map": {
-    "A narrow procedural step (e.g. a format check)": {
-     "art6_3_exception": "narrow_procedural"
-    },
-    "Improving the result of a task a human already completed": {
-     "art6_3_exception": "improve_prior_human_work"
-    },
-    "Detecting decision patterns (without replacing human assessment)": {
-     "art6_3_exception": "detect_patterns"
-    },
-    "Preparation for an assessment a human will make": {
-     "art6_3_exception": "preparatory"
-    },
-    "None of these": {
-     "art6_3_exception": "none"
-    },
-    "I don't know": {
-     "art6_3_exception": "unknown"
-    }
-   },
-   "simple_q": "For example: does the agent only tidy or summarise a form, or does it produce an assessment or score about a person?",
-   "focus_terms": [
-    "closest to"
-   ],
-   "support_terms": [
-    [
-     "document",
-     "assess",
-     "narrow",
-     "preparatory"
-    ],
-    [
-     "not high-risk",
-     "high-risk",
-     "provider"
-    ],
-    [
-     "annex iii"
-    ]
-   ],
-   "concerns": [
-    "legal"
-   ]
-  },
-  {
-   "phase": "Use",
-   "controls": [
-    "C01"
-   ],
-   "critical": true,
-   "condition": "annex3_area_set",
-   "sources": [
-    "AIA",
-    "TAI-GOV"
-   ],
-   "anchors": [
-    "AIA|Art. 6(3)",
-    "AIA|Art. 6(4)"
-   ],
-   "id": "art6_influence",
-   "title": "Steering the decision",
-   "slots": [
-    "influences_decision"
-   ],
-   "priority": 90.5,
-   "hint": "does not materially influence the outcome of decision making",
-   "default_q": "Does the agent's output in practice steer the decision a human makes?",
-   "options": [
-    "Yes",
-    "No",
-    "I don't know"
-   ],
-   "simple_q": "For example: does the decision maker mostly apply the agent's recommendation as it is?",
-   "focus_terms": [
-    "in practice steer"
-   ],
-   "support_terms": [
-    [
-     "document",
-     "assess",
-     "influence"
-    ],
-    [
-     "not high-risk",
-     "high-risk",
-     "provider"
-    ],
-    [
-     "annex iii"
-    ]
-   ],
-   "evidence_terms": [
-    "steer",
-    "influence",
-    "decision"
-   ],
-   "concerns": [
-    "legal"
-   ]
-  }
- ],
- "equivalences": [
-  {
-   "if": {
-    "annex3_area": "biometrics"
-   },
-   "then": {
-    "g_biometric": "yes"
-   },
-   "reason": "The Annex III biometrics area was selected; biometric data use is considered declared."
-  },
-  {
-   "if": {
-    "g_biometric": "no"
-   },
-   "then": {
-    "t_emotion_biometric": "no"
-   },
-   "reason": "No biometric data use was declared."
-  },
-  {
-   "if": {
-    "t_synthetic_content": "no"
-   },
-   "then": {
-    "t_deepfake_public_text": "no"
-   },
-   "reason": "No content generation was declared."
-  },
-  {
-   "if": {
-    "action_mode": "approved_action"
-   },
-   "then": {
-    "approval_exists": "yes"
-   },
-   "reason": "It was declared that it acts after approval."
-  },
-  {
-   "if": {
-    "action_mode": "envelope_action"
-   },
-   "then": {
-    "approval_exists": "no"
-   },
-   "reason": "It was declared that it acts without approval for each action."
-  },
-  {
-   "if": {
-    "action_mode": "self_expanding"
-   },
-   "then": {
-    "approval_exists": "no"
-   },
-   "reason": "It was declared that it can expand its own authority."
-  },
-  {
-   "if": {
-    "annex1_product": "no"
-   },
-   "then": {
-    "annex1_third_party": "no"
-   },
-   "reason": "The agent is not part of a regulated product, so no product conformity assessment applies."
-  }
- ],
- "exclusions": [
-  {
-   "if": {
-    "g_biometric": "no"
-   },
-   "excludes": {
     "annex3_area": [
-     "biometrics"
-    ]
-   }
-  },
-  {
-   "if": {
-    "approval_exists": "no"
-   },
-   "excludes": {
+      "none",
+      "biometrics",
+      "critical_infrastructure",
+      "education",
+      "employment",
+      "essential_services",
+      "law_enforcement",
+      "migration",
+      "justice_democracy",
+      "unknown"
+    ],
+    "profiling": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "art6_3_exception": [
+      "none",
+      "narrow_procedural",
+      "improve_prior_human_work",
+      "detect_patterns",
+      "preparatory",
+      "unknown"
+    ],
+    "influences_decision": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "t_interacts_people": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "t_synthetic_content": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "t_emotion_biometric": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "t_deepfake_public_text": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "personal_data": [
+      "none",
+      "ordinary",
+      "special",
+      "unknown"
+    ],
+    "vulnerable_groups": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "action_mode": [
+      "info_only",
+      "recommend",
+      "draft",
+      "approved_action",
+      "envelope_action",
+      "self_expanding",
+      "unknown"
+    ],
+    "tools_summary": "text",
+    "human_review": [
+      "yes",
+      "no",
+      "partial",
+      "unknown"
+    ],
     "approval_bound": [
-     "yes",
-     "partial"
-    ]
-   },
-   "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
-   "resolve": {
-    "All actions are done with action-specific approval": {
-     "action_mode": "approved_action",
-     "approval_exists": "yes",
-     "approval_bound": "yes"
-    },
-    "Actions are done without approval": {
-     "approval_exists": "no",
-     "approval_bound": "no"
-    },
-    "Some actions are approved, some are not": {
-     "action_mode": "envelope_action",
-     "approval_exists": "unknown",
-     "approval_bound": "partial"
-    },
-    "I don't know": {
-     "approval_exists": "unknown",
-     "approval_bound": "unknown"
-    }
-   }
-  },
-  {
-   "if": {
-    "action_mode": "envelope_action"
-   },
-   "excludes": {
-    "approval_bound": [
-     "yes"
-    ]
-   },
-   "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
-   "resolve": {
-    "All actions are done with action-specific approval": {
-     "action_mode": "approved_action",
-     "approval_exists": "yes",
-     "approval_bound": "yes"
-    },
-    "Actions are done without approval": {
-     "approval_exists": "no",
-     "approval_bound": "no"
-    },
-    "Some actions are approved, some are not": {
-     "action_mode": "envelope_action",
-     "approval_exists": "unknown",
-     "approval_bound": "partial"
-    },
-    "I don't know": {
-     "approval_exists": "unknown",
-     "approval_bound": "unknown"
-    }
-   }
-  },
-  {
-   "if": {
-    "action_mode": "self_expanding"
-   },
-   "excludes": {
-    "approval_bound": [
-     "yes"
-    ]
-   },
-   "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
-   "resolve": {
-    "All actions are done with action-specific approval": {
-     "action_mode": "approved_action",
-     "approval_exists": "yes",
-     "approval_bound": "yes"
-    },
-    "Actions are done without approval": {
-     "approval_exists": "no",
-     "approval_bound": "no"
-    },
-    "Some actions are approved, some are not": {
-     "action_mode": "envelope_action",
-     "approval_exists": "unknown",
-     "approval_bound": "partial"
-    },
-    "I don't know": {
-     "approval_exists": "unknown",
-     "approval_bound": "unknown"
-    }
-   }
-  },
-  {
-   "if": {
-    "action_mode": "approved_action"
-   },
-   "excludes": {
+      "yes",
+      "no",
+      "partial",
+      "unknown"
+    ],
+    "limits_enforced": [
+      "technical",
+      "policy_only",
+      "none",
+      "unknown"
+    ],
+    "authority_expansion": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "delegates_to_agents": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "max_harm": [
+      "minimal",
+      "limited",
+      "serious",
+      "critical",
+      "unknown"
+    ],
+    "harm_desc": "text",
+    "reversibility": [
+      "reversible",
+      "partly",
+      "irreversible",
+      "unknown"
+    ],
+    "reach": [
+      "single",
+      "group",
+      "wide",
+      "unknown"
+    ],
+    "eval_uses_social_traits": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "eval_predicts_crime": [
+      "yes",
+      "no",
+      "unknown"
+    ],
     "approval_exists": [
-     "no"
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "can_stop": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "can_rollback": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "human_reexam": [
+      "yes",
+      "no",
+      "partial",
+      "unknown"
+    ],
+    "monitoring_live": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "post_action_review": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "aggregate_limit": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "approval_bypass": [
+      "yes",
+      "no",
+      "unknown"
+    ],
+    "wf_threshold": [
+      "yes",
+      "no"
+    ],
+    "annex1_third_party": [
+      "yes",
+      "no",
+      "unknown"
     ]
-   },
-   "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
-   "resolve": {
-    "All actions are done with action-specific approval": {
-     "action_mode": "approved_action",
-     "approval_exists": "yes",
-     "approval_bound": "yes"
+  },
+  "topics": [
+    {
+      "id": "purpose",
+      "phase": "Scope",
+      "title": "Intended purpose and affected decisions",
+      "slots": [
+        "purpose",
+        "affected_decisions"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": true,
+      "priority": 100,
+      "hint": "intended purpose use for which an AI system is intended",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 3(12)"
+      ],
+      "default_q": "Could you briefly describe what the agent we will assess does?",
+      "open": true,
+      "concerns": [
+        "legal"
+      ],
+      "support_terms": [
+        [
+          "intended purpose"
+        ]
+      ]
     },
-    "Actions are done without approval": {
-     "approval_exists": "no",
-     "approval_bound": "no"
+    {
+      "id": "eu_link",
+      "phase": "Scope",
+      "title": "EU link",
+      "slots": [
+        "eu_link"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": false,
+      "priority": 95,
+      "hint": "scope applies to providers deployers located in the Union output used in the Union",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 2(1)"
+      ],
+      "default_q": "Is the agent used in the EU, or do its outputs affect people or organisations in the EU?",
+      "options": [
+        "Yes, it is used in the EU",
+        "No link with the EU",
+        "I don't know"
+      ],
+      "simple_q": "In short: do people living in the EU, or an organisation in the EU, use the agent's outputs or get affected by them? If you are unsure, you can list the countries of your customers and your organisation.",
+      "option_map": {
+        "Yes, it is used in the EU": {
+          "eu_link": "yes"
+        },
+        "No link with the EU": {
+          "eu_link": "no"
+        },
+        "I don't know": {
+          "eu_link": "unknown"
+        }
+      },
+      "early": true,
+      "concerns": [
+        "legal"
+      ]
     },
-    "Some actions are approved, some are not": {
-     "action_mode": "envelope_action",
-     "approval_exists": "unknown",
-     "approval_bound": "partial"
+    {
+      "id": "org_role",
+      "phase": "Scope",
+      "title": "Role of the organisation",
+      "slots": [
+        "org_role"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": false,
+      "priority": 96,
+      "hint": "provider deployer importer distributor definitions role",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 25(1)",
+        "TAI-GOV|s. 7"
+      ],
+      "default_q": "Did your organisation build this agent, or does it use an agent that someone else built?",
+      "options": [
+        "We developed it",
+        "We use a ready-made agent",
+        "I'm not sure"
+      ],
+      "option_map": {
+        "We developed it": {
+          "org_role": "provider"
+        },
+        "We use a ready-made agent": {
+          "org_role": "deployer"
+        },
+        "I'm not sure": {
+          "org_role": "unknown"
+        }
+      },
+      "early": true,
+      "concerns": [
+        "legal"
+      ],
+      "support_terms": [
+        [
+          "provider"
+        ],
+        [
+          "deployer"
+        ],
+        [
+          "importer",
+          "distributor",
+          "role"
+        ]
+      ]
     },
-    "I don't know": {
-     "approval_exists": "unknown",
-     "approval_bound": "unknown"
+    {
+      "id": "use_status",
+      "phase": "Scope",
+      "title": "Usage status and date",
+      "slots": [
+        "use_status"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": false,
+      "priority": 94,
+      "hint": "date of application obligations apply from",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 113",
+        "TAI-GOV|s. 7"
+      ],
+      "default_q": "Is the agent live now, or is this a planned use?",
+      "options": [
+        "Live",
+        "Planned",
+        "I don't know"
+      ],
+      "option_map": {
+        "Live": {
+          "use_status": "live"
+        },
+        "Planned": {
+          "use_status": "planned"
+        },
+        "I don't know": {
+          "use_status": "unknown"
+        }
+      },
+      "early": true,
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "screening",
+      "phase": "Use",
+      "title": "Standard prohibited-use check",
+      "slots": [
+        "g_biometric",
+        "g_influence",
+        "g_person_eval"
+      ],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 78,
+      "hint": "prohibited artificial intelligence practices biometric emotion manipulative techniques social scoring risk assessment natural persons",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(a)",
+        "AIA|Art. 5(1)(c)",
+        "AIA|Art. 5(1)(f)",
+        "AIA|Art. 5(1)(g)",
+        "TAI-GOV|s. 6"
+      ],
+      "default_q": "Standard check, asked for every agent: does your agent do any of the following? Tick everything that applies, or choose “None of these”. Anything you already told me is left out. You can also describe it in your own words.",
+      "simple_q": "In short, do any of these apply? For example: face recognition at a door or emotion analysis from a camera; messages written to persuade someone to buy something or change their mind; or a score or ranking number given to applicants, customers or employees. Tick what applies, or say you are not sure.",
+      "multi": {
+        "items": [
+          {
+            "slot": "g_biometric",
+            "label": "It uses biometric data (face, voice, fingerprints) to recognise people or work out something about them, such as emotions"
+          },
+          {
+            "slot": "g_influence",
+            "label": "It is meant to steer the people it deals with towards a behaviour, such as buying, clicking, voting or giving up (a plain recommendation to a decision maker does not count)"
+          },
+          {
+            "slot": "g_person_eval",
+            "label": "It gives people a score, a rank or a risk/suitability value"
+          }
+        ],
+        "none_label": "None of these",
+        "unsure_label": "I'm not sure about some of these"
+      },
+      "focus_terms": [],
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "g_biometric",
+      "phase": "Use",
+      "title": "Biometrics screening",
+      "slots": [
+        "g_biometric"
+      ],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 88,
+      "hint": "prohibited biometric categorisation emotion inference facial images remote biometric identification",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(g)",
+        "AIA|Art. 5(1)(f)"
+      ],
+      "default_q": "Does the agent use biometric data such as face, voice or fingerprints to recognise people or infer their characteristics?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "simple_q": "For example: face recognition at a door, voice-based identity verification, fingerprint reading, or emotion analysis from a camera. Is there anything like that?",
+      "focus_terms": [
+        "biometric",
+        "fingerprint",
+        "face",
+        "facial"
+      ],
+      "evidence_terms": [
+        "biometric",
+        "fingerprint",
+        "face",
+        "facial",
+        "voice",
+        "iris",
+        "recognition"
+      ],
+      "asked": false,
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "g_influence",
+      "phase": "Use",
+      "title": "Behaviour steering screening",
+      "slots": [
+        "g_influence"
+      ],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 86,
+      "hint": "prohibited manipulative deceptive techniques exploit vulnerabilities distort behaviour",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(a)",
+        "AIA|Art. 5(1)(b)",
+        "TAI-GOV|s. 6"
+      ],
+      "default_q": "Is the agent's purpose to steer the people it meets towards a specific behaviour (buying, clicking, voting, giving up)? Merely giving a recommendation to a decision maker does not count.",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "simple_q": "For example: does it generate messages designed to persuade a user to buy something or change their mind?",
+      "focus_terms": [
+        "steer",
+        "persuade",
+        "specific behaviour"
+      ],
+      "evidence_terms": [
+        "steer",
+        "persuade",
+        "manipulate",
+        "manipulation",
+        "nudge",
+        "behaviour",
+        "behavior",
+        "influence",
+        "users"
+      ],
+      "asked": false,
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "g_person_eval",
+      "phase": "Use",
+      "title": "Scoring of people screening",
+      "slots": [
+        "g_person_eval"
+      ],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 84,
+      "hint": "prohibited social scoring risk assessment of natural persons criminal offence profiling",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(c)",
+        "AIA|Art. 5(1)(d)",
+        "TAI-GOV|s. 6"
+      ],
+      "default_q": "Does the agent assign people a score, a rank or a risk/suitability value?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "simple_q": "For example: does it give applicants, customers or employees a score or a ranking number?",
+      "focus_terms": [
+        "score, rank",
+        "risk/suitability"
+      ],
+      "evidence_terms": [
+        "score",
+        "scoring",
+        "rank",
+        "ranking",
+        "rating",
+        "suitability",
+        "evaluate",
+        "evaluates",
+        "profile"
+      ],
+      "asked": false,
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "prohibited_detail",
+      "phase": "Use",
+      "title": "Conditions and exceptions of a possible prohibition",
+      "slots": [],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 99,
+      "hint": "prohibited practices conditions exceptions",
+      "sources": [
+        "AIA"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(a)"
+      ],
+      "default_q": "I need to clarify which feature in the prohibited-use screening applies.",
+      "condition": null,
+      "asked": false,
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "annex3",
+      "phase": "Use",
+      "title": "Sensitive use area",
+      "slots": [
+        "annex3_area"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": true,
+      "priority": 92,
+      "hint": "high-risk AI systems Annex III areas employment education essential services law enforcement migration justice biometrics",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 6(2)",
+        "AIA|Annex III",
+        "TAI-GOV|s. 6"
+      ],
+      "default_q": "Does the agent's task fall into one of these areas: recruitment/employee management, education/exams, access to essential services such as credit, insurance or social benefits, law enforcement, migration/borders, justice/elections, or critical infrastructure?",
+      "options": [
+        "None of them",
+        "Recruitment / employee management",
+        "Credit / insurance / essential services",
+        "Education / exams",
+        "Another area",
+        "I don't know"
+      ],
+      "simple_q": "For example: is it used in a decision process that affects a person's life, such as recruitment, a credit or insurance application, school/exams, police or migration procedures?",
+      "focus_terms": [
+        "recruitment",
+        "credit",
+        "insurance",
+        "exams",
+        "law enforcement",
+        "migration",
+        "critical infrastructure",
+        "justice"
+      ],
+      "option_map": {
+        "None of them": {
+          "annex3_area": "none"
+        },
+        "Recruitment / employee management": {
+          "annex3_area": "employment"
+        },
+        "Credit / insurance / essential services": {
+          "annex3_area": "essential_services"
+        },
+        "Education / exams": {
+          "annex3_area": "education"
+        },
+        "I don't know": {
+          "annex3_area": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "recruitment",
+        "hiring",
+        "candidates",
+        "employee",
+        "credit",
+        "insurance",
+        "exam",
+        "education",
+        "school",
+        "law",
+        "enforcement",
+        "police",
+        "migration",
+        "border",
+        "justice",
+        "election",
+        "infrastructure"
+      ],
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "profiling",
+      "phase": "Use",
+      "title": "Profiling",
+      "slots": [
+        "profiling"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": true,
+      "priority": 91.5,
+      "hint": "profiling of natural persons always high-risk Annex III",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 6(3)"
+      ],
+      "default_q": "In this task, does the agent evaluate people and build profiles of them?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "condition": "annex3_area_set",
+      "simple_q": "Does the agent automatically assess a person's personality, behaviour or interests and build a profile?",
+      "evidence_terms": [
+        "profile",
+        "profiling",
+        "personality",
+        "behaviour",
+        "interests"
+      ],
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "id": "annex1",
+      "phase": "Use",
+      "title": "Product safety component",
+      "slots": [
+        "annex1_product",
+        "annex1_third_party"
+      ],
+      "controls": [
+        "C01"
+      ],
+      "critical": false,
+      "priority": 74,
+      "hint": "safety component of a product Union harmonisation legislation third-party conformity assessment Article 6(1) needs both conditions",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 6(1)"
+      ],
+      "default_q": "Is the agent a safety component of a regulated product (such as a medical device, machinery or a toy), or the product itself? If so, must that product pass an independent safety check by an outside body (a notified body) before it is sold?",
+      "options": [
+        "Yes, and the product must pass an independent safety check by an outside body (a notified body) before it is sold",
+        "Yes, but the product does not need an independent safety check by an outside body",
+        "Yes, but I don't know whether an independent safety check is needed",
+        "No, it is not part of a regulated product",
+        "I don't know"
+      ],
+      "evidence_terms": [
+        "safety",
+        "component",
+        "medical",
+        "device",
+        "machinery",
+        "toy",
+        "product"
+      ],
+      "concerns": [
+        "legal"
+      ],
+      "option_map": {
+        "Yes, and the product must pass an independent safety check by an outside body (a notified body) before it is sold": {
+          "annex1_product": "yes",
+          "annex1_third_party": "yes"
+        },
+        "Yes, but the product does not need an independent safety check by an outside body": {
+          "annex1_product": "yes",
+          "annex1_third_party": "no"
+        },
+        "Yes, but I don't know whether an independent safety check is needed": {
+          "annex1_product": "yes",
+          "annex1_third_party": "unknown"
+        },
+        "No, it is not part of a regulated product": {
+          "annex1_product": "no",
+          "annex1_third_party": "no"
+        },
+        "I don't know": {
+          "annex1_product": "unknown",
+          "annex1_third_party": "unknown"
+        }
+      }
+    },
+    {
+      "id": "tool_inventory",
+      "phase": "Authority and impact",
+      "title": "Tool and action inventory",
+      "slots": [
+        "tools_summary"
+      ],
+      "controls": [
+        "C11"
+      ],
+      "critical": true,
+      "priority": 94,
+      "hint": "tool access permissions actions",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 6"
+      ],
+      "default_q": "Which tools, systems, accounts and data sources can the agent access, and for each one what can it do (read, write, modify, delete, send, execute or transact)?",
+      "options": [
+        "Read-only access",
+        "Can also change or send information",
+        "Can execute transactions",
+        "I don't know"
+      ],
+      "simple_q": "For example, can it only read CVs from a database, or can it also change candidate records, send messages or reject applications?",
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "action_mode",
+      "phase": "Authority and impact",
+      "title": "Action authority",
+      "slots": [
+        "action_mode",
+        "tools_summary"
+      ],
+      "controls": [
+        "C11"
+      ],
+      "critical": true,
+      "priority": 93,
+      "hint": "agent tools access permissions actions autonomy latitude",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 6",
+        "TAI-AG|s. 20"
+      ],
+      "default_q": "What can the agent do on its own, and does a person have to approve it first? Please describe each kind of action, for example: “it answers customers by itself, but refunds need an employee’s approval”.",
+      "options": [
+        "Only provides information",
+        "Gives recommendations, a human acts",
+        "Prepares drafts, a human sends them",
+        "Acts after approval",
+        "Acts without approval",
+        "Something else",
+        "I don't know"
+      ],
+      "simple_q": "For example: can the agent send an e-mail, make a payment or change a record on its own, or does it only prepare a recommendation for a person?",
+      "focus_terms": [
+        "take actions"
+      ],
+      "option_map": {
+        "Only provides information": {
+          "action_mode": "info_only"
+        },
+        "Gives recommendations, a human acts": {
+          "action_mode": "recommend"
+        },
+        "Prepares drafts, a human sends them": {
+          "action_mode": "draft"
+        },
+        "Acts after approval": {
+          "action_mode": "approved_action"
+        },
+        "Acts without approval": {
+          "action_mode": "envelope_action"
+        },
+        "I don't know": {
+          "action_mode": "unknown"
+        }
+      },
+      "support_terms": [
+        [
+          "autonom",
+          "level",
+          "oversight"
+        ],
+        [
+          "approv",
+          "gate"
+        ],
+        [
+          "action",
+          "tool",
+          "permission",
+          "execut"
+        ]
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "review_basis",
+      "phase": "Authority and impact",
+      "title": "Review of the recommendation",
+      "slots": [
+        "human_review"
+      ],
+      "controls": [
+        "C09"
+      ],
+      "critical": false,
+      "priority": 81,
+      "hint": "human oversight reviewers understand outputs automation bias ability to override",
+      "sources": [
+        "TAI-AG",
+        "AIA",
+        "NIST-PB",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "TAI-AG|s. 10",
+        "AIA|Art. 14(4)",
+        "NIST-PB|MAP 3.5",
+        "TAI-GOV|s. 10"
+      ],
+      "default_q": "Can the employee who decides see what information the agent's recommendation is based on?",
+      "options": [
+        "Yes, they can see the basis",
+        "Partly",
+        "No, they only see the result",
+        "I don't know"
+      ],
+      "condition": "recommends",
+      "focus_terms": [
+        "basis",
+        "based on"
+      ],
+      "context": true,
+      "option_map": {
+        "Yes, they can see the basis": {
+          "human_review": "yes"
+        },
+        "Partly": {
+          "human_review": "partial"
+        },
+        "No, they only see the result": {
+          "human_review": "no"
+        },
+        "I don't know": {
+          "human_review": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "basis",
+        "reason",
+        "see",
+        "explanation"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "approval_exists",
+      "phase": "Authority and impact",
+      "title": "Is there human approval",
+      "slots": [
+        "approval_exists"
+      ],
+      "controls": [
+        "C09"
+      ],
+      "critical": true,
+      "priority": 85,
+      "condition": "acts",
+      "hint": "human approval before actions oversight intervention",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB",
+        "AIA"
+      ],
+      "anchors": [
+        "TAI-AG|s. 10",
+        "NIST-PB|MAP 3.5"
+      ],
+      "default_q": "Before the agent carries out an action, does a person have to approve it? If it depends on the amount or the kind of action, please describe the rule.",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "simple_q": "For example: before a payment, sending an e-mail or changing a record, does someone press an 'approve' button?",
+      "focus_terms": [
+        "approval is obtained"
+      ],
+      "evidence_terms": [
+        "approve",
+        "approval",
+        "approving",
+        "sign",
+        "confirm",
+        "human"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "approval_bound",
+      "phase": "Authority and impact",
+      "title": "Action-specific approval",
+      "slots": [
+        "approval_bound"
+      ],
+      "controls": [
+        "C09"
+      ],
+      "critical": true,
+      "priority": 84,
+      "hint": "human approval before actions bound to the specific action oversight intervention",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB",
+        "AIA"
+      ],
+      "anchors": [
+        "TAI-AG|s. 10",
+        "TAI-AG|s. 20",
+        "NIST-PB|MAP 3.5"
+      ],
+      "default_q": "Is this approval specific to that single action (details such as amount and recipient approved one by one), or is it a general/bulk approval?",
+      "options": [
+        "Yes, specific to the action",
+        "No, general / bulk approval",
+        "Partly",
+        "I don't know"
+      ],
+      "condition": "approval_exists_yes",
+      "simple_q": "For example: does the approver see and approve the amount and recipient each time, or was a one-time general permission given?",
+      "option_map": {
+        "Yes, specific to the action": {
+          "approval_bound": "yes"
+        },
+        "No, general / bulk approval": {
+          "approval_bound": "no"
+        },
+        "Partly": {
+          "approval_bound": "partial"
+        },
+        "I don't know": {
+          "approval_bound": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "approve",
+        "approval",
+        "specific",
+        "action",
+        "transaction"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "limits_enforced",
+      "phase": "Authority and impact",
+      "title": "Enforcement of limits",
+      "slots": [
+        "limits_enforced"
+      ],
+      "controls": [
+        "C11"
+      ],
+      "critical": true,
+      "priority": 83,
+      "hint": "permission limits allowlist enforced technically tools scope budget caps",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 6",
+        "TAI-AG|s. 27"
+      ],
+      "default_q": "Are the agent’s limits (for example the maximum amount, or which systems it can reach) enforced by the system itself, or only written down in instructions?",
+      "options": [
+        "Technically enforced",
+        "Only instructions / policy",
+        "There is no limit",
+        "I don't know"
+      ],
+      "condition": "acts",
+      "simple_q": "For example: is the maximum amount blocked by code in the system, or is there only an instruction telling the agent 'do not exceed this much'?",
+      "option_map": {
+        "Technically enforced": {
+          "limits_enforced": "technical"
+        },
+        "Only instructions / policy": {
+          "limits_enforced": "policy_only"
+        },
+        "There is no limit": {
+          "limits_enforced": "none"
+        },
+        "I don't know": {
+          "limits_enforced": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "limit",
+        "limits",
+        "cap",
+        "block",
+        "enforce",
+        "enforced",
+        "instruction",
+        "allowlist"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "authority_expansion",
+      "phase": "Authority and impact",
+      "title": "Authority expansion",
+      "slots": [
+        "authority_expansion"
+      ],
+      "controls": [
+        "C11"
+      ],
+      "critical": true,
+      "priority": 82,
+      "hint": "authority expansion privilege escalation delegation ceiling dynamic permissions",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 14",
+        "TAI-AG|s. 16"
+      ],
+      "default_q": "Can the agent give itself more permissions or access on its own while it is working?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "condition": "acts",
+      "simple_q": "For example: can the agent add a new tool, permission or access for itself for its task?",
+      "support_terms": [
+        [
+          "delegat",
+          "orchestrat",
+          "subagent"
+        ],
+        [
+          "authority",
+          "permission",
+          "privilege",
+          "access",
+          "constraint"
+        ],
+        [
+          "agent"
+        ]
+      ],
+      "evidence_terms": [
+        "expand",
+        "grant",
+        "itself",
+        "permission",
+        "access",
+        "privilege"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "delegation",
+      "phase": "Authority and impact",
+      "title": "Delegation to other agents",
+      "slots": [
+        "delegates_to_agents"
+      ],
+      "controls": [
+        "C11"
+      ],
+      "critical": false,
+      "priority": 60,
+      "hint": "multi-agent delegation orchestrator subagents accountability",
+      "sources": [
+        "TAI-AG"
+      ],
+      "anchors": [
+        "TAI-AG|s. 14",
+        "TAI-AG|s. 16"
+      ],
+      "default_q": "Does the agent delegate part of its work to other agents or automated tools?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "condition": "acts",
+      "evidence_terms": [
+        "delegate",
+        "delegates",
+        "agents",
+        "orchestrator"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "max_harm",
+      "phase": "Authority and impact",
+      "title": "Reasonable worst-case harm",
+      "slots": [
+        "max_harm",
+        "harm_desc"
+      ],
+      "controls": [
+        "C04",
+        "C05"
+      ],
+      "critical": true,
+      "priority": 90,
+      "hint": "risk of harm to health safety fundamental rights severity of harm",
+      "sources": [
+        "TAI-AG",
+        "AIA",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 4",
+        "AIA|Art. 9(2)",
+        "NIST-PB|MAP 5.1"
+      ],
+      "default_q": "What is the worst reasonable outcome if the agent makes a mistake (financial loss, privacy breach, loss of rights, safety)? For employment decisions, could qualified candidates lose a job opportunity?",
+      "options": [
+        "Negligible / easily corrected",
+        "Limited harm",
+        "Serious harm",
+        "Critical (safety / fundamental rights)",
+        "I don't know"
+      ],
+      "simple_q": "If the agent recommends or does something wrong, what would be the worst outcome: a small correction, a financial loss, a serious loss of rights? Losing a job opportunity can be serious even if a person decides.",
+      "focus_terms": [
+        "worst"
+      ],
+      "option_map": {
+        "Negligible / easily corrected": {
+          "max_harm": "minimal"
+        },
+        "Limited harm": {
+          "max_harm": "limited"
+        },
+        "Serious harm": {
+          "max_harm": "serious"
+        },
+        "Critical (safety / fundamental rights)": {
+          "max_harm": "critical"
+        },
+        "I don't know": {
+          "max_harm": "unknown"
+        }
+      },
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "reversibility",
+      "phase": "Authority and impact",
+      "title": "Reversibility",
+      "slots": [
+        "reversibility"
+      ],
+      "controls": [
+        "C04"
+      ],
+      "critical": false,
+      "priority": 52,
+      "hint": "reversibility of actions irreversible consequences",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 4",
+        "TAI-AG|s. 30"
+      ],
+      "default_q": "If a wrong result or recommendation is noticed, can it be corrected?",
+      "options": [
+        "Easily corrected",
+        "Partly correctable",
+        "No, it cannot be undone",
+        "I don't know"
+      ],
+      "condition": "harm_known_no_rollback",
+      "focus_terms": [
+        "corrected",
+        "correctable"
+      ],
+      "option_map": {
+        "Easily corrected": {
+          "reversibility": "reversible"
+        },
+        "Partly correctable": {
+          "reversibility": "partly"
+        },
+        "No, it cannot be undone": {
+          "reversibility": "irreversible"
+        },
+        "I don't know": {
+          "reversibility": "unknown"
+        }
+      },
+      "context": true,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "reach",
+      "phase": "Authority and impact",
+      "title": "Reach",
+      "slots": [
+        "reach"
+      ],
+      "controls": [
+        "C05"
+      ],
+      "critical": false,
+      "priority": 50,
+      "hint": "scale reach number of persons affected speed",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 30"
+      ],
+      "default_q": "How many people could be affected by such a mistake?",
+      "options": [
+        "One person/unit",
+        "A group",
+        "A large number of people",
+        "I don't know"
+      ],
+      "condition": "harm_known",
+      "focus_terms": [
+        "how many people",
+        "could be affected"
+      ],
+      "option_map": {
+        "One person/unit": {
+          "reach": "single"
+        },
+        "A group": {
+          "reach": "group"
+        },
+        "A large number of people": {
+          "reach": "wide"
+        },
+        "I don't know": {
+          "reach": "unknown"
+        }
+      },
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "personal_data",
+      "phase": "Use",
+      "title": "Personal data",
+      "slots": [
+        "personal_data"
+      ],
+      "controls": [
+        "C06"
+      ],
+      "critical": false,
+      "priority": 62,
+      "hint": "data and data governance personal data special categories",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 10(1)"
+      ],
+      "default_q": "What type of personal data does the agent work with?",
+      "options": [
+        "No personal data",
+        "Ordinary personal data (such as name, contact details, order history)",
+        "Sensitive data too (such as health, religion, ethnic origin)",
+        "I don't know"
+      ],
+      "focus_terms": [
+        "personal data"
+      ],
+      "option_map": {
+        "No personal data": {
+          "personal_data": "none"
+        },
+        "Ordinary personal data (such as name, contact details, order history)": {
+          "personal_data": "ordinary"
+        },
+        "Sensitive data too (such as health, religion, ethnic origin)": {
+          "personal_data": "special"
+        },
+        "I don't know": {
+          "personal_data": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "personal",
+        "data",
+        "sensitive",
+        "health",
+        "name",
+        "contact"
+      ],
+      "concerns": [
+        "data",
+        "legal"
+      ]
+    },
+    {
+      "id": "vulnerable_groups",
+      "phase": "Use",
+      "title": "Vulnerable groups",
+      "slots": [
+        "vulnerable_groups"
+      ],
+      "controls": [
+        "C05"
+      ],
+      "critical": false,
+      "priority": 53,
+      "hint": "vulnerable groups children elderly persons with disabilities adverse impact",
+      "sources": [
+        "AIA",
+        "NIST-PB",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 9(9)"
+      ],
+      "default_q": "Can vulnerable groups such as children, elderly or disabled people be affected by the agent's decisions?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "condition": "personal_data_set",
+      "focus_terms": [
+        "children",
+        "elderly",
+        "disabled"
+      ],
+      "evidence_terms": [
+        "children",
+        "child",
+        "elderly",
+        "vulnerable",
+        "disabled",
+        "minors"
+      ],
+      "concerns": [
+        "data",
+        "legal"
+      ]
+    },
+    {
+      "id": "t_interacts",
+      "phase": "Use",
+      "title": "Direct interaction with people",
+      "slots": [
+        "t_interacts_people"
+      ],
+      "controls": [
+        "C16"
+      ],
+      "critical": false,
+      "priority": 56,
+      "hint": "AI systems intended to interact directly with natural persons informed they are interacting with an AI system",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 50(1)"
+      ],
+      "default_q": "Does the agent communicate directly with people, for example by chat, e-mail or voice? This includes your own staff as well as customers or suppliers.",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "focus_terms": [
+        "talk or message",
+        "directly with"
+      ],
+      "context": true,
+      "evidence_terms": [
+        "talk",
+        "talks",
+        "message",
+        "messages",
+        "chat",
+        "converse",
+        "customers",
+        "directly",
+        "interact"
+      ],
+      "concerns": [
+        "transparency",
+        "legal"
+      ]
+    },
+    {
+      "id": "t_synthetic",
+      "phase": "Use",
+      "title": "Content generation",
+      "slots": [
+        "t_synthetic_content"
+      ],
+      "controls": [
+        "C16"
+      ],
+      "critical": false,
+      "priority": 54,
+      "hint": "synthetic audio image video or text content marked machine-readable format",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 50(2)"
+      ],
+      "default_q": "Does the agent write free-form text, or produce audio, images or video, as its output? Filling in structured fields or taking actions (for example placing an order) does not count.",
+      "options": [
+        "No, it only takes actions or fills in structured fields",
+        "Yes, free-form text (for example e-mails or summaries)",
+        "Yes, audio, images or video",
+        "I don't know"
+      ],
+      "focus_terms": [
+        "generate content",
+        "video"
+      ],
+      "evidence_terms": [
+        "generate",
+        "generates",
+        "content",
+        "image",
+        "video",
+        "audio",
+        "text",
+        "publish"
+      ],
+      "option_map": {
+        "No, it only takes actions or fills in structured fields": {
+          "t_synthetic_content": "no"
+        },
+        "Yes, free-form text (for example e-mails or summaries)": {
+          "t_synthetic_content": "yes"
+        },
+        "Yes, audio, images or video": {
+          "t_synthetic_content": "yes"
+        },
+        "I don't know": {
+          "t_synthetic_content": "unknown"
+        }
+      },
+      "concerns": [
+        "transparency",
+        "legal"
+      ]
+    },
+    {
+      "id": "t_deepfake",
+      "phase": "Use",
+      "title": "Content resembling a real person/event",
+      "slots": [
+        "t_deepfake_public_text"
+      ],
+      "controls": [
+        "C16"
+      ],
+      "critical": false,
+      "priority": 45,
+      "hint": "deep fake disclose artificially generated or manipulated text published to inform the public",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 50(4)"
+      ],
+      "default_q": "Is that output published, or does it imitate real people, places or events? Please pick the closest description.",
+      "options": [
+        "No: nothing is published and nothing imitates real people, places or events",
+        "It imitates real people, places or events (for example a realistic voice, image or video)",
+        "It writes text that is published to inform the public about matters of public interest",
+        "Neither, but it is sent to outside parties (for example customers or suppliers)",
+        "I don't know"
+      ],
+      "condition": "synthetic_yes",
+      "evidence_terms": [
+        "deepfake",
+        "real",
+        "person",
+        "public"
+      ],
+      "option_map": {
+        "No: nothing is published and nothing imitates real people, places or events": {
+          "t_deepfake_public_text": "no"
+        },
+        "It imitates real people, places or events (for example a realistic voice, image or video)": {
+          "t_deepfake_public_text": "yes"
+        },
+        "It writes text that is published to inform the public about matters of public interest": {
+          "t_deepfake_public_text": "yes"
+        },
+        "Neither, but it is sent to outside parties (for example customers or suppliers)": {
+          "t_deepfake_public_text": "no"
+        },
+        "I don't know": {
+          "t_deepfake_public_text": "unknown"
+        }
+      },
+      "concerns": [
+        "transparency",
+        "legal"
+      ]
+    },
+    {
+      "id": "ctl_owner",
+      "phase": "Authority and impact",
+      "title": "Responsible owner",
+      "slots": [],
+      "controls": [
+        "C03"
+      ],
+      "critical": false,
+      "priority": 30,
+      "hint": "accountability responsible owner roles AI literacy",
+      "sources": [
+        "NIST-PB",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "NIST-PB|GOVERN 2.1",
+        "AIA|Art. 4",
+        "TAI-GOV|s. 10.2"
+      ],
+      "default_q": "Is there a named person who is the responsible owner of this system?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_risk",
+      "phase": "Authority and impact",
+      "title": "Written risk/impact assessment",
+      "slots": [],
+      "controls": [
+        "C04",
+        "C05"
+      ],
+      "critical": false,
+      "priority": 29,
+      "hint": "risk management system impact assessment documented",
+      "sources": [
+        "NIST-PB",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "NIST-PB|MAP 5.1",
+        "AIA|Art. 9(2)"
+      ],
+      "default_q": "Has a written risk assessment been done for this use?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_logging",
+      "phase": "Authority and impact",
+      "title": "Logging",
+      "slots": [],
+      "controls": [
+        "C08"
+      ],
+      "critical": false,
+      "priority": 28,
+      "hint": "logging trajectory logs record-keeping traceability",
+      "sources": [
+        "TAI-AG",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "TAI-AG|s. 13",
+        "AIA|Art. 12(1)",
+        "TAI-GOV|s. 4.2"
+      ],
+      "default_q": "Are the agent's actions and recommendations recorded so that they can be traced later?",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_monitoring",
+      "phase": "Authority and impact",
+      "title": "Monitoring and incident handling",
+      "slots": [],
+      "controls": [
+        "C18"
+      ],
+      "critical": false,
+      "priority": 27,
+      "hint": "post-deployment monitoring incident response reporting",
+      "sources": [
+        "NIST-PB",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "NIST-PB|MANAGE 4.1",
+        "NIST-PB|GOVERN 4.3"
+      ],
+      "default_q": "Is there someone who monitors the agent's live behaviour and is there an incident process?",
+      "options": [
+        "Yes, both",
+        "Only one of them",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_docs",
+      "phase": "Authority and impact",
+      "title": "Documentation",
+      "slots": [],
+      "controls": [
+        "C06",
+        "C07"
+      ],
+      "critical": false,
+      "priority": 26,
+      "hint": "technical documentation instructions for use data provenance",
+      "sources": [
+        "AIA",
+        "NIST-PB",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 11(1)"
+      ],
+      "default_q": "Is there a current document that explains how the agent works and what its limits are?",
+      "options": [
+        "Yes",
+        "Outdated / incomplete",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_external",
+      "phase": "Authority and impact",
+      "title": "External content and memory",
+      "slots": [],
+      "controls": [
+        "C12",
+        "C13"
+      ],
+      "critical": false,
+      "priority": 25,
+      "hint": "prompt injection indirect instructions untrusted content memory poisoning",
+      "sources": [
+        "TAI-AG",
+        "AIA"
+      ],
+      "anchors": [
+        "TAI-AG|s. 9"
+      ],
+      "default_q": "Does the agent read external content such as web pages, e-mails or documents; if so, is there a safeguard so that this content cannot steer the agent?",
+      "options": [
+        "It does not read external content",
+        "It reads it, safeguards exist",
+        "It reads it, no safeguards",
+        "I don't know"
+      ],
+      "condition": "acts_or_reads",
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_budget",
+      "phase": "Authority and impact",
+      "title": "Loop and budget limit",
+      "slots": [],
+      "controls": [
+        "C14"
+      ],
+      "critical": false,
+      "priority": 24,
+      "hint": "stop conditions iteration budget caps loops cascading failure",
+      "sources": [
+        "TAI-AG"
+      ],
+      "anchors": [
+        "TAI-AG|s. 27"
+      ],
+      "default_q": "Is there a step, time or budget limit so that the agent cannot run in an endless loop?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "condition": "acts",
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_supplier",
+      "phase": "Authority and impact",
+      "title": "Supplier and change control",
+      "slots": [],
+      "controls": [
+        "C15"
+      ],
+      "critical": false,
+      "priority": 23,
+      "hint": "third-party suppliers change control reassessment after changes",
+      "sources": [
+        "NIST-PB",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "NIST-PB|GOVERN 6.1",
+        "AIA|Art. 25(1)"
+      ],
+      "default_q": "Does the system use a third-party model or tool?",
+      "options": [
+        "Yes, there is a process",
+        "Yes, but there is no process",
+        "It does not use any",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_conformity",
+      "phase": "Authority and impact",
+      "title": "Conformity activities",
+      "slots": [],
+      "controls": [
+        "C20"
+      ],
+      "critical": false,
+      "priority": 22,
+      "hint": "conformity assessment registration quality management system",
+      "sources": [
+        "AIA",
+        "DEC2274"
+      ],
+      "anchors": [
+        "AIA|Art. 43(1)",
+        "AIA|Art. 17(1)"
+      ],
+      "default_q": "Has your organisation planned the formal checks and registration that the law requires for a high-risk use of AI?",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "I don't know"
+      ],
+      "condition": "legal_high_or_unknown",
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "ctl_transparency",
+      "phase": "Use",
+      "title": "User information",
+      "slots": [],
+      "controls": [
+        "C16"
+      ],
+      "critical": false,
+      "priority": 21,
+      "hint": "transparency obligations inform persons interacting with an AI system synthetic content disclosure",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 50(1)",
+        "AIA|Art. 50(2)",
+        "TAI-GOV|s. 4.2"
+      ],
+      "default_q": "Do users know that they are interacting with AI, or that content was generated by AI (for example, is it stated on screen)?",
+      "options": [
+        "Yes, it is stated",
+        "No",
+        "I don't know"
+      ],
+      "asked": false,
+      "concerns": [
+        "transparency",
+        "legal"
+      ]
+    },
+    {
+      "id": "eval_criteria",
+      "phase": "Use",
+      "title": "Criteria of the score",
+      "slots": [
+        "eval_uses_social_traits",
+        "eval_predicts_crime"
+      ],
+      "controls": [
+        "C02"
+      ],
+      "critical": true,
+      "priority": 85,
+      "condition": "person_eval_yes",
+      "hint": "evaluation or classification of natural persons social behaviour personal characteristics criminal offence risk assessment profiling",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 5(1)(c)",
+        "AIA|Art. 5(1)(d)"
+      ],
+      "default_q": "Which criteria and data is the score or evaluation calculated from?",
+      "simple_q": "Does this evaluation also include data such as social media, general behaviour or personality analysis, or a prediction of crime/fraud risk?",
+      "focus_terms": [
+        "criteria",
+        "which data"
+      ],
+      "open": true,
+      "simple_options": [
+        "No, neither",
+        "Yes, social behaviour or personality data is used",
+        "Yes, crime or fraud risk is assessed",
+        "I don't know"
+      ],
+      "simple_option_map": {
+        "No, neither": {
+          "eval_uses_social_traits": "no",
+          "eval_predicts_crime": "no"
+        },
+        "Yes, social behaviour or personality data is used": {
+          "eval_uses_social_traits": "yes"
+        },
+        "Yes, crime or fraud risk is assessed": {
+          "eval_predicts_crime": "yes"
+        },
+        "I don't know": {
+          "eval_uses_social_traits": "unknown",
+          "eval_predicts_crime": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "social",
+        "personality",
+        "behaviour",
+        "online",
+        "crime",
+        "criminal",
+        "fraud",
+        "offence"
+      ],
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "phase": "Authority and impact",
+      "controls": [
+        "C09",
+        "C18",
+        "C19"
+      ],
+      "critical": false,
+      "anchors": [
+        "AIA|Art. 14(4)",
+        "NIST-PB|GOVERN 3.2"
+      ],
+      "focus_terms": [],
+      "id": "oversight",
+      "title": "Safeguards during and after execution",
+      "slots": [
+        "can_stop",
+        "can_rollback",
+        "monitoring_live",
+        "post_action_review"
+      ],
+      "priority": 71,
+      "condition": "acts",
+      "hint": "human oversight intervene stop monitoring reversal",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB",
+        "AIA"
+      ],
+      "default_q": "Which of these safeguards exist for what the agent does? Tick everything that applies. (Approval before an action is a separate topic and is not covered here.)",
+      "simple_q": "In short: can a person stop the agent at once, watch it while it runs, review what it did afterwards, and undo a wrong action? Tick what applies, or say you are not sure.",
+      "multi": {
+        "items": [
+          {
+            "slot": "can_stop",
+            "label": "A person can pause or stop it immediately"
+          },
+          {
+            "slot": "monitoring_live",
+            "label": "A person can watch what it does while it is running"
+          },
+          {
+            "slot": "post_action_review",
+            "label": "A person reviews what it did afterwards"
+          },
+          {
+            "slot": "can_rollback",
+            "label": "A wrong action can be reversed or cancelled afterwards"
+          }
+        ],
+        "none_label": "None of these",
+        "unsure_label": "I'm not sure about some of these"
+      },
+      "evidence_terms": [
+        "stop",
+        "pause",
+        "monitor",
+        "watch",
+        "review",
+        "reverse",
+        "cancel",
+        "undo",
+        "rollback"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ],
+      "support_terms": [
+        [
+          "oversight",
+          "human"
+        ],
+        [
+          "monitor"
+        ],
+        [
+          "stop",
+          "interrupt",
+          "deactivat",
+          "intervene",
+          "override",
+          "supersede"
+        ],
+        [
+          "revers",
+          "rollback",
+          "recover",
+          "undo"
+        ]
+      ]
+    },
+    {
+      "phase": "Authority and impact",
+      "controls": [
+        "C11",
+        "C15"
+      ],
+      "critical": false,
+      "anchors": [],
+      "focus_terms": [],
+      "id": "boundaries",
+      "title": "Delegation and approval boundaries",
+      "slots": [
+        "delegates_to_agents",
+        "approval_bypass"
+      ],
+      "priority": 69,
+      "condition": "acts",
+      "hint": "delegation permissions authority approval boundary",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "default_q": "Do either of these apply to the agent? Tick what applies, or choose “None of these”.",
+      "simple_q": "In short: does the agent hand work to other agents or tools, and can any privileged or administrative route skip the approval step? Tick what applies, or say you are not sure.",
+      "multi": {
+        "items": [
+          {
+            "slot": "delegates_to_agents",
+            "label": "It can hand work to other agents or automated tools"
+          },
+          {
+            "slot": "approval_bypass",
+            "label": "Some privileged or administrative routes can skip the approval step"
+          }
+        ],
+        "none_label": "None of these",
+        "unsure_label": "I'm not sure about some of these"
+      },
+      "evidence_terms": [
+        "delegate",
+        "other agents",
+        "tools",
+        "privileged",
+        "admin",
+        "bypass",
+        "skip"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ],
+      "support_terms": [
+        [
+          "delegat",
+          "other agents"
+        ],
+        [
+          "permission",
+          "privilege",
+          "authority",
+          "scope"
+        ],
+        [
+          "approval",
+          "bypass",
+          "boundary",
+          "human"
+        ]
+      ]
+    },
+    {
+      "phase": "Authority and impact",
+      "controls": [
+        "C11",
+        "C14"
+      ],
+      "critical": false,
+      "anchors": [],
+      "focus_terms": [],
+      "id": "aggregate_cap",
+      "title": "Aggregate limits",
+      "slots": [
+        "aggregate_limit"
+      ],
+      "priority": 68,
+      "condition": "has_threshold",
+      "hint": "aggregate limits cumulative cap transactions",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "default_q": "Besides the limit on each single action (for example each order or payment), is there a total cap, such as per day, per week or per recipient, so that many small actions cannot add up beyond it?",
+      "options": [
+        "Yes, there is a total cap",
+        "No, only each single action is limited",
+        "I don't know"
+      ],
+      "option_map": {
+        "Yes, there is a total cap": {
+          "aggregate_limit": "yes"
+        },
+        "No, only each single action is limited": {
+          "aggregate_limit": "no"
+        },
+        "I don't know": {
+          "aggregate_limit": "unknown"
+        }
+      },
+      "evidence_terms": [
+        "total",
+        "cap",
+        "per day",
+        "per week",
+        "per supplier",
+        "aggregate",
+        "cumulative",
+        "budget"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ],
+      "support_terms": [
+        [
+          "limit",
+          "cap",
+          "budget",
+          "threshold",
+          "boundar"
+        ],
+        [
+          "aggregate",
+          "cumulative",
+          "total",
+          "blast",
+          "component"
+        ],
+        [
+          "transaction",
+          "action",
+          "tool"
+        ]
+      ]
+    },
+    {
+      "id": "stop_ability",
+      "phase": "Authority and impact",
+      "title": "Ability to stop",
+      "slots": [
+        "can_stop"
+      ],
+      "controls": [
+        "C09"
+      ],
+      "critical": false,
+      "priority": 70,
+      "context": true,
+      "condition": "acts",
+      "hint": "stop kill switch halt intervention human oversight",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB",
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "TAI-AG|s. 27",
+        "NIST-PB|MANAGE 2.4",
+        "AIA|Art. 14(4)",
+        "TAI-GOV|s. 11"
+      ],
+      "default_q": "If a mistake is noticed, can someone stop the agent immediately?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "focus_terms": [
+        "stop the agent"
+      ],
+      "support_terms": [
+        [
+          "supersede",
+          "disengage",
+          "deactivat",
+          "stop",
+          "halt",
+          "kill",
+          "intervene"
+        ],
+        [
+          "mechanism",
+          "responsib",
+          "oversight",
+          "human"
+        ],
+        [
+          "system"
+        ]
+      ],
+      "evidence_terms": [
+        "stop",
+        "halt",
+        "switch",
+        "shut",
+        "disable"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "rollback_ability",
+      "phase": "Authority and impact",
+      "title": "Ability to roll back",
+      "slots": [
+        "can_rollback"
+      ],
+      "controls": [
+        "C19"
+      ],
+      "critical": false,
+      "priority": 69,
+      "context": true,
+      "condition": "acts",
+      "hint": "rollback recovery reversibility of actions incident",
+      "sources": [
+        "TAI-AG",
+        "NIST-PB"
+      ],
+      "anchors": [
+        "TAI-AG|s. 27",
+        "TAI-AG|s. 4"
+      ],
+      "default_q": "If an action taken by the agent is wrong, can it be undone?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "focus_terms": [
+        "undone"
+      ],
+      "evidence_terms": [
+        "undo",
+        "roll",
+        "back",
+        "rollback",
+        "revert",
+        "reverse"
+      ],
+      "asked": false,
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "id": "reexam",
+      "phase": "Authority and impact",
+      "title": "Human re-examination",
+      "slots": [
+        "human_reexam"
+      ],
+      "controls": [
+        "C09"
+      ],
+      "critical": false,
+      "priority": 80,
+      "context": true,
+      "hint": "human oversight review of outputs contestability affected persons ability to override",
+      "sources": [
+        "TAI-AG",
+        "AIA",
+        "NIST-PB",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "TAI-AG|s. 10",
+        "AIA|Art. 14(4)",
+        "TAI-GOV|s. 10"
+      ],
+      "default_q": "Can a human re-examine the file of a person adversely affected by the agent's result (for example a rejected application or request)?",
+      "options": [
+        "Yes",
+        "Partly",
+        "No",
+        "I don't know"
+      ],
+      "option_map": {
+        "Yes": {
+          "human_reexam": "yes"
+        },
+        "Partly": {
+          "human_reexam": "partial"
+        },
+        "No": {
+          "human_reexam": "no"
+        },
+        "I don't know": {
+          "human_reexam": "unknown"
+        }
+      },
+      "focus_terms": [
+        "re-examine"
+      ],
+      "evidence_terms": [
+        "re-examine",
+        "review",
+        "appeal",
+        "human"
+      ],
+      "concerns": [
+        "agentic",
+        "oversight"
+      ]
+    },
+    {
+      "phase": "Use",
+      "controls": [
+        "C01"
+      ],
+      "critical": true,
+      "condition": "annex3_area_set",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 6(3)",
+        "AIA|Art. 6(4)"
+      ],
+      "id": "art6_role",
+      "title": "Type of task",
+      "slots": [
+        "art6_3_exception"
+      ],
+      "priority": 91,
+      "hint": "not high-risk narrow procedural task preparatory task improve result of previously completed human activity detect decision-making patterns",
+      "default_q": "Which of these is closest to the agent's task?",
+      "options": [
+        "A narrow procedural step (e.g. a format check)",
+        "Improving the result of a task a human already completed",
+        "Detecting decision patterns (without replacing human assessment)",
+        "Preparation for an assessment a human will make",
+        "None of these",
+        "I don't know"
+      ],
+      "option_map": {
+        "A narrow procedural step (e.g. a format check)": {
+          "art6_3_exception": "narrow_procedural"
+        },
+        "Improving the result of a task a human already completed": {
+          "art6_3_exception": "improve_prior_human_work"
+        },
+        "Detecting decision patterns (without replacing human assessment)": {
+          "art6_3_exception": "detect_patterns"
+        },
+        "Preparation for an assessment a human will make": {
+          "art6_3_exception": "preparatory"
+        },
+        "None of these": {
+          "art6_3_exception": "none"
+        },
+        "I don't know": {
+          "art6_3_exception": "unknown"
+        }
+      },
+      "simple_q": "For example: does the agent only tidy or summarise a form, or does it produce an assessment or score about a person?",
+      "focus_terms": [
+        "closest to"
+      ],
+      "support_terms": [
+        [
+          "narrow",
+          "preparatory",
+          "procedural"
+        ],
+        [
+          "not be considered",
+          "derogation",
+          "not high-risk"
+        ],
+        [
+          "annex iii"
+        ]
+      ],
+      "concerns": [
+        "legal"
+      ]
+    },
+    {
+      "phase": "Use",
+      "controls": [
+        "C01"
+      ],
+      "critical": true,
+      "condition": "annex3_area_set",
+      "sources": [
+        "AIA",
+        "TAI-GOV"
+      ],
+      "anchors": [
+        "AIA|Art. 6(3)",
+        "AIA|Art. 6(4)"
+      ],
+      "id": "art6_influence",
+      "title": "Steering the decision",
+      "slots": [
+        "influences_decision"
+      ],
+      "priority": 90.5,
+      "hint": "does not materially influence the outcome of decision making",
+      "default_q": "Does the agent's output in practice steer the decision a human makes?",
+      "options": [
+        "Yes",
+        "No",
+        "I don't know"
+      ],
+      "simple_q": "For example: does the decision maker mostly apply the agent's recommendation as it is?",
+      "focus_terms": [
+        "in practice steer"
+      ],
+      "support_terms": [
+        [
+          "document",
+          "assess",
+          "influence"
+        ],
+        [
+          "not high-risk",
+          "high-risk",
+          "provider"
+        ],
+        [
+          "annex iii"
+        ]
+      ],
+      "evidence_terms": [
+        "steer",
+        "influence",
+        "decision"
+      ],
+      "concerns": [
+        "legal"
+      ]
     }
-   }
+  ],
+  "equivalences": [
+    {
+      "if": {
+        "annex3_area": "biometrics"
+      },
+      "then": {
+        "g_biometric": "yes"
+      },
+      "reason": "The Annex III biometrics area was selected; biometric data use is considered declared."
+    },
+    {
+      "if": {
+        "g_biometric": "no"
+      },
+      "then": {
+        "t_emotion_biometric": "no"
+      },
+      "reason": "No biometric data use was declared."
+    },
+    {
+      "if": {
+        "t_synthetic_content": "no"
+      },
+      "then": {
+        "t_deepfake_public_text": "no"
+      },
+      "reason": "No content generation was declared."
+    },
+    {
+      "if": {
+        "action_mode": "approved_action"
+      },
+      "then": {
+        "approval_exists": "yes"
+      },
+      "reason": "It was declared that it acts after approval."
+    },
+    {
+      "if": {
+        "action_mode": "envelope_action"
+      },
+      "then": {
+        "approval_exists": "no"
+      },
+      "reason": "It was declared that it acts without approval for each action."
+    },
+    {
+      "if": {
+        "action_mode": "self_expanding"
+      },
+      "then": {
+        "approval_exists": "no"
+      },
+      "reason": "It was declared that it can expand its own authority."
+    },
+    {
+      "if": {
+        "annex1_product": "no"
+      },
+      "then": {
+        "annex1_third_party": "no"
+      },
+      "reason": "The agent is not part of a regulated product, so no product conformity assessment applies."
+    }
+  ],
+  "exclusions": [
+    {
+      "if": {
+        "g_biometric": "no"
+      },
+      "excludes": {
+        "annex3_area": [
+          "biometrics"
+        ]
+      }
+    },
+    {
+      "if": {
+        "approval_exists": "no"
+      },
+      "excludes": {
+        "approval_bound": [
+          "yes",
+          "partial"
+        ]
+      },
+      "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
+      "resolve": {
+        "All actions are done with action-specific approval": {
+          "action_mode": "approved_action",
+          "approval_exists": "yes",
+          "approval_bound": "yes"
+        },
+        "Actions are done without approval": {
+          "approval_exists": "no",
+          "approval_bound": "no"
+        },
+        "Some actions are approved, some are not": {
+          "action_mode": "envelope_action",
+          "approval_exists": "unknown",
+          "approval_bound": "partial"
+        },
+        "I don't know": {
+          "approval_exists": "unknown",
+          "approval_bound": "unknown"
+        }
+      }
+    },
+    {
+      "if": {
+        "action_mode": "envelope_action"
+      },
+      "excludes": {
+        "approval_bound": [
+          "yes"
+        ]
+      },
+      "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
+      "resolve": {
+        "All actions are done with action-specific approval": {
+          "action_mode": "approved_action",
+          "approval_exists": "yes",
+          "approval_bound": "yes"
+        },
+        "Actions are done without approval": {
+          "approval_exists": "no",
+          "approval_bound": "no"
+        },
+        "Some actions are approved, some are not": {
+          "action_mode": "envelope_action",
+          "approval_exists": "unknown",
+          "approval_bound": "partial"
+        },
+        "I don't know": {
+          "approval_exists": "unknown",
+          "approval_bound": "unknown"
+        }
+      }
+    },
+    {
+      "if": {
+        "action_mode": "self_expanding"
+      },
+      "excludes": {
+        "approval_bound": [
+          "yes"
+        ]
+      },
+      "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
+      "resolve": {
+        "All actions are done with action-specific approval": {
+          "action_mode": "approved_action",
+          "approval_exists": "yes",
+          "approval_bound": "yes"
+        },
+        "Actions are done without approval": {
+          "approval_exists": "no",
+          "approval_bound": "no"
+        },
+        "Some actions are approved, some are not": {
+          "action_mode": "envelope_action",
+          "approval_exists": "unknown",
+          "approval_bound": "partial"
+        },
+        "I don't know": {
+          "approval_exists": "unknown",
+          "approval_bound": "unknown"
+        }
+      }
+    },
+    {
+      "if": {
+        "action_mode": "approved_action"
+      },
+      "excludes": {
+        "approval_exists": [
+          "no"
+        ]
+      },
+      "question": "You said earlier that actions are taken without approval, and then that approval is specific to the action. Which of these applies to the actions?",
+      "resolve": {
+        "All actions are done with action-specific approval": {
+          "action_mode": "approved_action",
+          "approval_exists": "yes",
+          "approval_bound": "yes"
+        },
+        "Actions are done without approval": {
+          "approval_exists": "no",
+          "approval_bound": "no"
+        },
+        "Some actions are approved, some are not": {
+          "action_mode": "envelope_action",
+          "approval_exists": "unknown",
+          "approval_bound": "partial"
+        },
+        "I don't know": {
+          "approval_exists": "unknown",
+          "approval_bound": "unknown"
+        }
+      }
+    }
+  ],
+  "prohibition_groups": {
+    "influence": {
+      "deps": [
+        "p_manipulation",
+        "p_exploit_vulnerability"
+      ],
+      "requires": {
+        "g_influence": "yes"
+      },
+      "anchors": [
+        "AIA|Art. 5(1)(a)",
+        "AIA|Art. 5(1)(b)"
+      ],
+      "detail_q": "How does the agent aim to influence users' behaviour?",
+      "detail_options": [
+        "With a clear and understandable suggestion or offer",
+        "With methods the user will not be aware of",
+        "By taking advantage of vulnerabilities such as age, disability or financial situation",
+        "I don't know"
+      ],
+      "skip": "It was declared that the agent does not aim to steer users towards a specific behaviour; the manipulation and exploitation-of-vulnerabilities sub-screens were skipped."
+    },
+    "social": {
+      "deps": [
+        "p_social_scoring"
+      ],
+      "requires": {
+        "g_person_eval": "yes",
+        "eval_uses_social_traits": "yes"
+      },
+      "anchors": [
+        "AIA|Art. 5(1)(c)"
+      ],
+      "detail_q": "Is the score based on social behaviour or personality data used in a context different from the one where the data was collected, or can it lead to disproportionate or unjustified negative treatment of people?",
+      "detail_options": [
+        "No, it is used in the same context and with justification",
+        "Yes, it is used in a different context from where the data was collected",
+        "Yes, it can lead to disproportionate or unjustified negative treatment",
+        "I don't know"
+      ],
+      "skip": "It was declared that the score/evaluation does not use social behaviour or personality data (or that no score is given); the social scoring sub-screen was skipped."
+    },
+    "crime": {
+      "deps": [
+        "p_crime_profiling"
+      ],
+      "requires": {
+        "g_person_eval": "yes",
+        "eval_predicts_crime": "yes"
+      },
+      "anchors": [
+        "AIA|Art. 5(1)(d)"
+      ],
+      "detail_q": "Is the crime or fraud risk assessment based solely on a person's profile or personality traits, or also on objective and verifiable facts?",
+      "detail_options": [
+        "Solely on the profile / personality traits",
+        "Also on objective and verifiable facts",
+        "I don't know"
+      ],
+      "skip": "It was declared that the evaluation does not include crime/fraud risk prediction (or that no score is given); the crime-risk profiling sub-screen was skipped."
+    },
+    "biometric": {
+      "deps": [
+        "p_facial_scraping",
+        "p_emotion_work_edu",
+        "p_biometric_categorisation",
+        "p_rbi_law_enforcement"
+      ],
+      "requires": {
+        "g_biometric": "yes"
+      },
+      "anchors": [
+        "AIA|Art. 5(1)(e)",
+        "AIA|Art. 5(1)(f)",
+        "AIA|Art. 5(1)(g)",
+        "AIA|Art. 5(1)(h)"
+      ],
+      "detail_q": "For what purpose and from where do you obtain the biometric data?",
+      "detail_options": [
+        "To recognise a person or verify their identity",
+        "To infer emotional state",
+        "To infer characteristics such as race, religion or political opinion",
+        "To collect facial images from the internet or cameras",
+        "For another purpose",
+        "I don't know"
+      ],
+      "skip": "It was declared that no biometric data is processed; the facial-image scraping, emotion inference, biometric categorisation and real-time identification sub-screens were skipped."
+    }
+  },
+  "slot_desc": {
+    "purpose": "the single intended purpose/task of the agent",
+    "affected_decisions": "people and decisions affected by its output",
+    "eu_link": "use in the EU, or output affecting people/organisations in the EU",
+    "org_role": "whether the organisation developed the agent or only uses it",
+    "g_biometric": "whether it processes biometric data such as face, voice or fingerprints",
+    "g_influence": "whether the agent's PURPOSE is to steer the people it meets towards a specific behaviour (buying, voting, giving up, ...); recommending to a decision maker or influencing a decision is NOT this",
+    "g_person_eval": "whether the agent assigns people a score, rank or risk/suitability value (only this fact; it does NOT by itself mean social scoring or crime prediction)",
+    "annex3_area": "sensitive use area (recruitment/HR->employment, credit/insurance/essential services->essential_services, education, law enforcement, migration, justice, critical infrastructure) or none; FILL IN if the user states the area explicitly (e.g. 'recruitment agent'); biometrics is asked separately via g_biometric",
+    "annex1_product": "whether the agent is a safety component of a product (medical device, machinery, ...)",
+    "profiling": "whether it profiles people",
+    "art6_3_exception": "whether it only does a narrow procedural task / improves a completed human task / detects decision patterns / a preparatory task",
+    "influences_decision": "whether its output in practice steers a human decision",
+    "t_interacts_people": "whether the agent talks/messages DIRECTLY with a person (customer, employee, ...)",
+    "t_synthetic_content": "whether it generates and publishes audio/image/video/text content",
+    "t_deepfake_public_text": "content that looks like a real person/event, or text published to inform the public",
+    "personal_data": "type of personal data the agent uses",
+    "vulnerable_groups": "whether vulnerable groups (children, elderly, ...) are affected",
+    "action_mode": "the agent's authority (see the explanation below)",
+    "human_review": "whether the decision maker can see the basis of a recommendation/draft and object before deciding (not a review of actions afterwards: that is post_action_review)",
+    "approval_bound": "(if approval exists) whether the approval is specific to that single action",
+    "limits_enforced": "whether limits are technical or only instructions",
+    "authority_expansion": "whether it can expand its own authority/access",
+    "delegates_to_agents": "whether it delegates work to other agents/tools",
+    "max_harm": "worst reasonable harm if it fails",
+    "reversibility": "whether the harm can be reversed",
+    "reach": "how many people/units it affects",
+    "eval_uses_social_traits": "whether the score/evaluation also uses data on a person's social behaviour, personality traits or general online behaviour (only if the user said so)",
+    "eval_predicts_crime": "whether the evaluation also predicts the likelihood of a person committing a crime/fraud (only if the user said so)",
+    "p_manipulation": "",
+    "approval_exists": "whether a human approval is obtained before an action is taken",
+    "can_stop": "whether someone can stop the agent immediately",
+    "can_rollback": "whether an action taken by the agent can be undone if it is wrong",
+    "human_reexam": "whether a human can re-examine the file of a person adversely affected by the agent's result",
+    "monitoring_live": "whether a person can watch what the agent does while it is running (monitoring during execution; not approval before execution)",
+    "post_action_review": "whether a person reviews what the agent did afterwards (post-action review; not approval before execution)",
+    "aggregate_limit": "whether a total cap (per day, week or supplier) limits the sum of the agent's actions, not only each single action",
+    "approval_bypass": "whether privileged or administrative paths can skip the approval step",
+    "wf_threshold": "derived: a workflow with an amount or limit threshold was declared",
+    "annex1_third_party": "whether that product needs a third-party (notified body) conformity assessment"
+  },
+  "slot_help": {
+    "action_mode": "info_only=only produces information; recommend=gives recommendations, a human decides and acts; draft=prepares drafts, a human sends/executes; approved_action=acts only after human approval specific to that action; envelope_action=acts within defined limits without approval for each action; self_expanding=can expand or delegate its own scope or authority",
+    "p_*": "none=the user explicitly said it does not apply; possible=may apply/unclear; supported=the necessary conditions of the prohibition are supported by the answers AND exception/scope/date were considered and no exception applies; excepted=an exception applies; unknown=don't know (p_* values are normally derived from the g_* gate answers; fill them in only if a detail question was asked)"
   }
- ],
- "prohibition_groups": {
-  "influence": {
-   "deps": [
-    "p_manipulation",
-    "p_exploit_vulnerability"
-   ],
-   "requires": {
-    "g_influence": "yes"
-   },
-   "anchors": [
-    "AIA|Art. 5(1)(a)",
-    "AIA|Art. 5(1)(b)"
-   ],
-   "detail_q": "How does the agent aim to influence users' behaviour?",
-   "detail_options": [
-    "With a clear and understandable suggestion or offer",
-    "With methods the user will not be aware of",
-    "By taking advantage of vulnerabilities such as age, disability or financial situation",
-    "I don't know"
-   ],
-   "skip": "It was declared that the agent does not aim to steer users towards a specific behaviour; the manipulation and exploitation-of-vulnerabilities sub-screens were skipped."
-  },
-  "social": {
-   "deps": [
-    "p_social_scoring"
-   ],
-   "requires": {
-    "g_person_eval": "yes",
-    "eval_uses_social_traits": "yes"
-   },
-   "anchors": [
-    "AIA|Art. 5(1)(c)"
-   ],
-   "detail_q": "Is the score based on social behaviour or personality data used in a context different from the one where the data was collected, or can it lead to disproportionate or unjustified negative treatment of people?",
-   "detail_options": [
-    "No, it is used in the same context and with justification",
-    "Yes, it is used in a different context from where the data was collected",
-    "Yes, it can lead to disproportionate or unjustified negative treatment",
-    "I don't know"
-   ],
-   "skip": "It was declared that the score/evaluation does not use social behaviour or personality data (or that no score is given); the social scoring sub-screen was skipped."
-  },
-  "crime": {
-   "deps": [
-    "p_crime_profiling"
-   ],
-   "requires": {
-    "g_person_eval": "yes",
-    "eval_predicts_crime": "yes"
-   },
-   "anchors": [
-    "AIA|Art. 5(1)(d)"
-   ],
-   "detail_q": "Is the crime or fraud risk assessment based solely on a person's profile or personality traits, or also on objective and verifiable facts?",
-   "detail_options": [
-    "Solely on the profile / personality traits",
-    "Also on objective and verifiable facts",
-    "I don't know"
-   ],
-   "skip": "It was declared that the evaluation does not include crime/fraud risk prediction (or that no score is given); the crime-risk profiling sub-screen was skipped."
-  },
-  "biometric": {
-   "deps": [
-    "p_facial_scraping",
-    "p_emotion_work_edu",
-    "p_biometric_categorisation",
-    "p_rbi_law_enforcement"
-   ],
-   "requires": {
-    "g_biometric": "yes"
-   },
-   "anchors": [
-    "AIA|Art. 5(1)(e)",
-    "AIA|Art. 5(1)(f)",
-    "AIA|Art. 5(1)(g)",
-    "AIA|Art. 5(1)(h)"
-   ],
-   "detail_q": "For what purpose and from where do you obtain the biometric data?",
-   "detail_options": [
-    "To recognise a person or verify their identity",
-    "To infer emotional state",
-    "To infer characteristics such as race, religion or political opinion",
-    "To collect facial images from the internet or cameras",
-    "For another purpose",
-    "I don't know"
-   ],
-   "skip": "It was declared that no biometric data is processed; the facial-image scraping, emotion inference, biometric categorisation and real-time identification sub-screens were skipped."
-  }
- },
- "slot_desc": {
-  "purpose": "the single intended purpose/task of the agent",
-  "affected_decisions": "people and decisions affected by its output",
-  "eu_link": "use in the EU, or output affecting people/organisations in the EU",
-  "org_role": "whether the organisation developed the agent or only uses it",
-  "g_biometric": "whether it processes biometric data such as face, voice or fingerprints",
-  "g_influence": "whether the agent's PURPOSE is to steer the people it meets towards a specific behaviour (buying, voting, giving up, ...); recommending to a decision maker or influencing a decision is NOT this",
-  "g_person_eval": "whether the agent assigns people a score, rank or risk/suitability value (only this fact; it does NOT by itself mean social scoring or crime prediction)",
-  "annex3_area": "sensitive use area (recruitment/HR->employment, credit/insurance/essential services->essential_services, education, law enforcement, migration, justice, critical infrastructure) or none; FILL IN if the user states the area explicitly (e.g. 'recruitment agent'); biometrics is asked separately via g_biometric",
-  "annex1_product": "whether the agent is a safety component of a product (medical device, machinery, ...)",
-  "profiling": "whether it profiles people",
-  "art6_3_exception": "whether it only does a narrow procedural task / improves a completed human task / detects decision patterns / a preparatory task",
-  "influences_decision": "whether its output in practice steers a human decision",
-  "t_interacts_people": "whether the agent talks/messages DIRECTLY with a person (customer, employee, ...)",
-  "t_synthetic_content": "whether it generates and publishes audio/image/video/text content",
-  "t_deepfake_public_text": "content that looks like a real person/event, or text published to inform the public",
-  "personal_data": "type of personal data the agent uses",
-  "vulnerable_groups": "whether vulnerable groups (children, elderly, ...) are affected",
-  "action_mode": "the agent's authority (see the explanation below)",
-  "human_review": "whether the decision maker can see the basis of a recommendation/draft and object before deciding (not a review of actions afterwards: that is post_action_review)",
-  "approval_bound": "(if approval exists) whether the approval is specific to that single action",
-  "limits_enforced": "whether limits are technical or only instructions",
-  "authority_expansion": "whether it can expand its own authority/access",
-  "delegates_to_agents": "whether it delegates work to other agents/tools",
-  "max_harm": "worst reasonable harm if it fails",
-  "reversibility": "whether the harm can be reversed",
-  "reach": "how many people/units it affects",
-  "eval_uses_social_traits": "whether the score/evaluation also uses data on a person's social behaviour, personality traits or general online behaviour (only if the user said so)",
-  "eval_predicts_crime": "whether the evaluation also predicts the likelihood of a person committing a crime/fraud (only if the user said so)",
-  "p_manipulation": "",
-  "approval_exists": "whether a human approval is obtained before an action is taken",
-  "can_stop": "whether someone can stop the agent immediately",
-  "can_rollback": "whether an action taken by the agent can be undone if it is wrong",
-  "human_reexam": "whether a human can re-examine the file of a person adversely affected by the agent's result",
-  "monitoring_live": "whether a person can watch what the agent does while it is running (monitoring during execution; not approval before execution)",
-  "post_action_review": "whether a person reviews what the agent did afterwards (post-action review; not approval before execution)",
-  "aggregate_limit": "whether a total cap (per day, week or supplier) limits the sum of the agent's actions, not only each single action",
-  "approval_bypass": "whether privileged or administrative paths can skip the approval step",
-  "wf_threshold": "derived: a workflow with an amount or limit threshold was declared",
-  "annex1_third_party": "whether that product needs a third-party (notified body) conformity assessment"
- },
- "slot_help": {
-  "action_mode": "info_only=only produces information; recommend=gives recommendations, a human decides and acts; draft=prepares drafts, a human sends/executes; approved_action=acts only after human approval specific to that action; envelope_action=acts within defined limits without approval for each action; self_expanding=can expand or delegate its own scope or authority",
-  "p_*": "none=the user explicitly said it does not apply; possible=may apply/unclear; supported=the necessary conditions of the prohibition are supported by the answers AND exception/scope/date were considered and no exception applies; excepted=an exception applies; unknown=don't know (p_* values are normally derived from the g_* gate answers; fill them in only if a detail question was asked)"
- }
 }

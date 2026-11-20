@@ -23,6 +23,8 @@ TASK: extract ALL declarations in the user's LAST answer into slots, including c
 Rules:
 - FACTS come only from the USER'S TEXT. Never record a scenario from the schema descriptions (social scoring, crime prediction, manipulation, ...) as a property of the user's agent. For every filled slot (except unknown and free-text fields) write in the evidence field a SHORT VERBATIM quote from the user's text that SUPPORTS THE VALUE; if there is no such quote, do not fill the slot.
 - PURPOSE: write the purpose as one or two sentences that KEEP the concrete actions, systems and thresholds the user named (for example 'reviews purchase requests, checks approved suppliers and creates purchase orders; up to EUR 5,000 without per-order approval'). Never reduce it to a vague summary such as 'helps manage requests'.
+- TOOL/ACTION INVENTORY (tool_updates): record each explicitly named tool, system, account, API or data source with its name, kind (tool/system/account/data_source), scope and explicitly stated permissions (read/write/modify/delete/send/execute/transact). Read access is NOT action authority. Do not infer permissions from the tool name. Do not infer an external action from ranking, scoring or analyzing. Each entry requires a short verbatim supporting quote. List in permissions ONLY what the user says the agent CAN do with that tool; list in denied_permissions ONLY what the user explicitly says it can NOT do ('read-only' denies write, modify, delete, send, execute and transact; 'we revoked write access' denies write). A permission that is neither stated nor denied stays in neither list (unknown). If the user contradicts themselves (for example 'read-only' but 'the service account holds write credentials'), list the broader permission as confirmed. Actions that the agent triggers through other agents, sub-agents or automated tools count as the agent's own reachable authority: record them as workflows.
+- EMPLOYMENT HARM: a credible loss of a job opportunity for qualified candidates is material employment/fairness harm (serious), even when a human makes the final decision. Do not infer a loss of employment merely from the fact that the system ranks candidates.
 - AUTHORITY PER WORKFLOW (workflow_updates): describe what the agent can DO as one item per distinct (action, condition), for example one item 'creates purchase orders' with condition 'up to EUR 5,000' and execution=executes_without_approval, and another item with condition 'above EUR 5,000' and execution=executes_after_approval with approval_authority 'human manager'. A conditional approval structure (different rules for different amounts, suppliers or action types) is NORMAL and is never a contradiction: use separate items with separate conditions. execution: no_action | recommend | draft | executes_after_approval | executes_without_approval | unknown. execution=executes_without_approval or executes_after_approval ONLY when the user says the agent itself performs the action (places, sends, books, changes or executes something). Producing a score, ranking, summary or suggestion that a person then uses or decides on is recommend (or draft); if the user does not say who acts, use unknown. Never infer execution from a description of the agent's output alone. approval_bound=yes only if the approval is for that specific action, not a general permission. limit_enforcement: 'technical' only if the user says the system itself enforces the limit; 'policy_only' if it exists only in instructions or policy; 'none'; otherwise unknown. action = a base-form verb phrase without a subject ('create purchase orders', not 'creates purchase orders'). condition = ONLY a condition the user actually states ('' if none; never write 'unspecified' or 'unknown'). threshold = the amount or limit in the user's words ('' if none; never 'unspecified'); recipient = supplier or recipient scope ('' if not stated); recipient_restricted=yes only if the user says it is limited to an approved list. Reuse an existing workflow id from STATE when the user talks about the same action and condition; otherwise invent a short snake_case id. When you fill workflow_updates, do NOT fill action_mode, approval_exists, approval_bound or limits_enforced in slot_updates (the code derives them from the workflows). Every item needs a SHORT VERBATIM quote in evidence.
 - Extract every clearly stated fact; do not leave out a slot only because the user did not use the exact option wording. Mapping examples for the authority slot (action_mode): 'only answers questions / produces information' -> info_only; 'gives a recommendation, a human decides and acts' -> recommend; 'drafts something for a human to send/execute' -> draft; 'acts only after a human approves that specific action' -> approved_action; 'acts on its own within limits, without approval for each action' (e.g. 'creates orders without anyone approving each one') -> envelope_action; 'can grant itself new permissions/tools/access' -> self_expanding. If the limits are said to be only written in instructions -> limits_enforced=policy_only; if the system blocks them -> technical. Mapping for annex3_area when the user names the domain: recruitment, CV screening, employee evaluation -> employment; credit scoring, insurance, social benefits -> essential_services; exams, admissions -> education; if the user names none of the listed domains, leave it empty (do not guess 'none').
 - 'It scores/ranks people' means only g_person_eval=yes; do NOT fill eval_uses_social_traits, eval_predicts_crime or p_* unless the user said so explicitly. 'It influences/supports the decision' is NOT g_influence=yes; g_influence is yes only if the user describes the PURPOSE of steering people towards a behaviour. 'I don't know' confirms no property. Fill p_* only from the answer to a question whose kind=followup and fact='detail:...' in RECENT TURNS.
@@ -90,8 +92,13 @@ def _extract_schema() -> dict:
     S = {"type": "string"}
     return {
         "type": "object", "additionalProperties": False,
-        "required": ["slot_updates", "control_updates", "basis", "workflow_updates"],
+        "required": ["slot_updates", "control_updates", "basis", "workflow_updates", "tool_updates"],
         "properties": {
+            "tool_updates": {"type": "array", "items": {"type": "object", "additionalProperties": False,
+                             "required": ["name", "kind", "scope", "permissions", "denied_permissions", "evidence"],
+                             "properties": {"name": S, "kind": {"type": "string", "enum": ["tool", "system", "account", "data_source", "unknown"]},
+                                            "scope": S, "permissions": {"type": "array", "items": {"type": "string", "enum": list(C.TOOL_PERMISSIONS)}},
+                                            "denied_permissions": {"type": "array", "items": {"type": "string", "enum": list(C.TOOL_PERMISSIONS)}}, "evidence": S}}},
             "workflow_updates": {"type": "array", "items": {"type": "object", "additionalProperties": False,
                                  "required": ["id", "action", "condition", "threshold", "recipient", "recipient_restricted", "execution", "approval_authority", "approval_bound", "limit_enforcement", "evidence"],
                                  "properties": {"id": S, "action": S, "condition": S, "threshold": S, "recipient": S, "approval_authority": S, "evidence": S,
@@ -135,7 +142,7 @@ def _state_brief(state: dict) -> str:
     ct = {k: v["status"] for k, v in d["controls"].items()}
     eu = d["slots"].get("eu_link")
     wfs = [{"id": w["id"], "action": w.get("action"), "condition": w.get("condition"), "execution": w.get("execution"), "threshold": w.get("threshold")} for w in d["workflows"].values()]
-    return json.dumps({"KNOWN_slot=value_(answer_id)": known, "KNOWN_WORKFLOWS_reuse_the_id": wfs, "control_declarations": ct, "answered_questions": C.answered_count(state),
+    return json.dumps({"KNOWN_slot=value_(answer_id)": known, "KNOWN_WORKFLOWS_reuse_the_id": wfs, "KNOWN_TOOLS": d.get("tools", []), "control_declarations": ct, "answered_questions": C.answered_count(state),
                        "limit": config.MAX_QUESTIONS, "AGENT_OPERATING_SCOPE": (state.get("settings") or {}).get("scope_country", "Not specified"),
                        "EU_APPLICABILITY": {"no": "out of scope (user setting)", "yes": "present (user setting)"}.get(eu, "not determined")}, ensure_ascii=False)
 
@@ -432,6 +439,54 @@ AFTER_REVIEW = re.compile(r"\b(afterwards?|after the fact|after (?:they|the acti
 BASIS_REVIEW = re.compile(r"\b(basis|reasons?|reasoning|explanation|explain\w*|rationale|object|challenge|contest)\b", re.I)
 
 
+PERM_TERMS = {
+    "read": r"\b(read\w*|view\w*|see|sees|seen|access\w*|quer(?:y|ies|ied)|look\w* up|retriev\w*|fetch\w*|pull\w*|search\w*|brows\w*|open\w*|list\w*|check\w*|scan\w*|inspect\w*|monitor\w*|import\w*|ingest\w*|analy[sz]\w*|score\w*|rank\w*)\b",
+    "write": r"\b(writ\w*|wrote|creat\w*|add\w*|insert\w*|sav\w*|stor\w*|record\w*|append\w*|upload\w*|enter\w*|fil(?:e|es|ed|ing)|generat\w*|log(?:s|ged|ging)? (?:in|into|to))\b",
+    "modify": r"\b(modif\w*|edit\w*|updat\w*|chang\w*|alter\w*|overwr\w*|amend\w*|patch\w*|mov\w*|renam\w*|writ\w*|wrote|reassign\w*|reclassif\w*)\b",
+    "delete": r"\b(delet\w*|remov\w*|eras\w*|purg\w*|drop\w*|wip\w*|destroy\w*|cancel\w*|revok\w*)\b",
+    "send": r"\b(send\w*|sent|e-?mail\w*|mail\w*|messag\w*|notif\w*|forward\w*|repl(?:y|ies|ied)|publish\w*|post\w*|dispatch\w*|text\w*|sms|call\w*|broadcast\w*|contact\w*)\b",
+    "execute": r"\b(execut\w*|run|runs|running|launch\w*|trigger\w*|invok\w*|deploy\w*|start\w*|schedul\w*|submit\w*|plac(?:e|es|ed|ing)|operat\w*|script\w*|command\w*|restart\w*|perform\w*|carr(?:y|ies|ied) out)\b",
+    "transact": r"\b(transact\w*|pay\w*|transfer\w*|purchas\w*|buy\w*|bought|order\w*|refund\w*|charg\w*|bill\w*|invoic\w*|book\w*|wire\w*|withdraw\w*|deposit\w*|spend\w*|money|funds?)\b",
+}
+PERM_ALL = re.compile(r"\b(full|admin\w*|root|unrestricted|super ?user|read[- ]?write)\b[^.]{0,20}\b(access|rights|privileges?|permissions?|control)\b|\bread[- ]?write\b", re.I)
+READ_ONLY = re.compile(r"\b(read[- ]only|only (?:read|view|see)|view[- ]only|can only (?:read|view|see|look))\b", re.I)
+DENY_CUE = re.compile(r"\b(cannot|can ?not|can't|cant|unable|no|not|never|without|none|revok\w*|remov\w*|disabl\w*|block\w*|prohibit\w*|denied|forbid\w*|restrict\w*|lack\w*|isn't|aren't|doesn't|don't)\b|read[- ]only", re.I)
+
+
+def _sentences(text: str) -> list[str]:
+    return [x for x in re.split(r"(?<=[.!?;])\s+", text or "") if x.strip()]
+
+
+def _tool_context(name: str, quote: str, answer: str) -> str:
+    """The user's own words about a tool: the sentence(s) of the answer that name it, plus the quote. A permission that appears in none of them was invented."""
+    toks = [t for t in re.findall(r"[a-z0-9]+", name.lower()) if len(t) > 2]
+    sents = [x for x in _sentences(answer) if toks and any(t in x.lower() for t in toks)]
+    return " ".join(sents + [quote])
+
+
+def ground_permissions(name: str, quote: str, answer: str, confirmed: list[str], denied: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """(confirmed, denied, dropped). Confirmed: a word for that permission occurs in the user's words about the tool and is not itself negated there. Denied: the user's words contain a
+    negation or 'read-only' cue AND name the permission (or say read-only). Everything else is dropped and stays UNKNOWN; a permission is never created from the tool's name."""
+    ctx = _tool_context(name, quote, answer)
+    low = ctx.lower()
+    ok, no, drop = [], [], []
+    all_perm = bool(PERM_ALL.search(ctx))
+    for p in confirmed:
+        hit = re.search(PERM_TERMS[p], low) is not None or (all_perm and p != "transact")
+        negated = bool(READ_ONLY.search(ctx)) and p != "read" and not re.search(r"\bwrite credentials?|\bwrite access|\bcan write", low)
+        (ok if hit and not negated else drop).append(p)
+    for p in denied:
+        hit = DENY_CUE.search(ctx) is not None and (re.search(PERM_TERMS[p], low) is not None or (READ_ONLY.search(ctx) is not None and p != "read"))
+        (no if hit and p not in ok else drop).append(p)
+    return sorted(set(ok)), sorted(set(no)), sorted(set(drop))
+
+
+EXEC_ACT = re.compile(r"\b(plac\w*|send\w*|sent|book\w*|updat\w*|chang\w*|modif\w*|edit\w*|delet\w*|remov\w*|cancel\w*|reject\w*|declin\w*|approv\w*|creat\w*|issu\w*|submit\w*|fil(?:e|es|ed|ing)|execut\w*|"
+                      r"run|runs|ran|trigger\w*|transfer\w*|pay\w*|paid|purchas\w*|buy\w*|bought|order\w*|refund\w*|charg\w*|deploy\w*|publish\w*|post\w*|e-?mail\w*|notif\w*|clos\w*|grant\w*|revok\w*|"
+                      r"assign\w*|schedul\w*|writ\w*|wrote|commit\w*|merg\w*|mov\w*|sign\w*|withdraw\w*|block\w*|suspend\w*|lock\w*|unlock\w*|reset\w*|restart\w*|provision\w*|scal\w*|onboard\w*|enrol\w*|"
+                      r"regist\w*|activat\w*|deactivat\w*|hir\w*|fir\w*|terminat\w*|dismiss\w*|set|sets|apply|applies|applied|take|takes|take action|act|acts|acting|decid\w*|autonomous\w*|automatic\w*|automatically|itself|on its own|by itself|without (?:any )?(?:approval|human|review|sign))\b", re.I)
+
+
 def _sanitize(res: dict, turn: dict | None = None) -> dict:
     """Validates what the model extracted. Only facts with a verbatim user quote survive; the quote is stored with the fact for the report's trace."""
     spec = _slots_spec()
@@ -441,7 +496,19 @@ def _sanitize(res: dict, turn: dict | None = None) -> dict:
     if q.get("kind") == "followup" and str(q.get("fact", "")).startswith("detail:"):
         allowed_p = set(C.interview_cfg()["prohibition_groups"].get(q["fact"].split(":", 1)[1], {}).get("deps", []))
     slots, controls, basis, rejected, evidence = {}, {}, [], [], {}
-    workflows, superseded = [], []
+    workflows, superseded, tools = [], [], []
+    for item in res.get("tool_updates", []) or []:
+        name, quote = (item.get("name") or "").strip(), (item.get("evidence") or "").strip()
+        if not name or not quote or (turn is not None and not evidence_ok(quote, answer, "yes")):
+            continue
+        perms = [x for x in (item.get("permissions") or []) if x in C.TOOL_PERMISSIONS]
+        dperms = [x for x in (item.get("denied_permissions") or []) if x in C.TOOL_PERMISSIONS]
+        if turn is not None:  # permissions are facts about authority: each one must be in the user's own words about this tool
+            perms, dperms, dropped = ground_permissions(name, quote, answer, perms, dperms)
+            for p in dropped:
+                rejected.append((f"tool:{name[:40]}:{p}", "the permission is not stated in the user's words about this tool"))
+        tools.append({"name": name[:120], "kind": item.get("kind") if item.get("kind") in ("tool", "system", "account", "data_source") else "unknown",
+                      "scope": (item.get("scope") or "")[:160], "permissions": sorted(set(perms)), "denied_permissions": sorted(set(dperms) - set(perms)), "evidence": quote[:200]})
     raw = (turn or {}).get("answer") or ""
     ENUMS = {"execution": list(C.WF_RANK) + ["unknown"], "approval_bound": ["yes", "no", "unknown"], "limit_enforcement": ["technical", "policy_only", "none", "unknown"], "recipient_restricted": ["yes", "no", "unknown"]}
     for w in res.get("workflow_updates", []) or []:
@@ -460,6 +527,10 @@ def _sanitize(res: dict, turn: dict | None = None) -> dict:
         for f, allowed in ENUMS.items():
             v = (w.get(f) or "unknown").strip()
             item[f] = v if v in allowed else "unknown"
+        if item["execution"] in ("executes_without_approval", "executes_after_approval") and turn is not None \
+                and not EXEC_ACT.search(" ".join([quote, item["action"], item["condition"]])):
+            item["execution"], item["approval_bound"], item["approval_authority"] = "unknown", "unknown", ""  # an action that the agent itself performs is never inferred from analysis or ranking
+            rejected.append((f"workflow:{wid}:execution", "the quote does not say that the agent itself performs an action; authority left unknown"))
         if item["execution"] in ("executes_without_approval", "recommend", "draft", "no_action"):
             item["approval_bound"], item["approval_authority"] = "unknown", ""  # approval binding only has a meaning for a workflow that executes after approval
         workflows.append(item)
@@ -522,7 +593,7 @@ def _sanitize(res: dict, turn: dict | None = None) -> dict:
                 superseded.append((k, "superseded by the per-workflow authority facts of the same answer"))
                 slots.pop(k)
                 evidence.pop(k, None)
-    return {"slots": slots, "controls": controls, "basis": basis, "rejected": rejected, "evidence": evidence, "workflows": workflows, "superseded": superseded}
+    return {"slots": slots, "controls": controls, "basis": basis, "rejected": rejected, "evidence": evidence, "workflows": workflows, "tools": tools, "superseded": superseded}
 
 
 # ---------------------------------------------------------------------------- main step
@@ -754,6 +825,8 @@ def summary_sections(state: dict) -> list[tuple[str, list[tuple[str, str]]]]:
         lim = s.get("limits_enforced")
         auth.append(("confirmed", "Limits: " + str(v("limits_enforced"))) if lim in ("technical", "policy_only", "none") else val("limits_enforced", "Limits on what it may do"))
         auth += [yn("authority_expansion"), yn("approval_bypass")]
+    tools = d.get("tools", [])
+    auth.append(("confirmed", "Tool/action inventory: " + "; ".join(x["name"] + " (" + (", ".join(x["permissions"]) if x["permissions"] else "permissions not assessed") + ")" for x in tools)) if tools else ("not_collected", "Tool/action inventory: Not assessed"))
     secs.append(("Autonomy and approval", auth))
     imp = [val("max_harm", "Worst reasonable outcome", f"Worst reasonable outcome: {v('max_harm')}" + (f" ({s['harm_desc']})" if s.get("harm_desc") else ""))]
     if s.get("reversibility"):

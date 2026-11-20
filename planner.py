@@ -110,6 +110,14 @@ def candidates(state: dict, exclude_topic: str | None = None) -> list[dict]:
             g = cfg["prohibition_groups"][gid]
             out.append({"kind": "followup", "topic": topics["prohibited_detail"], "fact": "detail:" + gid, "gate": gid, "text": g["detail_q"], "options": g.get("detail_options", []),
                         "impact": "Clarifies whether the declared feature meets the conditions of a prohibited use.", "rank": (1, 0)})
+    for w in d["workflows"].values():  # an action was named but it is not known what the agent itself does with it: ask once, never assume
+        if (w.get("action") or "").strip() and not C.wf_definite(w.get("execution")) and d["followups"].get("wfx:" + w["id"], 0) == 0:
+            opts = C.WF_OPTION["execution"]
+            order = ["recommend", "draft", "executes_after_approval", "executes_without_approval", "no_action"]
+            out.append({"kind": "followup", "topic": topics["action_mode"], "fact": "wfx:" + w["id"],
+                        "text": f"You mentioned \u201c{w['action'].strip()}\u201d. What does the agent itself do with it?",
+                        "options": [opts[k] for k in order] + ["I don't know"], "sets": {opts[k]: {f"wf:{w['id']}:execution": k} for k in order},
+                        "impact": "Establishes what the agent itself is able to do, which defines its autonomy level.", "rank": (1, 0)})
     for t in cfg["topics"]:
         if t["id"] in ("prohibited_detail",) or not t.get("simple_q") or not (t["critical"] or t.get("multi")):
             continue

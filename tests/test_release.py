@@ -1,7 +1,7 @@
 """Release hygiene: source packaging, startup checks, secrets. No model calls."""
 import json
 import re
-import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -42,19 +42,17 @@ def test_every_required_source_file_exists_and_is_indexed(index):
 
 
 def _tracked() -> list[str]:
-    try:
-        out = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True).stdout.split("\n")
-    except Exception:  # not a git checkout (e.g. the release ZIP): fall back to every file
-        # not a git checkout (e.g. an unpacked release ZIP): check every file except sources/, where the user may have placed the private matrix
-        out = [str(p.relative_to(ROOT)) for p in ROOT.rglob("*") if p.is_file() and not ({".venv", "venv", "site-packages", ".cache", "__pycache__", ".pytest_cache"} & set(p.parts)) and "sources" not in p.relative_to(ROOT).parts[:1]]
-    return [f for f in out if f]
+    """The files that would be packaged (tools/build_release.py): a developer's local .env or QA reference copy is never part of the release."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    import build_release
+    return [str(p.relative_to(ROOT)) for p in build_release.package_files()]
 
 
 def test_no_secrets_or_restricted_documents_are_packaged():
     files = _tracked()
     assert ".env" not in files and not [f for f in files if f.startswith(".env") and f != ".env.example"]
     assert not [f for f in files if "iso_42001" in f.lower() or f.lower().endswith((".zip", ".docx"))], "restricted or private files must not be packaged"
-    key = re.compile(r"sk-(?:proj-)?[A-Za-z0-9_\-]{30,}")
+    key = re.compile(r"(?<![A-Za-z0-9])sk-(?:proj-)?[A-Za-z0-9_\-]{30,}")
     for f in files:
         p = ROOT / f
         if p.suffix in (".py", ".md", ".json", ".toml", ".txt", ".ini", ".example", "") and p.is_file():

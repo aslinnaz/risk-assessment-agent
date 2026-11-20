@@ -11,7 +11,7 @@ The application is a flat Python project (no package layout): one Streamlit entr
 | `planner.py` | Chooses candidate topics: conflicts, one follow-up after "unknown", blocking critical facts, answer impact, context topics; decides when the interview ends | No | No |
 | `classify.py` | `derive` (turns → accepted facts), `classify` (L, I, P, level, legal pathway, forbidden findings, blockers, C01–C21, gaps), `trace_integrity` | **No** | **No** |
 | `rag.py` | PDF/Word extraction, structure-aware chunking, BM25 plus embedding index, support check, startup validation | Embeddings only | Is the index |
-| `report.py` | `build_report` (findings with citations, trace), `client_summary`, `pdf_bytes` (two-page PDF) | Yes (one batched support check) | Yes |
+| `report.py` | `build_report` (findings with citations, trace), `client_summary`, `pdf_bytes` (client PDF: summary, C01–C21 table, traceability appendix) | Yes (one batched support check) | Yes |
 | `llm.py` | OpenAI wrapper: structured output, one retry on transient errors, errors that do not leak the key, token usage | Is the wrapper | No |
 | `config.py` | Environment settings, paths, question limits (target 12, max 20, context topics 3) | No | No |
 | `sources_admin.py`, `tools/add_source.py` | Register, validate, deactivate approved sources added after deployment | No | No |
@@ -69,7 +69,7 @@ The internal policy is **not** a retrievable source: it is never indexed, retrie
 
 ## Report and PDF
 
-`report.build_report` produces the full in-application report: the three statuses (interview, assessment, verification), the derivation trace for L, I, P, legal pathway and level, findings with citations, and the C01–C21 table. `client_summary` + `pdf_bytes` render a **separate two-page client summary** (page 1: agent, result, why, up to three next steps, limitation; page 2: C01–C21 table). The PDF omits sources, diagnostics, answer trail and trace by design. It embeds the Bitstream Vera font that ships with ReportLab, checks required glyphs at start, and raises an error instead of silently falling back (`REPORT_FONT`, `REPORT_FONT_BOLD` override).
+`report.build_report` produces the full in-application report: the three statuses (interview, assessment, verification), the derivation trace for L, I, P, legal pathway and level, findings with citations, and the C01–C21 table. `client_summary` + `pdf_bytes` render client PDF (page 1: banner, agent, result, why, up to three next steps, limitation; then the C01–C21 table; then a traceability appendix with the separate conclusions, the derivation with inputs and user quotes, the tool/action inventory and the cited sources). Retrieval diagnostics and the answer trail stay in the application. It embeds the Bitstream Vera font that ships with ReportLab, checks required glyphs at start, and raises an error instead of silently falling back (`REPORT_FONT`, `REPORT_FONT_BOLD` override).
 
 ## Dependencies
 

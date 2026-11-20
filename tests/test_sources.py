@@ -62,7 +62,7 @@ def test_real_ai_act_index_has_the_expected_references(index):
         assert r in refs, r
     assert not {"Art. 6(a)", "Art. 6(b)", "Art. 6(c)", "Art. 6(d)"} & refs
     assert sum(1 for c in index.chunks if c["source_id"] == "AIA") > 900
-    assert len(index.chunks) > 1300
+    assert len(index.chunks) > 1200  # footnotes and non-English pages are no longer indexed (release audit), so the count is lower than before
     index.validate()  # raises SourceError if an article, annex or mandatory anchor is missing
 
 

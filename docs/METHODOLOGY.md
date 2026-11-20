@@ -47,7 +47,7 @@ Declared reasonable worst-case harm maps directly: minimal I0, limited I1, serio
 
 **Escalation (`POL-ESC`).** From I1 upwards the posture rises by **one** step if at least one exposure factor is declared: wide reach, irreversible harm, vulnerable groups affected, sensitive personal data, or (for L4/L5) limits that are policy-only or absent. Several factors still cause one step; reasons are recorded; the posture is never lowered. An escalation is reported **only if the final posture is higher than the table value**; if the table already gives P4 the declared factors are recorded but no escalation is claimed.
 
-**Risk level** (`label_from_posture`): P1 LOW, P2 MEDIUM, P3 HIGH, P4 HIGH. P4 means "hold for redesign": an internal release decision, not a legal prohibition, and not escalated to FORBIDDEN. If L or I is unknown, every possible value is tried to give a posture **range**; a level is issued only if the range maps to a single level, otherwise the result is "not completed" and the missing critical facts are named.
+**Risk level** (`label_from_posture`): P1 LOW, P2 LOW, P3 HIGH, P4 HIGH. P4 means "hold for redesign": an internal release decision, not a legal prohibition, and not escalated to FORBIDDEN. If L or I is unknown, every possible value is tried to give a posture **range**; a level is issued only if the range maps to a single level, otherwise the result is "not completed" and the missing critical facts are named.
 
 ## 5. Legal pathway, prohibitions and transparency (EU AI Act reference)
 

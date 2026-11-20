@@ -140,10 +140,10 @@ def test_l3_requires_approval_bound_to_the_specific_action(index):
           "limit_enforcement": "technical", "evidence": "Every order needs approval from a human manager"}
     s = start(index, answer=ans, workflows=[wf], slots={"max_harm": "limited"})
     cls = C.classify(s)
-    assert (cls["L"], cls["I"], cls["posture"]) == ("L3", "I1", "P2") and cls["risk_label"] == "MEDIUM"
+    assert (cls["L"], cls["I"], cls["posture"]) == ("L3", "I1", "P2") and cls["risk_label"] == "LOW"
     s2 = start(index, answer=ans, workflows=[{**wf, "approval_bound": "no"}], slots={"max_harm": "limited"})
     c2 = C.classify(s2)
-    assert c2["L"] == "L4" and any("not declared to be bound" in n for n in c2["level_notes"])
+    assert c2["L"] is None and any("Specific-action approval was not established" in n for n in c2["level_notes"])
 
 
 def test_l5_when_the_agent_can_expand_its_own_authority(index):

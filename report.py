@@ -1,8 +1,8 @@
 """Report building (in-application) and the client PDF.
 
 build_report assembles the full in-application report: result, step-by-step derivation, findings with RAG-retrieved and support-checked citations, and the answer trail.
-pdf_bytes renders only a concise two-page client summary of it (assessed agent, result, reasons, next steps, limitation, and the C01-C21 table); sources, retrieval
-diagnostics, the derivation trace and the answer trail are NOT part of the PDF.
+pdf_bytes renders a client summary (page 1: banner, assessed agent, result, reasons, next steps, limitation), the C01-C21 table and a traceability appendix (separate
+conclusions, the derivation with its inputs and user quotes, the tool/action inventory, risk drivers and the cited sources). Retrieval diagnostics and the full answer trail stay in the application.
 
 The result comes ONLY from classify.py (deterministic). This module explains it (answer -> extracted fact -> retrieved evidence -> rule -> result). Retrieval and the
 optional model support check can remove or flag a citation; they can never change the result.
@@ -84,7 +84,7 @@ def build_findings(state: dict, cls: dict) -> list[dict]:
               "partly_assessed": "Against the AI Act reference, no Annex III area was declared, but the product route (Art. 6(1)) was not established: the legal pathway is only partly assessed.",
               "out_of_scope_declared": "No EU link was declared; the result is a general TrustAI assessment.",
               "undetermined": "The legal pathway could not be determined."}
-    area = P["annex3_areas"].get(s.get("annex3_area"), "none" if s.get("annex3_area") == "none" else "—")
+    area = P["annex3_areas"].get(s.get("annex3_area"), "none" if s.get("annex3_area") == "none" else "Not assessed")
     AREA_KW = {"biometrics": ["biometric"], "critical_infrastructure": ["critical infrastructure"], "education": ["education"], "employment": ["employment", "workers"],
                "essential_services": ["essential", "credit"], "law_enforcement": ["law enforcement"], "migration": ["migration", "asylum"], "justice_democracy": ["justice", "democratic"]}
     kw = ["applies to"] if lg["code"] == "out_of_scope_declared" else (AREA_KW.get(s.get("annex3_area"), ["high-risk"]) if lg["code"] not in ("not_high_by_declaration", "partly_assessed") else ["high-risk"])
@@ -114,7 +114,8 @@ def build_findings(state: dict, cls: dict) -> list[dict]:
                      "intervene and stop the agent, and keep records of what it did.")
         else:
             gtext = "Governance guidance for AI systems that support human decisions: the person who decides must be able to understand, challenge and override what the system produces."
-        add(gtext + " This guidance supports the recommendations in this report; it does not validate the internal rule results.", [], None, None, kind="guidance", role="guidance",
+        anc = ([("TAI-AG", "s. 27"), ("TAI-AG", "s. 10"), ("NIST-PB", "MAP 3.5")] if C.is_acting(d) else [("TAI-AG", "s. 10"), ("NIST-PB", "MAP 3.5")])  # curated guidance passages on oversight and enforced limits
+        add(gtext + " This guidance supports the recommendations in this report; it does not validate the internal rule results.", [], anc, [["oversight", "approval", "limit", "stop", "authority"]], kind="guidance", role="guidance",
             sources=("TAI-AG", "NIST-PB"), short=gtext, claim=gtext)
     return F
 
@@ -158,7 +159,7 @@ def semantic_check(findings: list[dict], index, client, usage) -> bool:
                                    "Return only the verdicts.", str(items), schema, name="support", max_tokens=500, usage=usage, kind="support_check")
     except Exception:  # noqa: BLE001
         return False
-    verdict = {x["id"]: x["verdict"] for x in r["results"]}
+    verdict = {x.get("id"): x.get("verdict") for x in (r.get("results") or []) if isinstance(x, dict) and x.get("verdict") in ("supported", "partial", "not_supported")}  # a malformed answer is ignored, never trusted
     for f in findings:
         v = verdict.get(f["id"])
         f["semantic"] = v or "not checked"
@@ -226,7 +227,7 @@ def _improvements(cls: dict, d: dict, index, num) -> list[dict]:
 
 
 def _inputs_view(inputs: list[dict], ans_text: dict) -> list[dict]:
-    return [{**i, "value_label": _v(i["value"]), "answer_text": ans_text.get(i["answer_id"], "")} for i in inputs or []]
+    return [{**i, "value_label": _v(i.get("value")), "answer_text": ans_text.get(i.get("answer_id"), "")} for i in inputs or []]
 
 
 def build_report(state: dict, index, client=None, semantic: bool | None = None) -> dict:
@@ -371,13 +372,13 @@ def build_report(state: dict, index, client=None, semantic: bool | None = None) 
         ("Operational recommendation", P["recommendation_text"]),
     ]
     # --- workflow facts (accepted facts only), capabilities, risk drivers, integrity and citation checks
-    wf_rows = [{"id": w["id"], "label": C.wf_label(w), "execution": C.WF_EXEC_LABEL.get(w.get("execution"), "not stated"), "threshold": w.get("threshold") or "—", "recipient": w.get("recipient") or "—",
-                "approval_authority": w.get("approval_authority") or "—", "approval_bound": ("not applicable" if w.get("execution") in ("executes_without_approval", "recommend", "draft", "no_action") else _v(w.get("approval_bound")) if C.wf_definite(w.get("approval_bound")) else "not stated"),
+    wf_rows = [{"id": w["id"], "label": C.wf_label(w), "execution": C.WF_EXEC_LABEL.get(w.get("execution"), "not stated"), "threshold": w.get("threshold") or "Not assessed", "recipient": w.get("recipient") or "Not assessed",
+                "approval_authority": w.get("approval_authority") or "Not assessed", "approval_bound": ("not applicable" if w.get("execution") in ("executes_without_approval", "recommend", "draft", "no_action") else _v(w.get("approval_bound")) if C.wf_definite(w.get("approval_bound")) else "not stated"),
                 "limit_enforcement": _v(w.get("limit_enforcement")) if C.wf_definite(w.get("limit_enforcement")) else "not stated", "answer_id": w["fields_src"].get("execution", ""),
                 "quote": (w.get("quotes") or {}).get("execution", "")} for w in d["workflows"].values()]
     capabilities = []
     for w in wf_rows:
-        capabilities.append(f"{w['label']}: {w['execution']}" + (f"; approval by {w['approval_authority']}" if w["approval_authority"] != "—" else "")
+        capabilities.append(f"{w['label']}: {w['execution']}" + (f"; approval by {w['approval_authority']}" if w["approval_authority"] != "Not assessed" else "")
                             + (f"; approval bound to the action: {w['approval_bound']}" if w["approval_bound"] != "not stated" else "")
                             + (f"; limit enforcement: {w['limit_enforcement']}" if w["limit_enforcement"] != "not stated" else ""))
     drivers = []
@@ -393,6 +394,9 @@ def build_report(state: dict, index, client=None, semantic: bool | None = None) 
     drivers += [b["text"] for b in cls["blockers"]]
     if cls["legal"]["high"]:
         drivers.append("A legal high-risk pathway (Art. 6) is supported by the declarations.")
+    tool_rows = [{"name": x["name"], "kind": x["kind"] if x["kind"] != "unknown" else "Not assessed", "scope": x["scope"] or "Not assessed",
+                  "confirmed": ", ".join(x["permissions"]) or "none declared", "denied": ", ".join(x["denied_permissions"]) or "none declared",
+                  "unknown": ", ".join(x["unknown_permissions"]) or "none", "answer_ids": ", ".join(x["answer_ids"]), "quote": (x["evidence"] or [""])[0]} for x in d.get("tools", [])]
     integrity = C.trace_integrity(state, cls)
     cit_check = validate_citations(cited, index)
     legal_review = [f"Possible prohibited practice not settled ({P['critical_labels'].get(k, k)}); refer to legal review instead of treating it as cleared or confirmed." for k in cls["unresolved"] if k.startswith("p_") and s.get(k) == "possible"]
@@ -403,8 +407,8 @@ def build_report(state: dict, index, client=None, semantic: bool | None = None) 
             "banner": P["banner"], "posture": cls["posture"], "posture_text": posture_txt, "posture_meaning": P["posture_meaning"].get(cls["posture"]) if cls["posture"] else "",
             "label_rule": P["label_rule"], "evidence_state": P["evidence_state"]["text"], "recommendation": P["recommendation_text"],
             "context": {"scope_country": settings.get("scope_country", "Not specified"), "applicability": P["applicability"][cls["applicability"]], "reference": P["context_defaults"]["reference_framework"]},
-            "use_text": ((s.get("purpose") or "—") + ((". Affected decisions: " + s["affected_decisions"]) if s.get("affected_decisions") else ""))[:600],
-            "workflows": wf_rows, "capabilities": capabilities, "drivers": drivers, "context_gaps": cls.get("context_gaps", []),
+            "use_text": ((s.get("purpose") or "Not assessed") + ((". Affected decisions: " + s["affected_decisions"]) if s.get("affected_decisions") else ""))[:600],
+            "workflows": wf_rows, "tools": tool_rows, "capabilities": capabilities, "drivers": drivers, "context_gaps": cls.get("context_gaps", []),
             "integrity": {"ok": not integrity, "violations": integrity}, "citation_check": cit_check, "policy_notice": P["policy_notice"], "legal_review": legal_review,
             "key_findings": [{"id": f["id"], "text": f["short"], "decl": f["decl"], "cite_nos": f["cite_nos"], "cites": cite_view(f["cite_nos"]), "method": f["kind"] in ("method", "internal_rule"), "rules": f.get("rules", []),
                               "unsupported": bool(f["sources"]) and not f["cite_nos"]} for f in key],
@@ -415,7 +419,7 @@ def build_report(state: dict, index, client=None, semantic: bool | None = None) 
             "findings": findings, "verification": ver, "answers": [{"id": a["id"], "q": a["q"], "a": a["a"]} for a in trail], "controls": rows, "control_counts": counts,
             "dates": dates, "cited": cited, "bibliography": biblio, "currency": P["currency_statement"], "disclaimer": P["disclaimer"],
             "note": NOTE, "policy_version": P["policy_version"], "policy_id": P["policy_id"],
-            "system": [("Intended purpose", s.get("purpose", "—")), ("Affected decisions", s.get("affected_decisions", "—"))],
+            "system": [("Intended purpose", s.get("purpose") or "Not assessed"), ("Affected decisions", s.get("affected_decisions") or "Not assessed")],
             "legal_scope_note": lg.get("scope_note", ""), "retrieval_mode": mode, "retrieval_note": RETRIEVAL_NOTE[mode], "warnings": list(warnings)}
 
 
@@ -551,8 +555,8 @@ def client_summary(cls: dict, d: dict, rows: list[dict], improvements: list[dict
 
 
 def pdf_bytes(rep: dict) -> bytes:
-    """Concise client report: page 1 = assessed agent, result, reasons, next steps, limitation; page 2 (and 3 only if needed) = C01–C21 table. Sources, retrieval
-    diagnostics, transcripts and derivation traces stay in the application and in the stored records; they are not part of this document."""
+    """Client report: page 1 = banner, assessed agent, result, reasons, next steps, limitation; then the C01–C21 table; then a traceability appendix (separate conclusions,
+    derivation with inputs, tool/action inventory, drivers, cited sources). Retrieval diagnostics and the transcript stay in the application."""
     from reportlab.lib import colors
     from reportlab.lib.enums import TA_LEFT
     from reportlab.lib.pagesizes import A4
@@ -572,9 +576,14 @@ def pdf_bytes(rep: dict) -> bytes:
     B = lambda t: Paragraph("•  " + escape(str(t)), bullet)  # noqa: E731
     sm = rep["summary"]
     cls = rep["cls"]
-    label = {"LOW": "Low", "MEDIUM": "Medium", "HIGH": "High", "FORBIDDEN": "Unacceptable (prohibited use)"}.get(rep["risk_label"], "Not issued")
+    label = {"LOW": "Low", "HIGH": "High", "FORBIDDEN": "Unacceptable (prohibited use)"}.get(rep["risk_label"], "Not issued")
     el = [P("TrustAI", sub), P("Agentic AI Risk Assessment", title), P("Preliminary Assessment Report", sub), P(f"Assessment date: {rep['date']}", small),
           Spacer(1, 4), Table([[""]], colWidths=[170 * mm], rowHeights=[1], style=[("LINEABOVE", (0, 0), (-1, 0), 1.2, teal)])]
+    banner = Table([[Paragraph(escape("PRELIMINARY, DECLARATION-BASED ASSESSMENT. " + C.policy()["banner"] + " No control was tested and no evidence was reviewed; this is not a compliance finding, a certificate or legal advice."),
+                               st("bn", fontName=fb, fontSize=8.8, leading=12, textColor=navy))]], colWidths=[170 * mm])
+    banner.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 0.8, teal), ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#E2F3F1")),
+                                ("TOPPADDING", (0, 0), (-1, -1), 5), ("BOTTOMPADDING", (0, 0), (-1, -1), 5), ("LEFTPADDING", (0, 0), (-1, -1), 6)]))
+    el += [Spacer(1, 5), banner]
     el.append(P("A. Assessed Agent", h2))
     for a in sm["agent"] or ["The intended purpose was not stated."]:
         el.append(P(a))
@@ -606,6 +615,42 @@ def pdf_bytes(rep: dict) -> bytes:
                             ("VALIGN", (0, 0), (-1, -1), "TOP"), ("TOPPADDING", (0, 0), (-1, -1), 3.2), ("BOTTOMPADDING", (0, 0), (-1, -1), 3.2),
                             ("LEFTPADDING", (0, 0), (-1, -1), 3), ("RIGHTPADDING", (0, 0), (-1, -1), 3)]))
     el.append(tb)
+    # ---- appendix: traceability (derivation with inputs, tool/action inventory, separate conclusions, sources). Empty fields read 'Not assessed'.
+    t2 = st("t2b", fontName=fb, fontSize=15, leading=19)
+    el += [PageBreak(), P("Basis and traceability", t2), Spacer(1, 2),
+           P("How the result was derived, what the agent can reach, and which external passages are cited. Everything below comes from the answers given and the deterministic internal policy.", small)]
+    el.append(P("Separate conclusions", h2))
+    for k, v in rep["conclusions"]:
+        el += [P(k, cellb), P(v, cell), Spacer(1, 3)]
+
+    def _in(i):
+        name = i.get("slot") or i.get("tool") or "input"
+        val = i.get("value_label") if i.get("value_label") not in (None, "") else (", ".join(i.get("permissions") or []) or i.get("execution") or "Not assessed")
+        ids = i.get("answer_id") or ", ".join(i.get("answer_ids") or []) or "Not assessed"
+        wfl = f" [{i['workflow']}]" if i.get("workflow") else ""
+        return f"input: {name}{wfl} = {val} (answer {ids})" + (f" — user quote: \u201c{i['quote']}\u201d" if i.get("quote") else "")
+    el.append(P("Classification derivation", h2))
+    for step in rep["derivation"]:
+        el += [P(f"{step['step']} = {step.get('result') or 'Not assessed'}" + (f"  [{step['rule_id']}]" if step.get("rule_id") else ""), cellb), P(step.get("rule") or "Not assessed", cell)]
+        el += [P(_in(i), small) for i in step.get("inputs") or []]
+        el.append(Spacer(1, 3))
+    el.append(P("Tool and action inventory (as declared)", h2))
+    if not rep["workflows"] and not rep["tools"]:
+        el.append(P("Not assessed. No tool, system, account, data source or action was described in the interview.", cell))
+    for w in rep["workflows"]:
+        el.append(P(f"Action: {w['label']} \u2014 {w['execution']}; threshold: {w['threshold']}; approval authority: {w['approval_authority']}; approval bound to the action: {w['approval_bound']}; "
+                    f"limit enforcement: {w['limit_enforcement']}; answer {w['answer_id'] or 'Not assessed'}", cell))
+    for x in rep["tools"]:
+        el.append(P(f"Tool/system: {x['name']} ({x['kind']}); scope: {x['scope']}; confirmed permissions: {x['confirmed']}; denied: {x['denied']}; not stated (unknown): {x['unknown']}; answer {x['answer_ids'] or 'Not assessed'}", cell))
+    el.append(P("Risk drivers", h2))
+    for dv in rep["drivers"] or ["Not assessed"]:
+        el.append(B(dv))
+    el.append(P("Sources cited (external passages)", h2))
+    if not rep["cited"]:
+        el.append(P("Not assessed. No retrieved passage passed the support check for this report.", cell))
+    for c in rep["cited"]:
+        el.append(P(cite_text(c), cell))
+    el += [Spacer(1, 3), P("Registered sources: " + "; ".join(f"{b['short']} ({b['kind']}, {b['version']})" + (" \u2014 bibliographic entry only, text not used" if b["note"].startswith("Bibliographic") else "") for b in rep["bibliography"]) + ".", small)]
 
     def footer(canvas, doc):
         canvas.saveState()

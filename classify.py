@@ -11,6 +11,7 @@ with the accepted input facts they were computed from."""
 from __future__ import annotations
 
 import json
+import re
 from functools import lru_cache
 
 import config
@@ -34,7 +35,7 @@ def controls_cfg() -> dict:
 TOPICS = lambda: {t["id"]: t for t in interview_cfg()["topics"]}  # noqa: E731
 STATUS_LABEL = {"declared_present": "Declared present", "declared_absent": "Declared absent", "partial": "Partially assessed",
                 "unknown": "Unknown", "not_assessed": "Not assessed", "not_applicable": "Not applicable"}
-ORDER = ["LOW", "MEDIUM", "HIGH"]
+ORDER = ["LOW", "HIGH"]
 
 
 COUNTED_KINDS = ("question", "followup", "conflict")  # answered assessment questions
@@ -53,6 +54,7 @@ def _definite(v) -> bool:
 
 
 # ----------------------------------------------------------------------- per-workflow authority facts
+TOOL_PERMISSIONS = ("read", "write", "modify", "delete", "send", "execute", "transact")
 WF_FIELDS = ("action", "condition", "threshold", "recipient", "execution", "approval_authority", "approval_bound", "limit_enforcement", "recipient_restricted")
 WF_RANK = {"no_action": 0, "recommend": 1, "draft": 2, "executes_after_approval": 3, "executes_without_approval": 4}
 WF_MODE = {"no_action": "info_only", "recommend": "recommend", "draft": "draft", "executes_after_approval": "approved_action", "executes_without_approval": "envelope_action"}
@@ -133,7 +135,7 @@ def derive(state: dict) -> dict:
     spec = cfg["slots"]
     slots, src, controls, csrc, basis, ev = {}, {}, {}, {}, {}, {}
     asked, followups, conflict_asked, conflicts, unresolved_conflicts = {}, {}, {}, {}, {}
-    wfs, wf_conflicts, derived_from = {}, {}, {}
+    wfs, wf_conflicts, derived_from, tools = {}, {}, {}, {}
     st_eu = (state.get("settings") or {}).get("eu_link", "unknown")
     if st_eu in ("yes", "no"):  # assessment setting
         slots["eu_link"], src["eu_link"] = st_eu, "SETTINGS"
@@ -156,6 +158,26 @@ def derive(state: dict) -> dict:
                 ev[k] = quote
             elif v != "unknown":
                 ev.pop(k, None)
+        for item in u.get("tools") or []:
+            name = (item.get("name") or "").strip()
+            if not name:
+                continue
+            old = tools.setdefault(name.casefold(), {"name": name, "kind": "unknown", "permissions": [], "denied_permissions": [], "scope": "", "evidence": [], "answer_ids": []})
+            if item.get("kind") and item["kind"] != "unknown":
+                old["kind"] = item["kind"]
+            if item.get("scope"):
+                old["scope"] = item["scope"]
+            # Per permission: confirmed (declared), denied (explicitly excluded, e.g. 'read-only' or 'revoked') or unknown (not stated). A later statement replaces an
+            # earlier one for the same permission (correction, revocation). Within ONE statement a permission that is both denied and confirmed stays confirmed
+            # (the cautious reading: the contradiction is not resolved in favour of the lower authority).
+            confirmed = set(item.get("permissions") or []) & set(TOOL_PERMISSIONS)
+            denied = (set(item.get("denied_permissions") or []) & set(TOOL_PERMISSIONS)) - confirmed
+            old["permissions"] = sorted((set(old["permissions"]) - denied) | confirmed)
+            old["denied_permissions"] = sorted((set(old["denied_permissions"]) - confirmed) | denied)
+            if item.get("evidence") and item["evidence"] not in old["evidence"]:
+                old["evidence"].append(item["evidence"])
+            if aid not in old["answer_ids"]:
+                old["answer_ids"].append(aid)
         for w in u.get("workflows") or []:
             wid, cur = w["id"], wfs.get(w["id"])
             if cur is None:
@@ -242,6 +264,13 @@ def derive(state: dict) -> dict:
                                         "question": r.get("question"), "resolve": r.get("resolve")}
                     else:  # asked and still conflicting
                         unresolved_conflicts[k] = src.get(k)
+    for x in tools.values():  # confirmed / denied / unknown are three different states; 'unknown' is never read as 'denied'
+        x["unknown_permissions"] = [p for p in TOOL_PERMISSIONS if p not in x["permissions"] and p not in x["denied_permissions"]]
+    if tools:
+        names = ", ".join(x["name"] for x in tools.values())
+        slots["tools_summary"] = names
+        src["tools_summary"] = list(tools.values())[-1]["answer_ids"][-1]
+        derived["tools_summary"] = "Named tools and systems recorded with per-item permissions; unspecified permissions remain unknown."
     def _decl(cid, slot_names, yes, no):
         vals = [(k, slots.get(k)) for k in slot_names if slots.get(k) is not None]
         if cid in controls or not vals:
@@ -257,7 +286,7 @@ def derive(state: dict) -> dict:
         _decl("C09", ["approval_bound", "human_review"], ("yes",), ("no",))
     _decl("C11", ["limits_enforced"], ("technical",), ("policy_only", "none"))
     return {"slots": slots, "slots_src": src, "controls": controls, "controls_src": csrc, "basis": basis, "asked": asked,
-            "derived": derived, "derived_from": derived_from, "workflows": wfs, "evidence": ev, "followups": followups, "conflicts": conflicts,
+            "derived": derived, "derived_from": derived_from, "workflows": wfs, "tools": list(tools.values()), "evidence": ev, "followups": followups, "conflicts": conflicts,
             "conflict_asked": conflict_asked, "unresolved_conflicts": unresolved_conflicts}
 
 
@@ -574,12 +603,51 @@ def posture_for(I: str, L: str, escalate: bool) -> tuple[str, str]:
     return base, final
 
 
+# ----------------------------------------------------------------------- impact floors from the user's own description of the harm
+_NEG = re.compile(r"\b(no|not|never|none|cannot|can't|cant|without|unlikely|nobody|no one|neither|nor|impossible|rule[sd]? out)\b[^.;]{0,30}$", re.I)
+_I3_PATTERNS = (
+    (r"\b(death|deaths|die|dies|died|dying|fatal\w*|kill\w*|life[- ]threatening|serious(?:ly)? (?:injur\w+|harm\w*|hurt)|physical (?:harm|injur\w+)|injur(?:y|ies|ed)|endanger\w*)\b",
+     "POL-I3-SAFETY", "The declared harm concerns the safety of people (death, injury or danger to life), which is severe harm that reversibility alone cannot lower."),
+    (r"\b(wrongful(?:ly)? (?:arrest\w*|detain\w*|detention|convict\w*|deport\w*)|deportation|imprison\w*|denied (?:asylum|bail)|loss of (?:liberty|freedom))\b",
+     "POL-I3-RIGHTS", "The declared harm concerns fundamental rights (liberty, asylum, due process), which is severe harm."),
+    (r"\b(evict\w*|homeless\w*|lose (?:their |his |her )?(?:home|housing|livelihood)|loss of (?:livelihood|housing|income)|"
+     r"denied (?:essential|emergency|medical|health ?care|treatment|social benefits?|benefits?|food|water|electricity|heating)|"
+     r"(?:fired|dismissed|laid off|terminated|lose (?:their |his |her )?(?:current )?jobs?)(?!.{0,40}(?:opportunit|application|candidate|applicant|hiring))|bankrupt\w*|insolven\w*)\b",
+     "POL-I3-LIVELIHOOD", "The declared harm concerns livelihood or essential services (home, income, existing employment, essential care or benefits), which is severe harm."),
+)
+_I2_PATTERNS = (
+    (r"(?:lose|lost|denied|miss|depriv\w*|rejected|excluded|exclusion|loss of).{0,75}(?:job|employment|hiring|work opportunity|career opportunity)|(?:qualified candidates?|applicants?).{0,65}(?:lose|lost|denied|rejected|excluded|miss)",
+     "POL-I2-EMPLOYMENT", "Credible loss of an employment opportunity is material livelihood/fairness harm, not limited operational inconvenience."),
+    (r"\b(discriminat\w*|biased?|unfair(?:ly)?|unjust(?:ly)?|privacy (?:breach\w*|violation\w*|leak\w*)|data (?:breach\w*|leak\w*)|(?:leak|expos|disclos)\w* (?:of )?(?:personal|confidential|private|sensitive) (?:data|information)|"
+     r"wrong(?:ly)? (?:charged|billed|denied|rejected|refused)|denied (?:a )?(?:loan|credit|mortgage|insurance|service|access)|loss of (?:service|access)|legal (?:claims?|action|liability))\b",
+     "POL-I2-MATERIAL", "The declared harm concerns material fairness, privacy, service or rights consequences for people."),
+)
+
+
+def _hits(patterns, text: str):
+    out = []
+    for pat, rid, why in patterns:
+        for m in re.finditer(pat, text, re.I):
+            if not _NEG.search(text[max(0, m.start() - 40):m.start()]):  # 'nobody could die' is not a death scenario
+                out.append((rid, why))
+                break
+    return out
+
+
+def harm_floors(desc: str) -> list[tuple[str, str, str]]:
+    """Minimum impact classes implied by what the USER wrote about the harm: [(class, rule id, reason)], highest first. The user's own selected class can be higher; it is never lowered."""
+    text = (desc or "").lower()
+    out = [("I3", rid, why) for rid, why in _hits(_I3_PATTERNS, text)] + [("I2", rid, why) for rid, why in _hits(_I2_PATTERNS, text)]
+    return out
+
+
 def operational(d: dict) -> dict:
     """Autonomy level L, impact level I, posture P and risk level from the declared facts, with a step-by-step trace."""
     s, P = d["slots"], policy()
     trace, notes = [], []
     mode = s.get("action_mode")
     L = None
+    floor_L = None  # lower bound of the autonomy level when the level is undetermined only because part of the authority is not established
     if autonomy_conflict(d):
         notes.append("Approval/autonomy declarations conflict; no certain autonomy level was produced.")
         trace.append({"step": "Autonomy level (L)", "inputs": _inp(d, "action_mode", "approval_exists", "approval_bound"),
@@ -588,28 +656,56 @@ def operational(d: dict) -> dict:
         L = P["autonomy_map"].get(mode)
         enf = s.get("limits_enforced")
         trace.append({"step": "Autonomy level (L)", "inputs": _inp(d, "action_mode", *(["limits_enforced"] if mode in ("envelope_action", "approved_action") else [])),
-                      "rule_id": f"POL-{L}" if L else "POL-L", "rule": f"Declared action authority '{mode}' maps to {L} (" + (P["autonomy_notes"].get(L, "") if L else "no level without a declared authority") + ")"
+                      "rule_id": f"POL-{L}" if L else "POL-L", "rule": (f"Declared action authority '{mode}' maps to {L} (" + P["autonomy_notes"].get(L, "") + ")" if L else "No action authority was declared, so no autonomy level is derived (undetermined, not assumed)")
                       + (" The authority is the maximum declared reachable authority over the material workflows." if d.get("derived_from", {}).get("action_mode") else "")
                       + (" The limit was declared to be technically enforced." if mode in ("envelope_action", "approved_action") and enf == "technical" else
                          " The limit was declared to exist only in instructions or policy; this escalates the posture (POL-ESC)." if mode in ("envelope_action", "approved_action") and enf in ("policy_only", "none") else
                          " Technical enforcement of the limit has not been established." if mode == "envelope_action" else ""), "result": L or "undetermined"})
         if L == "L3" and s.get("approval_bound") != "yes":
-            L = "L4"
-            msg = "Approval was not declared to be bound to the specific action, so it was treated as L4 (L3 requires approval bound to that action)."
+            L = None
+            msg = "Specific-action approval was not established. L3 cannot be confirmed and L4 cannot be inferred from missing evidence."
             notes.append(msg)
-            trace.append({"step": "Autonomy adjustment", "rule_id": "POL-L3-BIND", "inputs": _inp(d, "approval_bound"), "rule": msg, "result": "L4"})
-        if L in ("L3", "L4") and s.get("authority_expansion") == "yes":
-            L = "L5"
-            msg = "The agent can expand its own authority, which defines L5 in the internal policy."
+            trace.append({"step": "Autonomy uncertainty", "rule_id": "POL-L3-BIND", "inputs": _inp(d, "approval_bound"), "rule": msg, "result": "undetermined"})
+        unknown_wf = [w for w in d.get("workflows", {}).values() if (w.get("action") or "").strip() and not wf_definite(w.get("execution"))]
+        if L in ("L0", "L1", "L2", "L3") and unknown_wf:
+            floor_L = L
+            msg = ("What the agent itself does was not established for: " + "; ".join(wf_label(w) for w in unknown_wf)
+                   + f". The declared ceiling ({L}) is a lower bound only; the authority level is undetermined, not assumed to be {L}.")
+            L = None
             notes.append(msg)
-            trace.append({"step": "Autonomy adjustment", "rule_id": "POL-L5-EXP", "inputs": _inp(d, "authority_expansion"), "rule": msg, "result": "L5"})
+            trace.append({"step": "Autonomy uncertainty", "rule_id": "POL-WF-UNKNOWN", "inputs": [], "rule": msg, "result": "undetermined"})
+    if s.get("authority_expansion") == "yes" and "authority_expansion" not in (set(d["conflicts"]) | set(d["unresolved_conflicts"])) and L != "L5":
+        # L5 is defined by the ability to select or expand execution scope or delegated authority without approval for each expansion. The maximum technically
+        # reachable authority counts, whatever the current mode is (a recommend-only agent that can grant itself new permissions can reach L5).
+        L, floor_L = "L5", None
+        msg = "The agent can expand its own authority, which defines L5 in the internal policy (maximum reachable authority, whatever its current mode)."
+        notes.append(msg)
+        trace.append({"step": "Autonomy adjustment", "rule_id": "POL-L5-EXP", "inputs": _inp(d, "authority_expansion"), "rule": msg, "result": "L5"})
+    # Accessible action permissions contradict a claim of recommendation-only
+    # authority unless the technical execution boundary has been established.
+    # Permissions alone do not prove that an action was executed or that L4 applies.
+    action_permissions = {"write", "modify", "delete", "send", "execute", "transact"}
+    privileged_tools = [x["name"] for x in d.get("tools", []) if action_permissions.intersection(x.get("permissions", []))]
+    if L in ("L0", "L1", "L2") and privileged_tools:
+        floor_L = L
+        notes.append("Action-capable tool permissions were declared (" + ", ".join(privileged_tools) + "). The technical boundary preventing external action has not been established; autonomy is undetermined.")
+        trace.append({"step": "Tool/action authority discrepancy", "rule_id": "POL-TOOL-BOUNDARY", "inputs": [{"tool": x["name"], "permissions": x["permissions"], "answer_ids": x["answer_ids"]} for x in d.get("tools", []) if x["name"] in privileged_tools], "rule": "Action-capable access conflicts with a recommendation-only authority claim until technical restrictions are established.", "result": "undetermined"})
+        L = None
+    open_tools = [x["name"] for x in d.get("tools", []) if len(x.get("unknown_permissions", [])) == len(TOOL_PERMISSIONS)]
+    if open_tools:
+        notes.append("The permissions of these tools or systems were not stated (neither confirmed nor denied): " + ", ".join(open_tools) + ". Reachable authority through them is not established.")
     if s.get("delegates_to_agents") == "yes":
         notes.append("Delegation to other agents/tools was declared: the delegation ceiling must be tested (a delegate must never hold more authority than the delegator).")
     I = P["impact_map"].get(s.get("max_harm"))
+    for floor, rid, why in harm_floors(s.get("harm_desc") or ""):
+        if I is None or IMPACTS.index(I) < IMPACTS.index(floor):  # a floor only ever RAISES the class stated by the user; it never lowers it
+            I = floor
+            trace.append({"step": "Impact adjustment", "rule_id": rid, "inputs": _inp(d, "harm_desc", "max_harm"), "rule": why, "result": floor})
     trace.append({"step": "Impact level (I)", "rule_id": f"POL-{I}" if I else "POL-I", "inputs": _inp(d, "max_harm"),
-                  "rule": f"Declared reasonable worst-case harm '{s.get('max_harm')}' maps to {I}" + (f" ({P['impact_notes'][I]})" if I else "") + "; reversibility alone cannot lower the class.", "result": I or "undetermined"})
+                  "rule": (f"Declared reasonable worst-case harm '{s.get('max_harm')}' maps to {I} ({P['impact_notes'][I]}); reversibility alone cannot lower the class." if I
+                           else "No worst-case harm was declared, so no impact level is derived (undetermined, not assumed)."), "result": I or "undetermined"})
     res = {"L": L, "I": I, "level_notes": notes, "trace": trace}
-    cand_L = [L] if L else (LEVELS if I else [])
+    cand_L = [L] if L else ((LEVELS[LEVELS.index(floor_L):] if floor_L else LEVELS) if I else [])
     cand_I = [I] if I else (IMPACTS if L else [])
     posts, labs, esc_all, base_set = set(), set(), [], set()
     for li in cand_L:
@@ -811,7 +907,7 @@ def classify(state: dict) -> dict:
     basis = []
     if op["label"]:
         rng = "" if op["posture"] else f" (posture range {op['posture_range']})"
-        basis.append({"rule_id": f"POL-LABEL-{op['posture'] or op['posture_range']}", "rule": f"Risk level derived from the posture{rng}: P1 = LOW, P2 = MEDIUM, P3 and P4 = HIGH.", "result": op["label"],
+        basis.append({"rule_id": f"POL-LABEL-{op['posture'] or op['posture_range']}", "rule": f"Risk level derived from the posture{rng}: P1/P2 = LOW, P3/P4 = HIGH.", "result": op["label"],
                       "inputs": []})
     if legal["high"]:
         label = "HIGH"

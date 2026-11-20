@@ -42,6 +42,8 @@ def _extract_text(path: Path) -> str:
 def validate(path: Path, meta: dict) -> list[str]:
     """Problems that stop a document from being registered (empty list = acceptable)."""
     problems = []
+    if rag.is_excluded_reference(path.name, str(meta.get("title") or ""), str(meta.get("source_id") or ""), str(meta.get("short") or "")):
+        problems.append("this document is an external development/QA reference (for example the compliance check matrix); it is never an application source and cannot be registered")
     if path.suffix.lower() not in ALLOWED_SUFFIXES:
         problems.append(f"unsupported file type '{path.suffix}' (use PDF or DOCX)")
     for k in REQUIRED:
@@ -68,7 +70,10 @@ def validate(path: Path, meta: dict) -> list[str]:
         return problems
     if not problems:
         try:
-            if len(_extract_text(path).strip()) < MIN_TEXT_CHARS:
+            text_ = _extract_text(path)
+            if rag.has_excluded_content(text_):
+                problems.append("the document text identifies it as an external development/QA reference (compliance check matrix); it cannot be registered")
+            if len(text_.strip()) < MIN_TEXT_CHARS:
                 problems.append(f"no extractable text (fewer than {MIN_TEXT_CHARS} characters); scanned documents need OCR first")
         except Exception as e:  # noqa: BLE001
             problems.append(f"the document could not be read: {str(e)[:120]}")

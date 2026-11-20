@@ -121,7 +121,7 @@ def test_report_pdf_and_state_agree_for_the_procurement_scenario(index):
         txt = re.sub(r"\s+", " ", " ".join(p.get_text() for p in doc))
     assert "L4" in txt and "I2" in txt and "P4" in txt and "Hold for redesign" in txt and "up to EUR 5,000" in txt
     assert "Some actions are approved" not in txt
-    assert "Technical appendix" not in txt and "Source passages" not in txt and "Citation validation" not in txt and "[K1]" not in txt
+    assert "Technical appendix" not in txt and "Citation validation" not in txt and "Basis and traceability" in txt and "Classification derivation" in txt and "Tool and action inventory" in txt
     assert rep["summary"]["steps"] and "Redesign" in rep["summary"]["steps"][0]
     assert rep["use_text"] and "EUR 5,000" in " ".join(rep["capabilities"]) and "EUR 5,000" in rep["use_text"]
 
@@ -186,7 +186,7 @@ def _state(slots, basis=None, wf=None):
 
 @pytest.mark.parametrize("slots,label,posture", [
     ({"action_mode": "info_only", "max_harm": "minimal"}, "LOW", "P1"),
-    ({"action_mode": "recommend", "max_harm": "limited"}, "MEDIUM", "P2"),
+    ({"action_mode": "recommend", "max_harm": "limited"}, "LOW", "P2"),
     ({"action_mode": "envelope_action", "max_harm": "serious", "limits_enforced": "technical"}, "HIGH", "P4"),
 ])
 def test_low_medium_high_pathways(slots, label, posture):
